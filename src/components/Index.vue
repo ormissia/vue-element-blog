@@ -18,7 +18,10 @@
       </el-menu>
     </el-header>
     <!--主体区域-->
-    <el-main>Main</el-main>
+    <el-main>
+      <!--需要实现根据顶部导航栏的跳转实现内容的替换-->
+      Main
+    </el-main>
     <!--底部区域-->
     <el-footer>Footer</el-footer>
   </el-container>
@@ -33,6 +36,7 @@ export default {
     }
   },
   methods: {
+    // 导航栏菜单点击事件
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
     }
@@ -46,7 +50,7 @@ export default {
 }
 
 .el-header {
-  background-color: #B3C0D1;
+  background-color: #545c64;
   text-align: center;
   line-height: 60px;
   padding: 0;
@@ -54,7 +58,13 @@ export default {
 
 .header-menu {
   background-color: #545c64;
-  width: 100%;
+  width: fit-content;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.el-menu-item {
+  width: 150px;
 }
 
 .el-main {
