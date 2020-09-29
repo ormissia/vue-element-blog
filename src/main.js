@@ -5,14 +5,18 @@ import './plugins/element.js'
 
 // 导入全局样式
 import './assets/css/global.css'
-
+// 导入axios
 import axios from 'axios'
+// 导入qs，用于序列化发送参数
+import qs from 'qs'
 // 配置请求根路径
 axios.defaults.baseURL = 'http://127.0.0.1:8085/api/private/'
 // 远程后台地址
 // axios.defaults.baseURL = ''
 // 挂在到Vue实例，后面可通过this调用
 Vue.prototype.$http = axios
+// 挂在qs
+Vue.prototype.$qs = qs
 
 Vue.config.productionTip = false
 

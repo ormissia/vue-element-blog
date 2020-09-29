@@ -10,6 +10,8 @@ export default {
     logout () {
       window.sessionStorage.clear()
       this.$router.push('/login')
+      // TODO
+      // 向后端发送等出请求
     }
   }
 }

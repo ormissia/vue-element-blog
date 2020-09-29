@@ -53,26 +53,31 @@ export default {
     }
   },
   methods: {
-    onSubmit () {
-      console.log(123)
-    },
     login () {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return false
-        const { data: res } = await this.$http.post('login', this.loginForm)
+        // 发送请求之前需要对密码加密
+        const { data: res } = await this.$http.post('login', this.$qs.stringify(this.loginForm))
         // console.log(res)
-        // 登录失败
-        if (res.meta.status !== 200) {
+        if (res.status === 405) {
+          // 登录失败，用户不存在
           return this.$rootMessage({
             showClose: true,
-            message: '登录失败',
+            message: res.message,
+            type: 'error'
+          })
+        } else if (res.status === 201) {
+          // 登录失败，密码错误
+          return this.$rootMessage({
+            showClose: true,
+            message: res.message,
             type: 'error'
           })
         }
         // 登录成功
         this.$rootMessage({
           showClose: true,
-          message: '登录成功',
+          message: res.message,
           type: 'success'
         })
         // 1、将登陆成功之后的token, 保存到客户端的sessionStorage中; localStorage中是持久化的保存
@@ -80,7 +85,7 @@ export default {
         //   1.2 token 只应在当前网站打开期间生效，所以将token保存在sessionStorage中
         window.sessionStorage.setItem('token', res.data.token)
         // 2、通过编程式导航跳转到后台主页, 路由地址为：/home
-        this.$router.push('/home')
+        await this.$router.push('/home')
       })
     }
   }
