@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '../components/Index.vue'
-import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 
 Vue.use(VueRouter)
@@ -14,10 +13,6 @@ const routes = [
   {
     path: '/index',
     component: Index
-  },
-  {
-    path: '/login',
-    component: Login
   },
   {
     path: '/home',
@@ -33,15 +28,14 @@ const router = new VueRouter({
 // to将要访问的路径
 // from代表从哪个路径跳转而来
 // next是一个函数表示放行
-//    next()放行    next('/login')强制跳转
+//    next()放行    next('/index')强制跳转
 router.beforeEach((to, from, next) => {
-  // 访问登录页和Index页面，放行
-  if (to.path === '/login') return next()
+  // 访问和Index页面，放行
   if (to.path === '/index') return next()
   // 获取token
   const tokenStr = window.sessionStorage.getItem('token')
-  // 没有token，跳转到登录页
-  if (!tokenStr) return next('/login')
+  // 没有token，跳转到首页
+  if (!tokenStr) return next('/index')
   next()
 })
 

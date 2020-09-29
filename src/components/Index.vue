@@ -4,12 +4,12 @@
     <el-header>
       <!--使用layout布局分割头部区域-->
       <el-row>
-        <el-col :span="2" :offset="6">
+        <el-col :span="2" :offset="4">
           <router-link to="/">
             <img class="logo" src="../assets/logo.png" alt="ormissia">
           </router-link>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="12">
           <!--头部菜单-->
           <el-menu
             mode="horizontal"
@@ -25,16 +25,34 @@
           </el-menu>
         </el-col>
         <el-col :span="3">
-          <el-button type="primary" @click="login">登录</el-button>
-        </el-col>
-        <el-col :span="6">
+          <el-button type="primary" @click="openLoginDialog">登录</el-button>
         </el-col>
       </el-row>
     </el-header>
     <!--主体区域-->
     <el-main>
       <!--需要实现根据顶部导航栏的跳转实现内容的替换-->
-      Main
+      <el-dialog
+        title="登录"
+        width="50%"
+        :visible.sync="dialogVisible">
+        <!--登录表单区-->
+        <el-form :model="loginForm" :rules="loginFormRules" ref="loginFormRef" class="login_form">
+          <!--用户名-->
+          <el-form-item prop="username">
+            <el-input placeholder="请输入用户名" v-model="loginForm.username" prefix-icon="el-icon-user-solid"></el-input>
+          </el-form-item>
+          <!--密码-->
+          <el-form-item prop="password">
+            <el-input placeholder="请输入密码" v-model="loginForm.password"
+                      prefix-icon="el-icon-info" type="password"></el-input>
+          </el-form-item>
+          <!--按钮-->
+          <el-form-item class="login_buttons">
+            <el-button type="primary" @click="login">登录</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </el-main>
     <!--底部区域-->
     <el-footer>Footer</el-footer>
@@ -46,7 +64,33 @@ export default {
   name: 'Index',
   data () {
     return {
-      activeIndex: '1'
+      activeIndex: '1',
+      // 登录Dialog打开关闭的标记
+      dialogVisible: false,
+      // 这是登录表单的绑定对象
+      loginForm: {
+        username: '',
+        password: ''
+      },
+      // 这是表单验证规则对象
+      loginFormRules: {
+        // 验证用户名是否为空
+        username: [
+          {
+            required: true,
+            message: '请输入用户名',
+            trigger: 'blur'
+          }
+        ],
+        // 验证密码是否为空
+        password: [
+          {
+            required: true,
+            message: '请输入密码',
+            trigger: 'blur'
+          }
+        ]
+      }
     }
   },
   methods: {
@@ -54,8 +98,45 @@ export default {
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
     },
+    // 打开登录Dialog
+    openLoginDialog () {
+      this.dialogVisible = true
+    },
+    // 点击登录Dialog的登录按钮
     login () {
-      console.log(123)
+      this.$refs.loginFormRef.validate(async valid => {
+        if (!valid) return false
+        // 发送请求之前需要对密码加密
+        const { data: res } = await this.$http.post('login', this.$qs.stringify(this.loginForm))
+        // console.log(res)
+        if (res.status === 405) {
+          // 登录失败，用户不存在
+          return this.$rootMessage({
+            showClose: true,
+            message: res.message,
+            type: 'error'
+          })
+        } else if (res.status === 201) {
+          // 登录失败，密码错误
+          return this.$rootMessage({
+            showClose: true,
+            message: res.message,
+            type: 'error'
+          })
+        }
+        // 登录成功
+        this.$rootMessage({
+          showClose: true,
+          message: res.message,
+          type: 'success'
+        })
+        // 1、将登陆成功之后的token, 保存到客户端的sessionStorage中; localStorage中是持久化的保存
+        //   1.1 项目中出现了登录之外的其他API接口，必须在登陆之后才能访问
+        //   1.2 token 只应在当前网站打开期间生效，所以将token保存在sessionStorage中
+        window.sessionStorage.setItem('token', res.data.token)
+        // 2、通过编程式导航跳转到后台主页, 路由地址为：/home
+        await this.$router.push('/home')
+      })
     }
   }
 }
@@ -80,6 +161,11 @@ export default {
       float: right;
       margin-right: 20px;
     }
+
+    .el-menu-item {
+      width: auto;
+      margin: 0 20px;
+    }
   }
 }
 
@@ -90,6 +176,11 @@ export default {
 .el-main {
   text-align: center;
   line-height: 100%;
+
+  .login_buttons {
+    display: flex;
+    justify-content: flex-start;
+  }
 }
 
 .el-footer {
