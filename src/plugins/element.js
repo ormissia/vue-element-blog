@@ -1,9 +1,14 @@
 import Vue from 'vue'
 import {
+  // 容器
   Container,
+  // 布局
+  Row,
+  Col,
   Header,
   Main,
   Footer,
+  // 控件
   Button,
   Form,
   FormItem,
@@ -14,6 +19,8 @@ import {
 } from 'element-ui'
 
 Vue.use(Container)
+Vue.use(Row)
+Vue.use(Col)
 Vue.use(Header)
 Vue.use(Main)
 Vue.use(Footer)
