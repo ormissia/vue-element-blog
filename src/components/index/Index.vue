@@ -55,7 +55,7 @@
         </el-form>
       </el-dialog>
       <!--使用layout布局分割内容区域-->
-      <el-row>
+      <el-row class="content-row">
         <el-col :span="16" :offset="4">
           <!--内容区域-->
           <!--路由占位符-->
@@ -175,6 +175,11 @@ export default {
       width: auto;
       margin: 0 20px;
     }
+
+    .login_buttons {
+      display: flex;
+      justify-content: flex-start;
+    }
   }
 }
 
@@ -186,9 +191,8 @@ export default {
   text-align: center;
   line-height: 100%;
 
-  .login_buttons {
-    display: flex;
-    justify-content: flex-start;
+  .content-row {
+    height: 100%;
   }
 }
 

@@ -11,5 +11,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.el-row {
+  // 页面高度设置
+  height: 100%;
 
+  .el-col {
+    height: 100%;
+  }
+}
 </style>
