@@ -1,21 +1,43 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Index from '../components/Index.vue'
-import Home from '../components/Home.vue'
+
+// 封面
+import BlogCover from '../components/BlogCover.vue'
+
+// 前台页面
+import Index from '../components/index/Index.vue'
+import Article from '../components/index/Article.vue'
+import Type from '../components/index/Type.vue'
+import TimeLine from '../components/index/TimeLine.vue'
+
+// 后台管理页面
+import Home from '../components/background/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    redirect: '/index'
+    component: BlogCover
   },
   {
     path: '/index',
-    component: Index
+    component: Index,
+    redirect: '/article',
+    children: [{
+      path: '/article',
+      component: Article
+    }, {
+      path: '/type',
+      component: Type
+    }, {
+      path: '/timeline',
+      component: TimeLine
+    }]
   },
+  // 后台管理页面
   {
-    path: '/home',
+    path: '/background/home',
     component: Home
   }
 ]
@@ -30,8 +52,8 @@ const router = new VueRouter({
 // next是一个函数表示放行
 //    next()放行    next('/index')强制跳转
 router.beforeEach((to, from, next) => {
-  // 访问和Index页面，放行
-  if (to.path === '/index') return next()
+  // 访问的不是background页面，放行
+  if (to.path.indexOf('/background') === -1) return next()
   // 获取token
   const tokenStr = window.sessionStorage.getItem('token')
   // 没有token，跳转到首页

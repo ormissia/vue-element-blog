@@ -6,7 +6,7 @@
       <el-row>
         <el-col :span="2" :offset="4">
           <router-link to="/">
-            <img class="logo" src="../assets/logo.png" alt="ormissia">
+            <img class="logo" src="../../assets/logo.png" alt="ormissia">
           </router-link>
         </el-col>
         <el-col :span="12">
@@ -16,15 +16,16 @@
             text-color="#fff"
             active-text-color="#ffd04b"
             background-color="#545c64"
+            :router="true"
             :default-active="activeIndex"
             @select="handleSelect">
-            <el-menu-item index="0">首页</el-menu-item>
-            <el-menu-item index="1">文章</el-menu-item>
-            <el-menu-item index="2">分类</el-menu-item>
-            <el-menu-item index="3">历程</el-menu-item>
+            <el-menu-item index="/">首页</el-menu-item>
+            <el-menu-item index="/article">文章</el-menu-item>
+            <el-menu-item index="/type">分类</el-menu-item>
+            <el-menu-item index="/timeline">历程</el-menu-item>
           </el-menu>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="2">
           <el-button type="primary" @click="openLoginDialog">登录</el-button>
         </el-col>
       </el-row>
@@ -53,6 +54,14 @@
           </el-form-item>
         </el-form>
       </el-dialog>
+      <!--使用layout布局分割内容区域-->
+      <el-row>
+        <el-col :span="16" :offset="4">
+          <!--内容区域-->
+          <!--路由占位符-->
+          <router-view></router-view>
+        </el-col>
+      </el-row>
     </el-main>
     <!--底部区域-->
     <el-footer>Footer</el-footer>
@@ -69,8 +78,8 @@ export default {
       dialogVisible: false,
       // 这是登录表单的绑定对象
       loginForm: {
-        username: '',
-        password: ''
+        username: '1',
+        password: '1'
       },
       // 这是表单验证规则对象
       loginFormRules: {
@@ -110,21 +119,21 @@ export default {
         const { data: res } = await this.$http.post('login', this.$qs.stringify(this.loginForm))
         // console.log(res)
         if (res.status === 405) {
-          // 登录失败，用户不存在
+          // 用户不存在登录失败提示
           return this.$rootMessage({
             showClose: true,
             message: res.message,
             type: 'error'
           })
         } else if (res.status === 201) {
-          // 登录失败，密码错误
+          // 密码错误登录失败提示
           return this.$rootMessage({
             showClose: true,
             message: res.message,
             type: 'error'
           })
         }
-        // 登录成功
+        // 登录成功提示
         this.$rootMessage({
           showClose: true,
           message: res.message,
@@ -135,7 +144,7 @@ export default {
         //   1.2 token 只应在当前网站打开期间生效，所以将token保存在sessionStorage中
         window.sessionStorage.setItem('token', res.data.token)
         // 2、通过编程式导航跳转到后台主页, 路由地址为：/home
-        await this.$router.push('/home')
+        await this.$router.push('/background/home')
       })
     }
   }
