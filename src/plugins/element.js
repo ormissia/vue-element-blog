@@ -16,6 +16,7 @@ import {
   Menu,
   MenuItem,
   Dialog,
+  Card,
   Message
 } from 'element-ui'
 
@@ -32,5 +33,6 @@ Vue.use(Input)
 Vue.use(Menu)
 Vue.use(MenuItem)
 Vue.use(Dialog)
+Vue.use(Card)
 // 导入弹框提示组件
 Vue.prototype.$rootMessage = Message

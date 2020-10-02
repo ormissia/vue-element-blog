@@ -33,10 +33,7 @@
     <!--主体区域-->
     <el-main>
       <!--需要实现根据顶部导航栏的跳转实现内容的替换-->
-      <el-dialog
-        title="登录"
-        width="50%"
-        :visible.sync="dialogVisible">
+      <el-dialog title="登录" width="50%" :visible.sync="dialogVisible">
         <!--登录表单区-->
         <el-form :model="loginForm" :rules="loginFormRules" ref="loginFormRef" class="login_form">
           <!--用户名-->

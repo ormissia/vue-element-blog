@@ -9,6 +9,8 @@ import Index from '../components/index/Index.vue'
 import Article from '../components/index/Article.vue'
 import Type from '../components/index/Type.vue'
 import TimeLine from '../components/index/TimeLine.vue'
+// 文章内容页面,也作为前台页面的一个子路由
+import ArticleDetail from '../components/index/ArticleDetail.vue'
 
 // 后台管理页面
 import Home from '../components/background/Home.vue'
@@ -33,6 +35,10 @@ const routes = [
     }, {
       path: '/timeline',
       component: TimeLine
+    }, {
+      // path后面添加 :blogId 为动态路由匹配，使用blogId作为参数，跳转到对应博客的页面
+      path: '/articleDetail/:blogId',
+      component: ArticleDetail
     }]
   },
   // 后台管理页面
@@ -43,6 +49,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  // (缩写)相当于 routes: routes
   routes
 })
 
