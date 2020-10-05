@@ -5,16 +5,16 @@
       <!--文章列表整体的Card，阴影总是显示-->
       <el-card shadow="always">
         <div class="infinite-list-wrapper" style="overflow:visible">
-          <ul class="list" v-infinite-scroll="loadMoreArticle" infinite-scroll-disabled="disabled">
-            <!--遍历articleList生成文章列表-->
-            <li v-for="i in articleList" :key="i.articleName" class="list-item">
+          <ul class="list" v-infinite-scroll="loadMoreBlog" infinite-scroll-disabled="disabled">
+            <!--遍历blogList生成文章列表-->
+            <li v-for="i in blogList" :key="i.blogName" class="list-item">
               <!--文章的Card，当鼠标移入时显示Card-->
               <el-card shadow="hover">
-                <div @click="openArticleDetail(i.articleName)">
-                  {{ i.articleName }}
+                <div @click="openBlogDetail(i.blogName)">
+                  {{ i.blogName }}
                 </div>
                 <div>
-                  {{ i.articleContent }}
+                  {{ i.blogContent }}
                 </div>
               </el-card>
             </li>
@@ -33,42 +33,42 @@
 
 <script>
 export default {
-  name: 'Article',
+  name: 'Blog',
   data () {
     return {
       // 默认加载数量
       count: 10,
       // 默认加载10条文章内容
-      articleList: [{
-        articleName: '标题1',
-        articleContent: '内容内容'
+      blogList: [{
+        blogName: '标题1',
+        blogContent: '内容内容'
       }, {
-        articleName: '标题2',
-        articleContent: '内容内容'
+        blogName: '标题2',
+        blogContent: '内容内容'
       }, {
-        articleName: '标题3',
-        articleContent: '内容内容'
+        blogName: '标题3',
+        blogContent: '内容内容'
       }, {
-        articleName: '标题4',
-        articleContent: '内容内容'
+        blogName: '标题4',
+        blogContent: '内容内容'
       }, {
-        articleName: '标题5',
-        articleContent: '内容内容'
+        blogName: '标题5',
+        blogContent: '内容内容'
       }, {
-        articleName: '标题6',
-        articleContent: '内容内容'
+        blogName: '标题6',
+        blogContent: '内容内容'
       }, {
-        articleName: '标题7',
-        articleContent: '内容内容'
+        blogName: '标题7',
+        blogContent: '内容内容'
       }, {
-        articleName: '标题8',
-        articleContent: '内容内容'
+        blogName: '标题8',
+        blogContent: '内容内容'
       }, {
-        articleName: '标题9',
-        articleContent: '内容内容'
+        blogName: '标题9',
+        blogContent: '内容内容'
       }, {
-        articleName: '标题10',
-        articleContent: '内容内容'
+        blogName: '标题10',
+        blogContent: '内容内容'
       }],
       loading: false
     }
@@ -82,19 +82,19 @@ export default {
     }
   },
   methods: {
-    loadMoreArticle () {
+    loadMoreBlog () {
       this.loading = true
       this.count += 1
-      this.articleList.push({
-        articleName: '标题' + this.count,
-        articleContent: '内容内容'
+      this.blogList.push({
+        blogName: '标题' + this.count,
+        blogContent: '内容内容'
       })
       setTimeout(() => {
         this.loading = false
       }, 500)
     },
-    openArticleDetail (index) {
-      this.$router.push('/articleDetail/' + index)
+    openBlogDetail (index) {
+      this.$router.push('/blogDetail/' + index)
     }
   }
 }

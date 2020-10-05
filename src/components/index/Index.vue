@@ -151,51 +151,53 @@ export default {
 <style lang="less" scoped>
 .index-container {
   height: 100%;
-}
 
-.el-header {
-  background-color: #545c64;
-  text-align: center;
-  line-height: 60px;
-  padding: 0;
+  .el-header {
+    background-color: #545c64;
+    text-align: center;
+    line-height: 60px;
+    padding: 0;
 
-  .el-row {
-    .logo {
-      height: 50px;
-      border-radius: 50%;
-      margin-top: 5px;
-      float: right;
-      margin-right: 20px;
-    }
+    .el-row {
+      .logo {
+        height: 50px;
+        border-radius: 50%;
+        margin-top: 5px;
+        float: right;
+        margin-right: 20px;
+      }
 
-    .el-menu-item {
-      width: auto;
-      margin: 0 20px;
-    }
+      .el-menu-item {
+        width: auto;
+        margin: 0 20px;
+      }
 
-    .login_buttons {
-      display: flex;
-      justify-content: flex-start;
+      .login_buttons {
+        display: flex;
+        justify-content: flex-start;
+      }
     }
   }
-}
 
-.el-menu-item {
-  width: 150px;
-}
-
-.el-main {
-  text-align: center;
-  line-height: 100%;
-
-  .content-row {
-    height: 100%;
+  .el-menu-item {
+    width: 150px;
   }
-}
 
-.el-footer {
-  background-color: #B3C0D1;
-  text-align: center;
-  line-height: 60px;
+  .el-main {
+    text-align: center;
+    line-height: 100%;
+    // 主题区域背景图片
+    background-image: url('../../assets/image/background-index.jpg');
+
+    .content-row {
+      height: 100%;
+    }
+  }
+
+  .el-footer {
+    background-color: #B3C0D1;
+    text-align: center;
+    line-height: 60px;
+  }
 }
 </style>
