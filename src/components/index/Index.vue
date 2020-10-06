@@ -31,7 +31,7 @@
       </el-row>
     </el-header>
     <!--主体区域-->
-    <el-main>
+    <el-main class="main-body">
       <!--需要实现根据顶部导航栏的跳转实现内容的替换-->
       <el-dialog title="登录" width="50%" :visible.sync="dialogVisible">
         <!--登录表单区-->
@@ -151,6 +151,8 @@ export default {
 <style lang="less" scoped>
 .index-container {
   height: 100%;
+  // 背景图片
+  background-image: url('../../assets/image/background-index.jpg');
 
   .el-header {
     background-color: #545c64;
@@ -167,9 +169,13 @@ export default {
         margin-right: 20px;
       }
 
-      .el-menu-item {
-        width: auto;
-        margin: 0 20px;
+      // TODO 需要解决导航栏菜单自动换行的问题
+      .el-menu {
+
+        .el-menu-item {
+          width: auto;
+          margin: 0 20px;
+        }
       }
 
       .login_buttons {
@@ -179,15 +185,11 @@ export default {
     }
   }
 
-  .el-menu-item {
-    width: 150px;
-  }
-
-  .el-main {
+  .main-body {
     text-align: center;
     line-height: 100%;
-    // 主题区域背景图片
-    background-image: url('../../assets/image/background-index.jpg');
+    // 背景图片透明度
+    background-color: rgba(255, 255, 255, 0.3);
 
     .content-row {
       height: 100%;
