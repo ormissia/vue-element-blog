@@ -6,19 +6,19 @@
       <el-row>
         <el-col :span="2" :offset="4">
           <router-link to="/">
-            <img class="logo" src="../../assets/logo.png" alt="ormissia">
+            <img class="head-portrait" src="../../assets/image/EVE.png" alt="ormissia">
           </router-link>
         </el-col>
         <el-col :span="12">
           <!--头部菜单-->
           <el-menu
-            mode="horizontal"
-            text-color="#fff"
-            active-text-color="#ffd04b"
-            background-color="#545c64"
-            :router="true"
-            :default-active="activeIndex"
-            @select="handleSelect">
+              mode="horizontal"
+              text-color="#fff"
+              active-text-color="#ffd04b"
+              background-color="#545c64"
+              :router="true"
+              :default-active="$route.path"
+              @select="handleSelect">
             <el-menu-item index="/">首页</el-menu-item>
             <el-menu-item index="/article">文章</el-menu-item>
             <el-menu-item index="/type">分类</el-menu-item>
@@ -102,7 +102,7 @@ export default {
   methods: {
     // 导航栏菜单点击事件
     handleSelect (key, keyPath) {
-      console.log(key, keyPath)
+      // console.log(key, keyPath)
     },
     // 打开登录Dialog
     openLoginDialog () {
@@ -161,12 +161,15 @@ export default {
     padding: 0;
 
     .el-row {
-      .logo {
+
+      .head-portrait {
         height: 50px;
         border-radius: 50%;
-        margin-top: 5px;
+        margin-top: 3px;
         float: right;
         margin-right: 20px;
+        //边缘2px
+        border: 2px solid pink;
       }
 
       // TODO 需要解决导航栏菜单自动换行的问题

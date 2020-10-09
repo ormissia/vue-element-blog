@@ -2,34 +2,30 @@
   <el-card shadow="always" class="blog-card">
     <h2>{{ $route.params.blogId }}</h2>
     <h4>文章内容</h4>
-    <markdown-it-vue class="md-body" :content="markdownContent" :options="options"/>
+    {{ markdownContent }}
+    <div>
+      <viewer :viewer="viewer"/>
+    </div>
   </el-card>
 </template>
 
 <script>
-import MarkdownItVue from 'markdown-it-vue'
-import 'markdown-it-vue/dist/markdown-it-vue.css'
+import { Viewer } from '@toast-ui/vue-editor'
+import '@toast-ui/editor/dist/toastui-editor-viewer.css'
 
 export default {
   name: 'ArticleDetail',
   components: {
-    MarkdownItVue
+    viewer: Viewer
   },
   data () {
     return {
       markdownContent: '# your markdown content\n',
-      options: {
-        markdownIt: {
-          linkify: true
-        },
-        linkAttributes: {
-          attrs: {
-            target: '_blank',
-            rel: 'noopener'
-          }
-        }
-      }
-
+      viewer: Viewer({
+        el: document.querySelector('#viewer'),
+        height: '600px',
+        initialValue: '# hello'
+      })
     }
   }
 }
