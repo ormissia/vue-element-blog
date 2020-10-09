@@ -50,7 +50,8 @@ const routes = [
 
 const router = new VueRouter({
   // (缩写)相当于 routes: routes
-  routes
+  routes,
+  mode: 'hash'
 })
 
 // 挂在路由导航守卫
