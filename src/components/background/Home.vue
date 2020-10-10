@@ -1,3 +1,4 @@
+<!--后台主页面，登录后跳转至此-->
 <template>
   <div>
     <el-button type="info" @click="logout">退出</el-button>

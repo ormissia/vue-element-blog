@@ -1,3 +1,4 @@
+<!--博客封面-->
 <template>
   <div class="blog-cover">
     <!--添加背景透明度的div-->

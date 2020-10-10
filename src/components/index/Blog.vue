@@ -1,3 +1,4 @@
+<!--博客页面-->
 <template>
   <el-row :gutter="20">
     <!--左侧文章列表-->
@@ -8,6 +9,7 @@
     <!--右侧推荐区域-->
     <el-col :span="8" style="background-color: yellow">
       <h3>右侧</h3>
+      <recommend-blog-list></recommend-blog-list>
     </el-col>
   </el-row>
 </template>
@@ -15,11 +17,13 @@
 <script>
 // 将文章列表以组件的方式引入
 import blogListCard from './BlogListCard'
+import recommendBlogList from './RecommendList'
 
 export default {
   name: 'Blog',
   components: {
-    'blog-list-card': blogListCard
+    'blog-list-card': blogListCard,
+    'recommend-blog-list': recommendBlogList
   },
   data () {
     return {}

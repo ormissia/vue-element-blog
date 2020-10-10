@@ -1,3 +1,4 @@
+<!--前台Index主页面-->
 <template>
   <el-container class="index-container">
     <!--头部区域-->
@@ -60,8 +61,6 @@
         </el-col>
       </el-row>
     </el-main>
-    <!--底部区域-->
-    <el-footer>Footer</el-footer>
   </el-container>
 </template>
 

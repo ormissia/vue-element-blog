@@ -1,3 +1,4 @@
+<!--博客文章页面-->
 <template>
   <el-card shadow="always" class="blog-card">
     <h2>{{ $route.params.blogId }}</h2>

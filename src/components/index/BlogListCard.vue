@@ -1,3 +1,4 @@
+<!--博客列表卡片-->
 <template>
   <!--文章列表整体的Card，阴影总是显示-->
   <el-card shadow="always" class="card-list">
@@ -5,7 +6,7 @@
       <ul class="list" v-infinite-scroll="loadMoreBlog" infinite-scroll-disabled="disabled">
         <!--遍历blogList生成文章列表-->
         <li v-for="i in blogList" :key="i.blogName" class="list-item">
-          <!--文章的Card，当鼠标移入时显示Card-->
+          <!--文章的Card，当鼠标移入时显示阴影-->
           <el-card shadow="hover" class="card-blog">
             <el-row>
               <!--左侧文章相关信息的布局-->
@@ -53,48 +54,50 @@ export default {
       // 默认加载数量
       count: 10,
       // 默认加载10条文章内容
-      blogList: [{
-        blogName: '标题1',
-        blogContent: '内容内容',
-        // 开发时候应使用webpack编译后的文件名
-        blogImg: 'img/background-index.c5c5c93f.jpg'
-      }, {
-        blogName: '标题2',
-        blogContent: '内容内容',
-        blogImg: 'img/background-index.c5c5c93f.jpg'
-      }, {
-        blogName: '标题3',
-        blogContent: '内容内容',
-        blogImg: 'img/background-index.c5c5c93f.jpg'
-      }, {
-        blogName: '标题4',
-        blogContent: '内容内容',
-        blogImg: 'img/background-index.c5c5c93f.jpg'
-      }, {
-        blogName: '标题5',
-        blogContent: '内容内容',
-        blogImg: 'img/background-index.c5c5c93f.jpg'
-      }, {
-        blogName: '标题6',
-        blogContent: '内容内容',
-        blogImg: 'img/background-index.c5c5c93f.jpg'
-      }, {
-        blogName: '标题7',
-        blogContent: '内容内容',
-        blogImg: 'img/background-index.c5c5c93f.jpg'
-      }, {
-        blogName: '标题8',
-        blogContent: '内容内容',
-        blogImg: 'img/background-index.c5c5c93f.jpg'
-      }, {
-        blogName: '标题9',
-        blogContent: '内容内容',
-        blogImg: 'img/background-index.c5c5c93f.jpg'
-      }, {
-        blogName: '标题10',
-        blogContent: '内容内容',
-        blogImg: 'img/background-index.c5c5c93f.jpg'
-      }],
+      blogList: [
+        {
+          blogName: '标题1',
+          blogContent: '内容内容',
+          // 开发时候应使用webpack编译后的文件名
+          blogImg: 'img/background-index.c5c5c93f.jpg'
+        }, {
+          blogName: '标题2',
+          blogContent: '内容内容',
+          blogImg: 'img/background-index.c5c5c93f.jpg'
+        }, {
+          blogName: '标题3',
+          blogContent: '内容内容',
+          blogImg: 'img/background-index.c5c5c93f.jpg'
+        }, {
+          blogName: '标题4',
+          blogContent: '内容内容',
+          blogImg: 'img/background-index.c5c5c93f.jpg'
+        }, {
+          blogName: '标题5',
+          blogContent: '内容内容',
+          blogImg: 'img/background-index.c5c5c93f.jpg'
+        }, {
+          blogName: '标题6',
+          blogContent: '内容内容',
+          blogImg: 'img/background-index.c5c5c93f.jpg'
+        }, {
+          blogName: '标题7',
+          blogContent: '内容内容',
+          blogImg: 'img/background-index.c5c5c93f.jpg'
+        }, {
+          blogName: '标题8',
+          blogContent: '内容内容',
+          blogImg: 'img/background-index.c5c5c93f.jpg'
+        }, {
+          blogName: '标题9',
+          blogContent: '内容内容',
+          blogImg: 'img/background-index.c5c5c93f.jpg'
+        }, {
+          blogName: '标题10',
+          blogContent: '内容内容',
+          blogImg: 'img/background-index.c5c5c93f.jpg'
+        }
+      ],
       loading: false
     }
   },
@@ -109,6 +112,13 @@ export default {
   methods: {
     loadMoreBlog () {
       this.loading = true
+      // 一次加载多篇
+      this.count += 1
+      this.blogList.push({
+        blogName: '标题' + this.count,
+        blogContent: '内容内容',
+        blogImg: 'img/background-index.c5c5c93f.jpg'
+      })
       this.count += 1
       this.blogList.push({
         blogName: '标题' + this.count,
