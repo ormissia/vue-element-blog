@@ -9,11 +9,13 @@
   },
   "dependencies": {
     "@toast-ui/editor": "^2.4.0",
+    "@toast-ui/editor-plugin-chart": "^1.0.0",
     "@toast-ui/editor-plugin-code-syntax-highlight": "^1.0.0",
     "@toast-ui/vue-editor": "^2.4.0",
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "element-ui": "^2.4.5",
+    "highlight.js": "^10.2.1",
     "qs": "^6.9.4",
     "vue": "^2.6.11",
     "vue-infinite-scroll": "^2.0.2",

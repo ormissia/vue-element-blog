@@ -117,7 +117,7 @@ export default {
       })
       setTimeout(() => {
         this.loading = false
-      }, 500)
+      }, 1500)
     },
     openBlogDetail (index) {
       this.$router.push('/blogDetail/' + index)
