@@ -50,7 +50,7 @@ export default {
         '![image](https://uicdn.toast.com/toastui/img/tui-editor-bi.png)\n' +
         '\n' +
         '# Awesome Editor!\n',
-      // markdown的设置属性对象
+      // markdown Viewer的设置属性对象
       viewerOptions: {
         usageStatistics: false,
         plugins: [

@@ -3,7 +3,9 @@
   <!--文章列表整体的Card，阴影总是显示-->
   <el-card shadow="always" class="card-list">
     <div class="infinite-list-wrapper" style="overflow:visible">
-      <ul class="list" v-infinite-scroll="loadMoreBlog" infinite-scroll-disabled="disabled">
+      <ul v-infinite-scroll="loadMoreBlog"
+          infinite-scroll-disabled="disabled"
+          class="list">
         <!--遍历blogList生成文章列表-->
         <li v-for="i in blogList" :key="i.blogName" class="list-item">
           <!--文章的Card，当鼠标移入时显示阴影-->

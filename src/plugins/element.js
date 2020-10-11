@@ -10,10 +10,14 @@ import {
   Main,
   Footer,
   // 控件
+  Switch,
+  Popconfirm,
   Button,
   Form,
   FormItem,
   Input,
+  Select,
+  Option,
   Menu,
   Submenu,
   MenuItem,
@@ -30,10 +34,14 @@ Vue.use(Aside)
 Vue.use(Header)
 Vue.use(Main)
 Vue.use(Footer)
+Vue.use(Switch)
+Vue.use(Popconfirm)
 Vue.use(Button)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Input)
+Vue.use(Select)
+Vue.use(Option)
 Vue.use(Menu)
 Vue.use(Submenu)
 Vue.use(MenuItem)

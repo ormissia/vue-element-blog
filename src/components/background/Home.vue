@@ -49,11 +49,10 @@
     <!--右侧区域-->
     <el-container class="right-container">
       <el-header class="right-header">
-        <div>123</div>
+        <div></div>
         <el-button type="info" @click="logout">退出</el-button>
       </el-header>
-      <el-main class="right-main"
-               style="background-color: darkseagreen">
+      <el-main class="right-main">
         <!--路由占位符-->
         <router-view></router-view>
       </el-main>
@@ -113,10 +112,10 @@ export default {
   },
   methods: {
     handleOpen (key, keyPath) {
-      console.log(key, keyPath)
+      // console.log('open', key, keyPath)
     },
     handleClose (key, keyPath) {
-      console.log(key, keyPath)
+      // console.log('close', key, keyPath)
     },
     // 退出登录的方法
     logout () {
@@ -153,7 +152,7 @@ export default {
         align-items: center;
         justify-content: center;
         color: #fff;
-        background-color: #666c76;
+        background-color: #878f9c;
       }
 
       // 导航栏区域主体
@@ -177,6 +176,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      background-color: #777f89;
     }
 
     // 右侧主体
