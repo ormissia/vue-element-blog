@@ -34,7 +34,10 @@
               </el-col>
               <!--右侧文章首图的布局-->
               <el-col class="col-right" :span="8">
-                <img :src="i.blogImg" alt="博客首图" class="right-img" @click="openBlogDetail(i.blogName)"/>
+                <img :src="i.blogImg"
+                     alt="博客首图"
+                     class="right-img"
+                     @click="openBlogDetail(i.blogName)"/>
               </el-col>
             </el-row>
           </el-card>
@@ -147,6 +150,8 @@ export default {
     .list-item {
       // 去掉li前面的点
       list-style: none;
+      // 鼠标指针样式
+      cursor: pointer;
 
       .card-blog {
         // 文字左对齐

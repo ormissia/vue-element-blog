@@ -5,6 +5,7 @@ import {
   // 布局
   Row,
   Col,
+  Aside,
   Header,
   Main,
   Footer,
@@ -14,7 +15,9 @@ import {
   FormItem,
   Input,
   Menu,
+  Submenu,
   MenuItem,
+  MenuItemGroup,
   Dialog,
   Card,
   Message
@@ -23,6 +26,7 @@ import {
 Vue.use(Container)
 Vue.use(Row)
 Vue.use(Col)
+Vue.use(Aside)
 Vue.use(Header)
 Vue.use(Main)
 Vue.use(Footer)
@@ -31,7 +35,9 @@ Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Input)
 Vue.use(Menu)
+Vue.use(Submenu)
 Vue.use(MenuItem)
+Vue.use(MenuItemGroup)
 Vue.use(Dialog)
 Vue.use(Card)
 // 导入弹框提示组件

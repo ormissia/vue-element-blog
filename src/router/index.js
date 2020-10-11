@@ -2,18 +2,20 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 // 封面
-import BlogCover from '../components/BlogCover.vue'
+import BlogCover from '@/components/BlogCover.vue'
 
 // 前台页面
-import Index from '../components/index/Index.vue'
-import Article from '../components/index/Blog.vue'
-import Type from '../components/index/Type.vue'
-import TimeLine from '../components/index/TimeLine.vue'
+import Index from '@/components/index/Index.vue'
+import Article from '@/components/index/Blog.vue'
+import Type from '@/components/index/Type.vue'
+import TimeLine from '@/components/index/TimeLine.vue'
 // 文章内容页面,也作为前台页面的一个子路由
-import ArticleDetail from '../components/index/BlogDetail.vue'
+import ArticleDetail from '@/components/index/BlogDetail.vue'
 
 // 后台管理页面
-import Home from '../components/background/Home.vue'
+import Home from '@/components/background/Home.vue'
+import BlogManagement from '@/components/background/BlogManagement'
+import TypeManagement from '@/components/background/TypeManagement'
 
 Vue.use(VueRouter)
 
@@ -26,25 +28,41 @@ const routes = [
     path: '/index',
     component: Index,
     redirect: '/article',
-    children: [{
-      path: '/article',
-      component: Article
-    }, {
-      path: '/type',
-      component: Type
-    }, {
-      path: '/timeline',
-      component: TimeLine
-    }, {
-      // path后面添加 :blogId 为动态路由匹配，使用blogId作为参数，跳转到对应博客的页面
-      path: '/blogDetail/:blogId',
-      component: ArticleDetail
-    }]
+    children: [
+      {
+        path: '/article',
+        component: Article
+      },
+      {
+        path: '/type',
+        component: Type
+      },
+      {
+        path: '/timeline',
+        component: TimeLine
+      },
+      {
+        // path后面添加 :blogId 为动态路由匹配，使用blogId作为参数，跳转到对应博客的页面
+        path: '/blogDetail/:blogId',
+        component: ArticleDetail
+      }
+    ]
   },
   // 后台管理页面
   {
     path: '/background/home',
-    component: Home
+    component: Home,
+    redirect: '/blogManagement',
+    children: [
+      {
+        path: '/blogManagement',
+        component: BlogManagement
+      },
+      {
+        path: '/typeManagement',
+        component: TypeManagement
+      }
+    ]
   }
 ]
 

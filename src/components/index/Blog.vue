@@ -7,8 +7,7 @@
       <blog-list-card></blog-list-card>
     </el-col>
     <!--右侧推荐区域-->
-    <el-col :span="8" style="background-color: yellow">
-      <h3>右侧</h3>
+    <el-col :span="8">
       <recommend-blog-list></recommend-blog-list>
     </el-col>
   </el-row>
@@ -39,7 +38,6 @@ export default {
 
   .col-left {
     height: 100%;
-    cursor: pointer;
   }
 }
 </style>
