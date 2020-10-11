@@ -1,12 +1,14 @@
 <template>
   <div class="blog-editor-container">
     <el-input placeholder="起个漂亮的名字吧"
-              v-model="blogTitle"
+              v-model="blogForm.blogTitle"
               class="input-title">
       <template slot="prepend">标题</template>
     </el-input>
     <!--markdown编辑器-->
-    <editor :initialValue='markdownContent'
+    <editor @blur="onEditorBlur"
+            ref="toastuiEditor"
+            :initialValue='blogForm.blogContent'
             :options="viewerOptions"
             class="editor"/>
     <!--博客简介-->
@@ -14,12 +16,12 @@
         type="textarea"
         :autosize="{ minRows: 4 }"
         placeholder="请输入内容"
-        v-model="description"
+        v-model="blogForm.blogDescription"
         class="description">
     </el-input>
     <div class="selector">
       <!--博客类型的选择器-->
-      <el-select v-model="blogType"
+      <el-select v-model="blogForm.blogType"
                  style="width: 50%;margin-right: 10px"
                  :filterable="true"
                  :allow-create="true"
@@ -33,7 +35,7 @@
       </el-select>
       <!--博客标签的选择器，可添加-->
       <el-select
-          v-model="blogTags"
+          v-model="blogForm.blogTags"
           style="width: 50%;margin-left: 10px"
           :multiple="true"
           :filterable="true"
@@ -50,7 +52,7 @@
     <div class="switcher">
       <!--是否推荐的开关选择器-->
       <el-switch
-          v-model="blogRecommend"
+          v-model="blogForm.blogRecommend"
           active-color="#13ce66"
           inactive-color="#9c9c9c"
           active-text="这玩意儿太顶了，我要推荐"
@@ -72,6 +74,7 @@ import { Editor } from '@toast-ui/vue-editor'
 // 导入markdown的toast ui样式
 import 'codemirror/lib/codemirror.css'
 import '@toast-ui/editor/dist/toastui-editor.css'
+// 代码高亮
 import codeSyntaxHightlight from '@toast-ui/editor-plugin-code-syntax-highlight'
 import hljs from 'highlight.js'
 
@@ -83,18 +86,25 @@ export default {
   },
   data () {
     return {
-      // 标题
-      blogTitle: '',
-      // 页面上的markdown内容
-      markdownContent: '',
-      // 博客简介
-      description: '',
-      // 当前博客类型
-      blogType: '',
-      // 当前博客标签
-      blogTags: [],
-      // 是否推荐
-      blogRecommend: false,
+      // 博客保存表单的绑定对象
+      blogForm: {
+        // 标题
+        blogTitle: '',
+        // 页面上的markdown内容
+        blogContent: '',
+        // 博客简介
+        blogDescription: '',
+        // 当前博客类型
+        blogType: '',
+        // 当前博客标签
+        blogTags: [],
+        // 是否推荐
+        blogRecommend: false
+      },
+
+      // TODO 页面添加复原按钮，点击后将编辑器等内容恢复到编辑之前的状态
+      // 编辑之前的blog信息
+      oldBlog: {},
 
       // 所有类型
       allTypes: [],
@@ -104,6 +114,7 @@ export default {
       // markdown Viewer的设置属性对象
       viewerOptions: {
         usageStatistics: false,
+        language: 'zh-CN',
         plugins: [
           [codeSyntaxHightlight, { hljs }]
         ],
@@ -134,9 +145,12 @@ export default {
   },
   methods: {
     saveAndPublish () {
-      console.log(this.blogType)
-      console.log(this.blogTags)
-      console.log(this.blogRecommend)
+      // 需要在页面上做校验是否有必须输入的内容，
+      console.log(this.blogForm)
+    },
+    // 当编辑器失去焦点时赋值
+    onEditorBlur () {
+      this.blogForm.blogContent = this.$refs.toastuiEditor.invoke('getMarkdown')
     }
   }
 }
