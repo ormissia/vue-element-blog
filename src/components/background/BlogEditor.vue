@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-editor-container">
+  <el-card shadow="always" class="blog-editor-container">
     <el-input placeholder="起个漂亮的名字吧"
               v-model="blogForm.blogTitle"
               class="input-title">
@@ -65,7 +65,7 @@
       <el-button type="primary" @click="saveAndPublish">写完了，马上发布</el-button>
       <el-button type="primary" :plain="true">没写完，保存草稿</el-button>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -88,6 +88,8 @@ export default {
     return {
       // 博客保存表单的绑定对象
       blogForm: {
+        // 博客Id
+        blogId: '',
         // 标题
         blogTitle: '',
         // 页面上的markdown内容
@@ -152,6 +154,11 @@ export default {
     onEditorBlur () {
       this.blogForm.blogContent = this.$refs.toastuiEditor.invoke('getMarkdown')
     }
+  },
+  created () {
+    const blogId = this.$route.params.blogId
+    // 通过博客Id获取博客信息，并赋值给双向绑定的数据对象中
+    console.log(blogId)
   }
 }
 </script>

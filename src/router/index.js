@@ -54,18 +54,18 @@ const routes = [
   {
     path: '/background/home',
     component: Home,
-    redirect: '/blogManagement',
+    redirect: '/background/blogManagement',
     children: [
       {
-        path: '/blogManagement',
+        path: '/background/blogManagement',
         component: BlogManagement
       },
       {
-        path: '/typeManagement',
+        path: '/background/typeManagement',
         component: TypeManagement
       },
       {
-        path: '/blogEditor/:blogId',
+        path: '/background/blogEditor/:blogId',
         component: BlogEditor
       }
     ]
