@@ -20,6 +20,7 @@ import {
   FormItem,
   Table,
   TableColumn,
+  Pagination,
   Input,
   Select,
   Option,
@@ -49,6 +50,7 @@ Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Table)
 Vue.use(TableColumn)
+Vue.use(Pagination)
 Vue.use(Input)
 Vue.use(Select)
 Vue.use(Option)

@@ -9,7 +9,7 @@
     </el-breadcrumb>
     <!--顶部搜索框区域-->
     <el-row :gutter="20">
-      <el-col :span="6">
+      <el-col :span="18">
         <!--搜索框-->
         <el-input placeholder="请输入内容" v-model="queryInfo.queryStr">
           <el-button slot="append" icon="el-icon-search"></el-button>
@@ -19,7 +19,8 @@
         <!--跳转到新建博客页面的按钮-->
         <el-button type="primary"
                    :plain="false"
-                   @click="openBlogEditor('new')">
+                   @click="openBlogEditor('new')"
+                   class="btn-add-blog">
           奇怪的知识又增加了（新建博客）
         </el-button>
       </el-col>
@@ -71,6 +72,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <!--分页区域-->
+    <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pageNum"
+        :page-size="queryInfo.pageSize"
+        :page-sizes="[3, 5, 10, 20]"
+        :total="total"
+        layout="total, sizes, prev, pager, next, jumper">
+    </el-pagination>
   </el-card>
 </template>
 
@@ -84,11 +95,12 @@ export default {
         // 搜索框的内容
         queryStr: '',
         // 当前页数
-        pageNum: '',
+        pageNum: 1,
         // 当前每页显示多少条数据
-        pageSize: ''
+        pageSize: 10
       },
-      total: '',
+      // 一共多少条数据
+      total: 0,
       blogList: [
         {
           blogId: 'uaidsh7868',
@@ -114,8 +126,19 @@ export default {
   methods: {
     openBlogEditor (index) {
       this.$router.push('/background/blogEditor/' + index)
-    }
+    },
     // TODO 实现分页以及添加点击状态开关的操作
+    // 监听pageSize改变的事件
+    handleSizeChange (newSize) {
+      // 把改变后的pageSize保存到对应变量中
+      this.queryInfo.pageSize = newSize
+      // 每页数据改变后重新发起请求获取当前页数据
+    },
+    // 监听页码值改变的事件
+    handleCurrentChange (newPageNum) {
+      console.log(newPageNum)
+      this.queryInfo.pageNum = newPageNum
+    }
   }
 }
 </script>
@@ -124,5 +147,9 @@ export default {
 .management-card {
   // 高度设置成100会出现滚动条，就很奇怪
   height: 99%;
+
+  .btn-add-blog {
+    float: right;
+  }
 }
 </style>

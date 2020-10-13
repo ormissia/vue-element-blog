@@ -146,9 +146,17 @@ export default {
     }
   },
   methods: {
-    saveAndPublish () {
-      // 需要在页面上做校验是否有必须输入的内容，
-      console.log(this.blogForm)
+    saveAndPublish: async function () {
+      // 需要在页面上做校验是否有必须输入的内容
+      const { data: res } = await this.$http.post('saveBlog', this.$qs.parse(this.blogForm))
+      // 根据返回值判断是否保存成功，若成功则跳到BlogManagement页面
+      if (res.code === 200) {
+        this.$rootMessage({
+          showClose: true,
+          message: res.message,
+          type: 'success'
+        })
+      }
     },
     // 当编辑器失去焦点时赋值
     onEditorBlur () {
