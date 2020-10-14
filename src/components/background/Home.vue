@@ -76,12 +76,12 @@ export default {
             {
               id: '101',
               menuName: '博客管理',
-              path: '/blogManagement'
+              path: '/background/blogManagement'
             },
             {
               id: '102',
               menuName: '类型管理',
-              path: '/typeManagement'
+              path: '/background/typeManagement'
             },
             {
               id: '103',
@@ -138,6 +138,8 @@ export default {
 <style lang="less" scoped>
 .home-container {
   height: 100%;
+  // 背景图片
+  background-image: url('../../assets/image/background-index.jpg');
 
   // 左侧导航栏区域
   .el-aside {

@@ -10,11 +10,17 @@ import {
   Main,
   Footer,
   // 控件
+  Breadcrumb,
+  BreadcrumbItem,
   Switch,
   Popconfirm,
+  Tooltip,
   Button,
   Form,
   FormItem,
+  Table,
+  TableColumn,
+  Pagination,
   Input,
   Select,
   Option,
@@ -34,11 +40,17 @@ Vue.use(Aside)
 Vue.use(Header)
 Vue.use(Main)
 Vue.use(Footer)
+Vue.use(Breadcrumb)
+Vue.use(BreadcrumbItem)
 Vue.use(Switch)
 Vue.use(Popconfirm)
+Vue.use(Tooltip)
 Vue.use(Button)
 Vue.use(Form)
 Vue.use(FormItem)
+Vue.use(Table)
+Vue.use(TableColumn)
+Vue.use(Pagination)
 Vue.use(Input)
 Vue.use(Select)
 Vue.use(Option)

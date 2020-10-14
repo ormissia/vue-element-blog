@@ -4,3 +4,15 @@ html, body, #app {
     margin: 0;
     padding: 0;
 }
+
+.el-table {
+    margin-top: 15px;
+    font-size: 13px;
+}
+
+.el-pagination {
+    margin-top: 15px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+}

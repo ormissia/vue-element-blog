@@ -1,6 +1,6 @@
 <!--博客编辑页面组件-->
 <template>
-  <div class="blog-editor-container">
+  <el-card shadow="always" class="blog-editor-container">
     <el-input placeholder="起个漂亮的名字吧"
               v-model="blogForm.blogTitle"
               class="input-title">
@@ -66,7 +66,7 @@
       <el-button type="primary" @click="saveAndPublish">写完了，马上发布</el-button>
       <el-button type="primary" :plain="true">没写完，保存草稿</el-button>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -89,6 +89,8 @@ export default {
     return {
       // 博客保存表单的绑定对象
       blogForm: {
+        // 博客Id
+        blogId: '',
         // 标题
         blogTitle: '',
         // 页面上的markdown内容
@@ -145,14 +147,27 @@ export default {
     }
   },
   methods: {
-    saveAndPublish () {
-      // 需要在页面上做校验是否有必须输入的内容，
-      console.log(this.blogForm)
+    saveAndPublish: async function () {
+      // 需要在页面上做校验是否有必须输入的内容
+      const { data: res } = await this.$http.post('saveBlog', this.$qs.parse(this.blogForm))
+      // 根据返回值判断是否保存成功，若成功则跳到BlogManagement页面
+      if (res.code === 200) {
+        this.$rootMessage({
+          showClose: true,
+          message: res.message,
+          type: 'success'
+        })
+      }
     },
     // 当编辑器失去焦点时赋值
     onEditorBlur () {
       this.blogForm.blogContent = this.$refs.toastuiEditor.invoke('getMarkdown')
     }
+  },
+  created () {
+    const blogId = this.$route.params.blogId
+    // 通过博客Id获取博客信息，并赋值给双向绑定的数据对象中
+    console.log(blogId)
   }
 }
 </script>
