@@ -1,3 +1,4 @@
+<!--博客编辑页面组件-->
 <template>
   <div class="blog-editor-container">
     <el-input placeholder="起个漂亮的名字吧"
