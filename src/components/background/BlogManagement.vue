@@ -41,7 +41,8 @@
         <template slot-scope="scope">
           <el-switch v-model="scope.row.isPublish"
                      active-text="发布"
-                     inactive-text="草稿">
+                     inactive-text="草稿"
+                     @change="saveBlog(scope.row.blogId,scope.row.isPublish)">
           </el-switch>
         </template>
       </el-table-column>
@@ -66,7 +67,8 @@
                       :enterable="false">
             <el-button type="danger"
                        icon="el-icon-delete"
-                       size="small">
+                       size="small"
+                       @click="deleteBlogByBlogId(scope.row.blogId)">
             </el-button>
           </el-tooltip>
         </template>
@@ -74,13 +76,13 @@
     </el-table>
     <!--分页区域-->
     <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="queryInfo.pageNum"
-        :page-size="queryInfo.pageSize"
-        :page-sizes="[3, 5, 10, 20]"
-        :total="total"
-        layout="total, sizes, prev, pager, next, jumper">
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="queryInfo.pageNum"
+      :page-size="queryInfo.pageSize"
+      :page-sizes="[3, 5, 10, 20]"
+      :total="total"
+      layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
   </el-card>
 </template>
@@ -127,18 +129,55 @@ export default {
     openBlogEditor (index) {
       this.$router.push('/background/blogEditor/' + index)
     },
-    // TODO 实现分页以及添加点击状态开关的操作
     // 监听pageSize改变的事件
     handleSizeChange (newSize) {
       // 把改变后的pageSize保存到对应变量中
       this.queryInfo.pageSize = newSize
       // 每页数据改变后重新发起请求获取当前页数据
+      this.selectBlogByPage()
     },
     // 监听页码值改变的事件
     handleCurrentChange (newPageNum) {
-      console.log(newPageNum)
       this.queryInfo.pageNum = newPageNum
+      // 页码值改变后重新发起请求来获取当前页面数据
+      this.selectBlogByPage()
+    },
+    async saveBlog (blogId, isPublish) {
+      // 使用修改保存博客的接口，传入数据创建一个博客对象，只包含博客Id和是否发布的信息
+      const { data: res } = await this.$http.post('saveBlog', this.$qs.parse({
+        blogId: blogId,
+        isPublish: isPublish
+      }.toString()))
+      // 根据返回值判断是否保存成功，若成功则提示修改成功的消息
+      if (res.code === 200) {
+        this.$rootMessage({
+          showClose: true,
+          message: res.message,
+          type: 'success'
+        })
+      } else {
+        // 当状态码不是200的时候为修改失败，提示修改失败的消息
+        this.$rootMessage({
+          showClose: true,
+          message: res.message,
+          type: 'error'
+        })
+      }
+    },
+    // 根据博客Id发起删除博客的请求
+    async deleteBlogByBlogId (blogId) {
+      const { data: res } = await this.$http.delete('deleteBlogByBlogId', blogId)
+      console.log(res)
+    },
+    // 按照页面分页获取博客列表
+    async selectBlogByPage () {
+      const { data: res } = await this.$http.post('selectBlogByPage', this.$qs.parse(this.queryInfo.toString()))
+      console.log(res)
     }
+  },
+  created () {
+    // 页面加载前按照默认分页获取博客列表
+    this.selectBlogByPage()
   }
 }
 </script>

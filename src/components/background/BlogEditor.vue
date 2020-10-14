@@ -14,11 +14,11 @@
             class="editor"/>
     <!--博客简介-->
     <el-input
-        type="textarea"
-        :autosize="{ minRows: 4 }"
-        placeholder="请输入内容"
-        v-model="blogForm.blogDescription"
-        class="description">
+      type="textarea"
+      :autosize="{ minRows: 4 }"
+      placeholder="请输入内容"
+      v-model="blogForm.blogDescription"
+      class="description">
     </el-input>
     <div class="selector">
       <!--博客类型的选择器-->
@@ -29,43 +29,54 @@
                  :default-first-option="true"
                  placeholder="请选择文章类型">
         <el-option
-            v-for="item in allTypes"
-            :key="item.typeId"
-            :value="item.typeName">
+          v-for="item in allTypes"
+          :key="item.typeId"
+          :value="item.typeName">
         </el-option>
       </el-select>
       <!--博客标签的选择器，可添加-->
       <el-select
-          v-model="blogForm.blogTags"
-          style="width: 50%;margin-left: 10px"
-          :multiple="true"
-          :filterable="true"
-          :allow-create="true"
-          :default-first-option="true"
-          placeholder="请选择文章标签">
+        v-model="blogForm.blogTags"
+        style="width: 50%;margin-left: 10px"
+        :multiple="true"
+        :filterable="true"
+        :allow-create="true"
+        :default-first-option="true"
+        placeholder="请选择文章标签">
         <el-option
-            v-for="item in allTags"
-            :key="item.tagId"
-            :value="item.tagName">
+          v-for="item in allTags"
+          :key="item.tagId"
+          :value="item.tagName">
         </el-option>
       </el-select>
     </div>
     <div class="switcher">
       <!--是否推荐的开关选择器-->
       <el-switch
-          v-model="blogForm.blogRecommend"
-          active-color="#13ce66"
-          inactive-color="#9c9c9c"
-          active-text="这玩意儿太顶了，我要推荐"
-          inactive-text="知识积累">
+        v-model="blogForm.blogRecommend"
+        active-color="#13ce66"
+        inactive-color="#9c9c9c"
+        active-text="这玩意儿太顶了，我要推荐"
+        inactive-text="知识积累">
       </el-switch>
     </div>
     <!--底部按钮区域-->
-    <div class="buttons">
-      <!--发布和保存的按钮-->
-      <el-button type="primary" @click="saveAndPublish">写完了，马上发布</el-button>
-      <el-button type="primary" :plain="true">没写完，保存草稿</el-button>
-    </div>
+    <el-row :gutter="20">
+      <!--左边按钮区域-->
+      <el-col :span="12">
+        <!--重置按钮-->
+        // TODO 重置按钮居左显示
+        <el-button type="primary" @click="refreshBlog">改了啥了都，还原一下</el-button>
+      </el-col>
+      <!--右边按钮区域-->
+      <el-col :span="12">
+        <div class="buttons">
+          <!--发布和保存的按钮-->
+          <el-button type="primary" @click="saveAndPublish">写完了，马上发布</el-button>
+          <el-button type="primary" :plain="true">没写完，保存草稿</el-button>
+        </div>
+      </el-col>
+    </el-row>
   </el-card>
 </template>
 
@@ -104,10 +115,23 @@ export default {
         // 是否推荐
         blogRecommend: false
       },
-
-      // TODO 页面添加复原按钮，点击后将编辑器等内容恢复到编辑之前的状态
       // 编辑之前的blog信息
-      oldBlog: {},
+      oldBlog: {
+        // 博客Id
+        blogId: '',
+        // 标题
+        blogTitle: '',
+        // 页面上的markdown内容
+        blogContent: '',
+        // 博客简介
+        blogDescription: '',
+        // 当前博客类型
+        blogType: '',
+        // 当前博客标签
+        blogTags: [],
+        // 是否推荐
+        blogRecommend: false
+      },
 
       // 所有类型
       allTypes: [],
@@ -147,9 +171,12 @@ export default {
     }
   },
   methods: {
+    refreshBlog () {
+      this.blogForm = this.oldBlog
+    },
     saveAndPublish: async function () {
       // 需要在页面上做校验是否有必须输入的内容
-      const { data: res } = await this.$http.post('saveBlog', this.$qs.parse(this.blogForm))
+      const { data: res } = await this.$http.post('saveBlog', this.$qs.parse(this.blogForm.toString()))
       // 根据返回值判断是否保存成功，若成功则跳到BlogManagement页面
       if (res.code === 200) {
         this.$rootMessage({
@@ -157,17 +184,32 @@ export default {
           message: res.message,
           type: 'success'
         })
+        // 跳转到博客管理页面
+        await this.$router.push('/background/blogManagement/')
+      } else {
+        // 保存失败，输出错误提示
+        this.$rootMessage({
+          showClose: true,
+          message: res.message,
+          type: 'error'
+        })
       }
     },
-    // 当编辑器失去焦点时赋值
+    // 当编辑器失去焦点时获取Editor的值
     onEditorBlur () {
       this.blogForm.blogContent = this.$refs.toastuiEditor.invoke('getMarkdown')
+    },
+    // 通过博客Id查询博客信息
+    async selectBlogByBlogId (blogId) {
+      const { data: res } = await this.$http.post('selectBlogByBlogId', this.$qs.parse(blogId))
+      console.log(res)
+      // 判断返回结果状态值，如果成功获取博客信息，则将博客信息分别赋值给blogForm和oldBlog（用于页面恢复数据）
     }
   },
   created () {
     const blogId = this.$route.params.blogId
     // 通过博客Id获取博客信息，并赋值给双向绑定的数据对象中
-    console.log(blogId)
+    this.selectBlogByBlogId(blogId)
   }
 }
 </script>
