@@ -19,7 +19,7 @@
         <!--跳转到新建博客页面的按钮-->
         <el-button type="primary"
                    :plain="false"
-                   @click="openBlogEditor('new')"
+                   @click="openBlogEditor('-1')"
                    class="btn-add-blog">
           奇怪的知识又增加了（新建博客）
         </el-button>
