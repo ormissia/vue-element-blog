@@ -3,6 +3,9 @@ import App from './App.vue'
 import router from './router'
 import './plugins/element.js'
 
+// 导入自定义的控件
+import '@/plugins/mycontrols'
+
 // 导入全局样式
 import './assets/css/global.css'
 // 导入axios
