@@ -8,7 +8,7 @@
     </el-input>
     <!--markdown编辑器-->
     <editor @blur="onEditorBlur"
-            ref="toastuiEditor"
+            ref="toastUiEditor"
             :initialValue='blogForm.blogContent'
             :options="viewerOptions"
             class="editor"/>
@@ -97,6 +97,7 @@ export default {
   },
   data () {
     return {
+      mk: '123',
       // 博客保存表单的绑定对象
       blogForm: {
         // 博客Id
@@ -205,15 +206,43 @@ export default {
         })
       }
     },
-    // 当编辑器失去焦点时获取Editor的值
     onEditorBlur () {
-      this.blogForm.blogContent = this.$refs.toastuiEditor.invoke('getMarkdown')
+      // 当编辑器失去焦点时获取Editor的值
+      this.blogForm.blogContent = this.$refs.toastUiEditor.invoke('getMarkdown')
+    },
+    // 刷新编辑器的内容
+    setMarkdown (blogContent) {
+      this.$refs.toastUiEditor.invoke('setMarkdown', blogContent, false)
     },
     // 通过博客Id查询博客信息
     async selectBlogByBlogId (blogId) {
-      const { data: res } = await this.$http.post('selectBlogByBlogId', this.$qs.parse(blogId))
-      console.log(res)
+      const { data: res } = await this.$http.post('selectBlogByBlogId', this.$qs.stringify({ blogId: blogId }))
       // 判断返回结果状态值，如果成功获取博客信息，则将博客信息分别赋值给blogForm和oldBlog（用于页面恢复数据）
+      if (res.code === 200) {
+        console.log(res)
+        this.blogForm.blogId = res.data.blogId
+        this.blogForm.blogTitle = res.data.blogTitle
+        this.blogForm.blogContent = res.data.blogContent
+        this.blogForm.description = res.data.description
+        this.blogForm.blogType = res.data.type.typeName
+        this.blogForm.userId = res.data.user.userId
+        if (res.data.tags.length >= 0) {
+          for (let i = 0; i < res.data.tags.length; i++) {
+            this.blogForm.blogTags.push(res.data.tags[i].tagName)
+          }
+        }
+        if (res.data.isRecommend === 1) {
+          this.blogForm.isRecommend = true
+        }
+        if (res.data.isPublished === 1) {
+          this.blogForm.isPublished = 1
+        }
+
+        // 同时将原始值保存到oldBlog中
+        this.oldBlog = this.blogForm
+        // 刷新编辑器内容
+        this.setMarkdown(this.blogForm.blogContent)
+      }
     }
   },
   created () {

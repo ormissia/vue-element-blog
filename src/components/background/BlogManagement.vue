@@ -105,7 +105,7 @@ export default {
       total: 0,
       blogList: [
         {
-          blogId: 'uaidsh7868',
+          blogId: '1fe9a5cc-5e63-48ba-8623-5d701bc4b172',
           blogName: '测试',
           createDate: '测试',
           lastEditDate: '测试',
@@ -114,7 +114,7 @@ export default {
           isPublish: true
         },
         {
-          blogId: 'dsfga4543',
+          blogId: '1e79c1c7-06c8-4af5-9d41-62413df2a9a4',
           blogName: '测试',
           createDate: '测试',
           lastEditDate: '测试',

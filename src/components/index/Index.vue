@@ -114,14 +114,14 @@ export default {
         // 发送请求之前需要对密码加密
         const { data: res } = await this.$http.post('login', this.$qs.parse(this.loginForm))
         // console.log(res)
-        if (res.status === 405) {
+        if (res.code === 405) {
           // 用户不存在登录失败提示
           return this.$rootMessage({
             showClose: true,
             message: res.message,
             type: 'error'
           })
-        } else if (res.status === 201) {
+        } else if (res.code === 201) {
           // 密码错误登录失败提示
           return this.$rootMessage({
             showClose: true,
