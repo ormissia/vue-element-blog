@@ -31,18 +31,18 @@
               :border="true"
               style="width: 100%">
       <el-table-column type="index"></el-table-column>
-      <el-table-column prop="blogName" label="标题"></el-table-column>
+      <el-table-column prop="blogTitle" label="标题"></el-table-column>
       <el-table-column prop="createDate" label="创建时间"></el-table-column>
       <el-table-column prop="lastEditDate" label="修改时间"></el-table-column>
-      <el-table-column prop="type" label="类型"></el-table-column>
+      <el-table-column prop="type.typeName" label="类型"></el-table-column>
       <el-table-column prop="tags" label="标签"></el-table-column>
-      <el-table-column prop="isPublish" label="状态">
+      <el-table-column label="状态">
         <!--通过作用域插槽将boolean值变成控件的开关状态-->
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.isPublish"
+          <el-switch v-model="scope.row.published"
                      active-text="发布"
                      inactive-text="草稿"
-                     @change="saveBlog(scope.row.blogId,scope.row.isPublish)">
+                     @change="saveBlog(scope.row.blogId,scope.row.published)">
           </el-switch>
         </template>
       </el-table-column>
@@ -76,13 +76,13 @@
     </el-table>
     <!--分页区域-->
     <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="queryInfo.pageNum"
-      :page-size="queryInfo.pageSize"
-      :page-sizes="[3, 5, 10, 20]"
-      :total="total"
-      layout="total, sizes, prev, pager, next, jumper">
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pageNum"
+        :page-size="queryInfo.pageSize"
+        :page-sizes="[3, 5, 10, 20]"
+        :total="total"
+        layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
   </el-card>
 </template>
@@ -103,26 +103,7 @@ export default {
       },
       // 一共多少条数据
       total: 0,
-      blogList: [
-        {
-          blogId: '1fe9a5cc-5e63-48ba-8623-5d701bc4b172',
-          blogName: '测试',
-          createDate: '测试',
-          lastEditDate: '测试',
-          type: '测试',
-          tags: '测试',
-          isPublish: true
-        },
-        {
-          blogId: '1e79c1c7-06c8-4af5-9d41-62413df2a9a4',
-          blogName: '测试',
-          createDate: '测试',
-          lastEditDate: '测试',
-          type: '测试',
-          tags: '测试',
-          isPublish: false
-        }
-      ]
+      blogList: []
     }
   },
   methods: {
@@ -142,12 +123,13 @@ export default {
       // 页码值改变后重新发起请求来获取当前页面数据
       this.selectBlogByPage()
     },
-    async saveBlog (blogId, isPublish) {
-      // 使用修改保存博客的接口，传入数据创建一个博客对象，只包含博客Id和是否发布的信息
-      const { data: res } = await this.$http.post('saveBlog', this.$qs.parse({
+    async saveBlog (blogId, isPublished) {
+      const blog = {
         blogId: blogId,
-        isPublish: isPublish
-      }.toString()))
+        isPublished: isPublished
+      }
+      // 使用修改保存博客的接口，传入数据创建一个博客对象，只包含博客Id和是否发布的信息
+      const { data: res } = await this.$http.post('saveBlog', this.$qs.parse(blog))
       // 根据返回值判断是否保存成功，若成功则提示修改成功的消息
       if (res.code === 200) {
         this.$rootMessage({
@@ -171,8 +153,8 @@ export default {
     },
     // 按照页面分页获取博客列表
     async selectBlogByPage () {
-      const { data: res } = await this.$http.post('selectBlogByPage', this.$qs.parse(this.queryInfo.toString()))
-      console.log(res)
+      const { data: res } = await this.$http.post('selectBlogByPage', this.$qs.parse(this.queryInfo))
+      this.blogList = res.data
     }
   },
   created () {

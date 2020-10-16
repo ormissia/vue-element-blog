@@ -71,7 +71,7 @@
       <el-col :span="12">
         <div class="buttons">
           <!--发布和保存的按钮-->
-          <el-button type="primary" @click="saveAndPublish(1)">写完了，马上发布</el-button>
+          <el-button type="primary" @click="saveAndPublish(true)">写完了，马上发布</el-button>
           <el-button type="primary" :plain="true">没写完，保存草稿</el-button>
         </div>
       </el-col>
@@ -115,7 +115,7 @@ export default {
         // 是否推荐
         isRecommend: false,
         // 是否发布
-        isPublished: 0,
+        isPublished: false,
         // 用户Id
         userId: ''
       },
@@ -136,7 +136,7 @@ export default {
         // 是否推荐
         isRecommend: false,
         // 是否发布
-        isPublished: 0,
+        isPublished: false,
         // 用户Id
         userId: ''
       },
@@ -180,7 +180,8 @@ export default {
   },
   methods: {
     refreshBlog () {
-      this.blogForm = this.oldBlog
+      this.blogForm = JSON.parse(JSON.stringify(this.oldBlog))
+      this.setMarkdown(this.oldBlog.blogContent)
     },
     // 发布按钮传1，保存草稿按钮传0
     saveAndPublish: async function (isPublished) {
@@ -210,7 +211,7 @@ export default {
       // 当编辑器失去焦点时获取Editor的值
       this.blogForm.blogContent = this.$refs.toastUiEditor.invoke('getMarkdown')
     },
-    // 刷新编辑器的内容
+    // 设置编辑器的内容
     setMarkdown (blogContent) {
       this.$refs.toastUiEditor.invoke('setMarkdown', blogContent, false)
     },
@@ -219,7 +220,6 @@ export default {
       const { data: res } = await this.$http.post('selectBlogByBlogId', this.$qs.stringify({ blogId: blogId }))
       // 判断返回结果状态值，如果成功获取博客信息，则将博客信息分别赋值给blogForm和oldBlog（用于页面恢复数据）
       if (res.code === 200) {
-        console.log(res)
         this.blogForm.blogId = res.data.blogId
         this.blogForm.blogTitle = res.data.blogTitle
         this.blogForm.blogContent = res.data.blogContent
@@ -231,15 +231,16 @@ export default {
             this.blogForm.blogTags.push(res.data.tags[i].tagName)
           }
         }
-        if (res.data.isRecommend === 1) {
+        if (res.data.recommend === true) {
           this.blogForm.isRecommend = true
         }
-        if (res.data.isPublished === 1) {
-          this.blogForm.isPublished = 1
+        if (res.data.published === true) {
+          this.blogForm.isPublished = true
         }
 
         // 同时将原始值保存到oldBlog中
-        this.oldBlog = this.blogForm
+        this.oldBlog = JSON.parse(JSON.stringify(this.blogForm))
+
         // 刷新编辑器内容
         this.setMarkdown(this.blogForm.blogContent)
       }
