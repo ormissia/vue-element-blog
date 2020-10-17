@@ -69,7 +69,6 @@ export default {
   name: 'Index',
   data () {
     return {
-      activeIndex: '1',
       // 登录Dialog打开关闭的标记
       dialogVisible: false,
       // 这是登录表单的绑定对象

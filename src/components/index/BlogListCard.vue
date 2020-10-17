@@ -2,12 +2,17 @@
 <template>
   <!--文章列表整体的Card，阴影总是显示-->
   <el-card shadow="always" class="card-list">
+    <!--搜索框-->
+    <el-input placeholder="请输入内容" v-model="queryInfo.queryStr">
+      <template slot="prepend">搜索</template>
+      <el-button slot="append" icon="el-icon-search" @click="searchBlog"></el-button>
+    </el-input>
     <div class="infinite-list-wrapper" style="overflow:visible">
       <ul v-infinite-scroll="loadMoreBlog"
           infinite-scroll-disabled="disabled"
           class="list">
         <!--遍历blogList生成文章列表-->
-        <li v-for="i in blogList" :key="i.blogName" class="list-item">
+        <li v-for="i in blogList" :key="i.blogId" class="list-item">
           <!--文章的Card，当鼠标移入时显示阴影-->
           <el-card shadow="hover" class="card-blog">
             <el-row>
@@ -15,22 +20,22 @@
               <el-col class="col-left" :span="16">
                 <!--标题-->
                 <!--点击跳转到对应的博客页面-->
-                <div @click="openBlogDetail(i.blogName)">
-                  <h1 class="blog-title">{{ i.blogName }}</h1>
+                <div @click="openBlogDetail(i.blogId)">
+                  <h1 class="blog-title">{{ i.blogTitle }}</h1>
                 </div>
                 <!--简介-->
-                <div @click="openBlogDetail(i.blogName)">
-                  <p>{{ i.blogContent }}</p>
+                <div @click="openBlogDetail(i.blogId)">
+                  <p>{{ i.description }}</p>
                 </div>
                 <!--底部-->
                 <div class="div-bottom">
                   <!--时间戳-->
                   <div style="float: left">
-                    时间戳
+                    {{ i.lastEditDate }}
                   </div>
-                  <!--标签-->
-                  <div style="float: right">
-                    标签
+                  <!--类型,判断是否为空，不为空时显示-->
+                  <div v-if="i.type != null" style="float: right">
+                    {{ i.type.typeName }}
                   </div>
                 </div>
               </el-col>
@@ -45,8 +50,8 @@
           </el-card>
         </li>
       </ul>
-      <p v-if="loading">正在用力加载中 *。*</p>
-      <p v-if="noMore">加载太多啦,嘤嘤嘤~~~</p>
+      <p v-if="!noMore">正在非常用力地加载中 *。*</p>
+      <p v-if="noMore">看到底了，你要负责，嘤嘤嘤~~~</p>
     </div>
   </el-card>
 </template>
@@ -56,87 +61,93 @@ export default {
   name: 'BlogListCard',
   data () {
     return {
-      // 默认加载数量
-      count: 10,
-      // 默认加载10条文章内容
-      blogList: [
-        {
-          blogName: '标题1',
-          blogContent: '内容内容',
-          // 开发时候应使用webpack编译后的文件名
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }, {
-          blogName: '标题2',
-          blogContent: '内容内容',
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }, {
-          blogName: '标题3',
-          blogContent: '内容内容',
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }, {
-          blogName: '标题4',
-          blogContent: '内容内容',
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }, {
-          blogName: '标题5',
-          blogContent: '内容内容',
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }, {
-          blogName: '标题6',
-          blogContent: '内容内容',
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }, {
-          blogName: '标题7',
-          blogContent: '内容内容',
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }, {
-          blogName: '标题8',
-          blogContent: '内容内容',
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }, {
-          blogName: '标题9',
-          blogContent: '内容内容',
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }, {
-          blogName: '标题10',
-          blogContent: '内容内容',
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }
-      ],
-      loading: false
+      // 用于获取博客列表的参数对象
+      queryInfo: {
+        // 搜索框的内容
+        queryStr: '',
+        // 当前页数
+        pageNum: 1,
+        // 当前每页显示多少条数据
+        pageSize: 10,
+        // 向后端发送请求携带的参数，查询未删除的博客，false
+        isDeleted: false
+      },
+      // 博客列表
+      blogList: [],
+      // 博客总数
+      total: 0,
+      // 加载状态，true为忙碌
+      loading: false,
+      // 继续加载时每次加载的数量
+      // 必须使首次加载的pageSize是该值的整数倍
+      loadPageSize: 2
     }
   },
   computed: {
+    // 判断是否还有没加载出来的博客
     noMore () {
-      return this.count > 50
+      return this.total <= this.queryInfo.pageNum * this.queryInfo.pageSize
     },
+    // 是否继续加载
     disabled () {
       return this.loading || this.noMore
     }
   },
   methods: {
     loadMoreBlog () {
+      // 开始加载时将状态置为true标识忙碌
       this.loading = true
-      // 一次加载多篇
-      this.count += 1
-      this.blogList.push({
-        blogName: '标题' + this.count,
-        blogContent: '内容内容',
-        blogImg: 'img/background-index.c5c5c93f.jpg'
-      })
-      this.count += 1
-      this.blogList.push({
-        blogName: '标题' + this.count,
-        blogContent: '内容内容',
-        blogImg: 'img/background-index.c5c5c93f.jpg'
-      })
-      setTimeout(() => {
-        this.loading = false
-      }, 1500)
+
+      // 修改查询参数并发起查询
+      // 首次加载10篇，则后续加载应该从第三页开始
+      if (this.queryInfo.pageNum === 1) {
+        // 当pageNum等于1时，为第一次连续加载，将pageNum置为3
+        this.queryInfo.pageNum = this.queryInfo.pageSize / this.loadPageSize + 1
+        this.queryInfo.pageSize = this.loadPageSize
+      } else {
+        // 其他情况不是第一次连续加载，则pageNum连续+1
+        this.queryInfo.pageNum += 1
+      }
+
+      // 调用发起请求的方法
+      this.loadMoreBlogByPage()
     },
+    // 搜索需要将页面加载参数重置为默认
+    searchBlog () {
+      // 新建变量保存queryStr
+      const queryStrCache = this.queryInfo.queryStr
+      this.queryInfo = this.$options.data().queryInfo
+      // 将表单重置中的查询参数pageSize，pageNum重置为为默认后将querStr的值放回去
+      this.queryInfo.queryStr = queryStrCache
+      // 发起查询请求
+      this.selectBlogByPage()
+    },
+    // 按照页面分页获取博客列表
+    // 首次打开页面时调用
+    async selectBlogByPage () {
+      const { data: res } = await this.$http.post('selectBlogByPage', this.$qs.parse(this.queryInfo))
+      this.blogList = res.data.blogList
+      this.total = res.data.total
+    },
+    // 连续加载时调用
+    async loadMoreBlogByPage () {
+      const { data: res } = await this.$http.post('selectBlogByPage', this.$qs.parse(this.queryInfo))
+      // 当返回值中blogList长度不为0时，添加到this.blogList后面
+      if (res.data.blogList.length !== 0) {
+        this.blogList = this.blogList.concat(res.data.blogList)
+      }
+
+      // 获取返回值之后将状态改为不繁忙忙碌
+      this.loading = false
+    },
+    // 根据博客Id打开博客详情页面
     openBlogDetail (index) {
       this.$router.push('/blogDetail/' + index)
     }
+  },
+  created () {
+    // 页面加载前按照默认分页获取博客列表
+    this.selectBlogByPage()
   }
 }
 </script>

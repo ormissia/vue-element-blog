@@ -12,7 +12,8 @@
       <el-col :span="18">
         <!--搜索框-->
         <el-input placeholder="请输入内容" v-model="queryInfo.queryStr">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+          <template slot="prepend">搜索</template>
+          <el-button slot="append" icon="el-icon-search" @click="selectBlogByPage"></el-button>
         </el-input>
       </el-col>
       <el-col :span="6">
@@ -149,6 +150,7 @@ export default {
       }
     },
     // 根据博客Id发起删除博客的请求
+    // 调用博客修改的接口，修改isDeleted字段的值
     async deleteBlogByBlogId (blogId) {
       const { data: res } = await this.$http.delete('deleteBlogByBlogId', blogId)
       console.log(res)
