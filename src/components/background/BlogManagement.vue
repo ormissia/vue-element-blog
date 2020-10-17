@@ -99,7 +99,9 @@ export default {
         // 当前页数
         pageNum: 1,
         // 当前每页显示多少条数据
-        pageSize: 10
+        pageSize: 10,
+        // 向后端发送请求携带的参数，查询未删除的博客，false
+        isDeleted: false
       },
       // 一共多少条数据
       total: 0,
@@ -154,7 +156,9 @@ export default {
     // 按照页面分页获取博客列表
     async selectBlogByPage () {
       const { data: res } = await this.$http.post('selectBlogByPage', this.$qs.parse(this.queryInfo))
-      this.blogList = res.data
+      this.blogList = res.data.blogList
+      // 给分页控件的总条数赋值
+      this.total = res.data.total
     }
   },
   created () {

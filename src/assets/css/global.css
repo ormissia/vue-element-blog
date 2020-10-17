@@ -5,11 +5,13 @@ html, body, #app {
     padding: 0;
 }
 
+/*表格全局样式*/
 .el-table {
     margin-top: 15px;
     font-size: 13px;
 }
 
+/*分页全局样式*/
 .el-pagination {
     margin-top: 15px;
     position: absolute;
