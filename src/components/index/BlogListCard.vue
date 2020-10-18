@@ -44,14 +44,18 @@
                 <img :src="i.blogImg"
                      alt="博客首图"
                      class="right-img"
-                     @click="openBlogDetail(i.blogName)"/>
+                     @click="openBlogDetail(i.blogId)"/>
               </el-col>
             </el-row>
           </el-card>
         </li>
       </ul>
-      <p v-if="!noMore">正在非常用力地加载中 *。*</p>
-      <p v-if="noMore">看到底了，你要负责，嘤嘤嘤~~~</p>
+      <p v-if="!noMore"
+         v-loading="!noMore"
+         element-loading-text="系统正在拼命加载中"
+         class="loadingTips">
+      </p>
+      <p v-if="noMore">----------看到底啦，你要负责----------</p>
     </div>
   </el-card>
 </template>
@@ -191,6 +195,11 @@ export default {
         }
       }
     }
+  }
+
+  // 加载中提示的控件样式
+  .loadingTips {
+    height: 30px;
   }
 }
 </style>

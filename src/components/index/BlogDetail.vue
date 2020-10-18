@@ -6,7 +6,7 @@
       <viewer ref="toastUiEditor"
               :options="viewerOptions"
               class="viewer"/>
-      <div>看到底啦，你要负责</div>
+      <div>----------就这么多了，要不看点别的？----------</div>
     </div>
   </el-card>
 </template>

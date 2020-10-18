@@ -28,6 +28,7 @@ import {
   Submenu,
   MenuItem,
   MenuItemGroup,
+  Loading,
   Dialog,
   Card,
   Message
@@ -58,6 +59,7 @@ Vue.use(Menu)
 Vue.use(Submenu)
 Vue.use(MenuItem)
 Vue.use(MenuItemGroup)
+Vue.use(Loading)
 Vue.use(Dialog)
 Vue.use(Card)
 // 导入弹框提示组件
