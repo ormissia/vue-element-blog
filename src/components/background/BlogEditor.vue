@@ -97,7 +97,6 @@ export default {
   },
   data () {
     return {
-      mk: '123',
       // 博客保存表单的绑定对象
       blogForm: {
         // 博客Id
@@ -181,10 +180,10 @@ export default {
   methods: {
     refreshBlog () {
       this.blogForm = JSON.parse(JSON.stringify(this.oldBlog))
-      this.setMarkdown(this.oldBlog.blogContent)
+      this.setMarkdown()
     },
-    // 发布按钮传1，保存草稿按钮传0
-    saveAndPublish: async function (isPublished) {
+    // 发布按钮传true，保存草稿按钮传0
+    async saveAndPublish (isPublished) {
       // 将发布状态赋值到对象中
       this.blogForm.isPublished = isPublished
       // 需要在页面上做校验是否有必须输入的内容
@@ -212,8 +211,8 @@ export default {
       this.blogForm.blogContent = this.$refs.toastUiEditor.invoke('getMarkdown')
     },
     // 设置编辑器的内容
-    setMarkdown (blogContent) {
-      this.$refs.toastUiEditor.invoke('setMarkdown', blogContent, false)
+    setMarkdown () {
+      this.$refs.toastUiEditor.invoke('setMarkdown', this.blogForm.blogContent, false)
     },
     // 通过博客Id查询博客信息
     async selectBlogByBlogId (blogId) {
@@ -224,25 +223,24 @@ export default {
         this.blogForm.blogTitle = res.data.blogTitle
         this.blogForm.blogContent = res.data.blogContent
         this.blogForm.description = res.data.description
-        this.blogForm.blogType = res.data.type.typeName
         this.blogForm.userId = res.data.user.userId
+        // 判断type和tags是否为空，如果为空时不加判断会报错
+        if (res.data.type !== null) {
+          this.blogForm.blogType = res.data.type.typeName
+        }
         if (res.data.tags.length >= 0) {
           for (let i = 0; i < res.data.tags.length; i++) {
             this.blogForm.blogTags.push(res.data.tags[i].tagName)
           }
         }
-        if (res.data.recommend === true) {
-          this.blogForm.isRecommend = true
-        }
-        if (res.data.published === true) {
-          this.blogForm.isPublished = true
-        }
+        this.blogForm.isRecommend = res.data.recommend
+        this.blogForm.isPublished = res.data.published
 
         // 同时将原始值保存到oldBlog中
         this.oldBlog = JSON.parse(JSON.stringify(this.blogForm))
 
         // 刷新编辑器内容
-        this.setMarkdown(this.blogForm.blogContent)
+        this.setMarkdown()
       }
     }
   },
