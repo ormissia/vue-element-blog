@@ -21,13 +21,13 @@ export default {
 
   methods: {
     btnClick () {
-      // 当select事件触发后，自动触发showCityName事件
+      // 当select事件触发后，自动触发btnClick事件
       this.$emit('btnClick', this.tagName)
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 
 </style>

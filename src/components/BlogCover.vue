@@ -9,6 +9,9 @@
         <img src="../assets/image/EVE.png" class="head-portrait" alt="安红豆">
         <!--头像下的链接-->
         <div>
+          <btn-with-num tag-name="按钮" number="3" @btnClick="loadHeadPortrait"
+                        style="width: 50px;height: 50px;background: yellow;margin: 1px;float: left;text-align: center">
+          </btn-with-num>
           <router-link to="/index"
                        style="width: 50px;height: 50px;background: yellow;margin: 1px;float: left;text-align: center">
             博客
@@ -27,7 +30,7 @@ export default {
   name: 'BlogCover',
   methods: {
     loadHeadPortrait () {
-      // console.log('加载头像')
+      console.log('加载头像')
     }
   },
   // 在模板渲染成html前调用，即通常初始化某些属性值，然后再渲染成视图。
