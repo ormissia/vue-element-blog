@@ -7,12 +7,12 @@
       <h3 class="list-title">推荐文章</h3>
     </div>
     <ul class="list">
-      <li v-for="i in recommendBlogList" :key="i.blogName">
+      <li v-for="i in blogList" :key="i.blogId">
         <el-card shadow="hover"
-                 @click.native="openBlogDetail(i.blogName)"
+                 @click.native="openBlogDetail(i.blogId)"
                  class="card-blog-title">
           <h4 class="blog-title">
-            {{ i.blogName }}
+            {{ i.blogTitle }}
           </h4>
         </el-card>
       </li>
@@ -25,40 +25,35 @@ export default {
   name: 'RecommendList',
   data () {
     return {
-      recommendBlogList: [
-        {
-          blogName: '标题1',
-          blogContent: '内容内容',
-          // 开发时候应使用webpack编译后的文件名
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }, {
-          blogName: '标题2',
-          blogContent: '内容内容',
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }, {
-          blogName: '标题3',
-          blogContent: '内容内容',
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }, {
-          blogName: '标题4',
-          blogContent: '内容内容',
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }, {
-          blogName: '标题5',
-          blogContent: '内容内容',
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }, {
-          blogName: '标题6',
-          blogContent: '内容内容',
-          blogImg: 'img/background-index.c5c5c93f.jpg'
-        }
-      ]
+      // 用于获取博客列表的参数对象
+      queryInfo: {
+        // 搜索框的内容
+        queryStr: '',
+        // 当前页数
+        pageNum: 1,
+        // 当前每页显示多少条数据，推荐文章默认显示6条
+        pageSize: 5,
+        // 向后端发送请求携带的参数，查询未删除的博客，false
+        isDeleted: false,
+        // 查询推荐的文章
+        isRecommend: true
+      },
+      // 博客列表
+      blogList: []
     }
   },
   methods: {
     openBlogDetail (index) {
       this.$router.push('/blogDetail/' + index)
+    },
+    // 按照页面分页获取推荐博客列表
+    async selectBlogByPage () {
+      const { data: res } = await this.$http.post('selectBlogByPage', this.$qs.parse(this.queryInfo))
+      this.blogList = res.data.blogList
     }
+  },
+  created () {
+    this.selectBlogByPage()
   }
 }
 </script>
@@ -66,7 +61,7 @@ export default {
 <style lang="less" scoped>
 .card-list {
 
-  .list-title{
+  .list-title {
     margin: 0;
   }
 
