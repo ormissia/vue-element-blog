@@ -33,10 +33,10 @@
     </el-header>
     <!--主体区域-->
     <el-main class="main-body">
-      <!--需要实现根据顶部导航栏的跳转实现内容的替换-->
-      <el-dialog title="登录" width="50%" :visible.sync="dialogVisible">
+      <!--登录的dialog-->
+      <el-dialog title="登录" width="30%" :visible.sync="dialogVisible">
         <!--登录表单区-->
-        <el-form :model="loginForm" :rules="loginFormRules" ref="loginFormRef" class="login_form">
+        <el-form :model="loginForm" :rules="loginFormRules" ref="loginFormRef">
           <!--用户名-->
           <el-form-item prop="username">
             <el-input placeholder="请输入用户名" v-model="loginForm.username" prefix-icon="el-icon-user-solid"></el-input>
@@ -47,7 +47,7 @@
                       prefix-icon="el-icon-info" type="password"></el-input>
           </el-form-item>
           <!--按钮-->
-          <el-form-item class="login_buttons">
+          <el-form-item class="login-button">
             <el-button type="primary" @click="login">登录</el-button>
           </el-form-item>
         </el-form>
@@ -180,7 +180,7 @@ export default {
         }
       }
 
-      .login_buttons {
+      .login-button {
         display: flex;
         justify-content: flex-start;
       }

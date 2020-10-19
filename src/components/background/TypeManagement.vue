@@ -20,7 +20,8 @@
         <!--创建新的Type，打开一个Dialog而不是打开新页面-->
         <el-button type="primary"
                    :plain="false"
-                   class="btn-add-type">
+                   @click="openDialogCreateNewType"
+                   class="open-dialog">
           添加新类型
         </el-button>
       </el-col>
@@ -71,6 +72,20 @@
         :total="total"
         layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
+    <!--添加新类型的dialog-->
+    <el-dialog title="添加新类型" width="30%" :visible.sync="dialogVisible">
+      <!--添加新类型表单区-->
+      <el-form :model="typeForm" :rules="typeFormRules">
+        <!--类型名输入框-->
+        <el-form-item prop="typeName">
+          <el-input placeholder="请输入要创建的类型名" v-model="typeForm.typeName" prefix-icon="el-icon-user-solid"></el-input>
+        </el-form-item>
+        <!--按钮-->
+        <el-form-item class="create-new-type">
+          <el-button type="primary" @click="createNewType">创建</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -79,6 +94,20 @@ export default {
   name: 'TypeManagement',
   data () {
     return {
+      // 登录Dialog打开关闭的标记
+      dialogVisible: false,
+      // 创建新类型的form表单
+      typeForm: {
+        typeName: ''
+      },
+      // 创建新类型的表单验证
+      typeFormRules: {
+        typeName: [{
+          required: true,
+          message: '请输入要创建的类型名称',
+          trigger: 'blur'
+        }]
+      },
       // 用于查询类型列表的参数对象
       queryInfo: {
         // 搜索框的内容
@@ -109,6 +138,33 @@ export default {
       // 页码值改变后重新发起请求来获取当前页面数据
       this.selectTypeByPage()
     },
+    // 打开添加新类型的Dialog
+    openDialogCreateNewType () {
+      this.dialogVisible = true
+    },
+    // 发起创建新类型的http请求
+    async createNewType () {
+      const { data: res } = await this.$http.post('createNewType', this.$qs.parse(this.typeForm))
+      // 根据返回值判断是否保存成功
+      if (res.code === 200) {
+        this.$rootMessage({
+          showClose: true,
+          message: res.message,
+          type: 'success'
+        })
+        // 返回成功之后关闭Dialog
+        this.dialogVisible = false
+      } else {
+        // 保存失败，输出错误提示
+        this.$rootMessage({
+          showClose: true,
+          message: res.message,
+          type: 'error'
+        })
+      }
+      // 添加成功后刷新列表
+      await this.selectTypeByPage()
+    },
     // 按照页面分页获取博客列表
     async selectTypeByPage () {
       const { data: res } = await this.$http.post('selectTypeByPage', this.$qs.parse(this.queryInfo))
@@ -129,8 +185,15 @@ export default {
   // 高度设置成100会出现滚动条，就很奇怪
   height: 99%;
 
-  .btn-add-type {
+  // 打开Dialog按钮的样式
+  .open-dialog {
     float: right;
+  }
+
+  // 发起添加新类型http请求的按钮样式
+  .create-new-type {
+    display: flex;
+    justify-content: flex-start;
   }
 }
 </style>
