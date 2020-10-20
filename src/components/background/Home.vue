@@ -86,7 +86,7 @@ export default {
             {
               id: '103',
               menuName: '标签管理',
-              path: '123'
+              path: '/background/tagManagement'
             }
           ]
         },

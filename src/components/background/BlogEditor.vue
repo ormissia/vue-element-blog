@@ -29,7 +29,7 @@
                  :default-first-option="true"
                  placeholder="请选择文章类型">
         <el-option
-            v-for="item in allTypes"
+            v-for="item in typeList"
             :key="item.typeId"
             :value="item.typeName">
         </el-option>
@@ -44,7 +44,7 @@
           :default-first-option="true"
           placeholder="请选择文章标签">
         <el-option
-            v-for="item in allTags"
+            v-for="item in tagList"
             :key="item.tagId"
             :value="item.tagName">
         </el-option>
@@ -140,10 +140,17 @@ export default {
         userId: ''
       },
 
+      // 用于查询所有类型标签列表的参数对象
+      queryInfo: {
+        // 当前页数
+        pageNum: 1,
+        // 当前每页显示多少条数据
+        pageSize: 9999
+      },
       // 所有类型
-      allTypes: [],
+      typeList: [],
       // 所有标签
-      allTags: [],
+      tagList: [],
 
       // markdown Viewer的设置属性对象
       viewerOptions: {
@@ -242,9 +249,22 @@ export default {
         // 刷新编辑器内容
         this.setMarkdown()
       }
+    },
+    // 按照页面分页获取博客列表
+    async selectTypeByPage () {
+      const { data: res } = await this.$http.post('selectTypeByPage', this.$qs.parse(this.queryInfo))
+      this.typeList = res.data.typeList
+    },
+    // 按照页面分页获取博客列表
+    async selectTagByPage () {
+      const { data: res } = await this.$http.post('selectTagByPage', this.$qs.parse(this.queryInfo))
+      this.tagList = res.data.tagList
     }
   },
   created () {
+    // 页面加载时查询所有类型和标签
+    this.selectTypeByPage()
+    this.selectTagByPage()
     const blogId = this.$route.params.blogId
     // 判断blogId是否等于-1，若相等则为新建博客，无需向后端发送请求
     if (blogId === '-1') {

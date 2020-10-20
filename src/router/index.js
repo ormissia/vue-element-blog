@@ -16,6 +16,7 @@ import ArticleDetail from '@/components/index/BlogDetail.vue'
 import Home from '@/components/background/Home.vue'
 import BlogManagement from '@/components/background/BlogManagement'
 import TypeManagement from '@/components/background/TypeManagement'
+import TagManagement from '@/components/background/TagManagement'
 // 博客编写组件
 import BlogEditor from '@/components/background/BlogEditor'
 
@@ -63,6 +64,10 @@ const routes = [
       {
         path: '/background/typeManagement',
         component: TypeManagement
+      },
+      {
+        path: '/background/tagManagement',
+        component: TagManagement
       },
       {
         path: '/background/blogEditor/:blogId',

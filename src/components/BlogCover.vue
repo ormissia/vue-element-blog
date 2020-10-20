@@ -64,6 +64,11 @@ export default {
         border-radius: 50%;
         //边缘2px
         border: 2px solid pink;
+        transition: all 0.5s;
+
+        &:hover {
+          transform: scale(1.1);
+        }
       }
     }
   }
