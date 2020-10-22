@@ -1,10 +1,10 @@
 <!--带数字标签的按钮组件-->
 <template>
-  <div @click="btnClick">
+  <div class="btn-container" @click="btnClick">
     <!--左边文字标签部分-->
-    <div>{{ tagName }}</div>
+    <div class="btn-name">{{ tagName }}</div>
     <!--右边数字部分-->
-    <div>{{ number }}</div>
+    <div class="btn-number">{{ number }}</div>
   </div>
 </template>
 
@@ -29,5 +29,21 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.btn-container {
+  border: 1px solid #ba9f93;
+  width: 100px;
+  height: 30px;
+  display: flex;
+  align-items: center;
 
+  .btn-name {
+    width: 70%;
+    text-align: center;
+  }
+
+  .btn-number {
+    width: 30%;
+    text-align: center;
+  }
+}
 </style>

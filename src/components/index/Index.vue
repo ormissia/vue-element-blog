@@ -169,6 +169,11 @@ export default {
         margin-right: 20px;
         //边缘2px
         border: 2px solid pink;
+        transition: all 0.4s;
+
+        &:hover {
+          transform: scale(1.1);
+        }
       }
 
       // TODO 需要解决导航栏菜单自动换行的问题
