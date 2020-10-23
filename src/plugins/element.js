@@ -31,7 +31,8 @@ import {
   Loading,
   Dialog,
   Card,
-  Message
+  Message,
+  MessageBox
 } from 'element-ui'
 
 Vue.use(Container)
@@ -64,3 +65,5 @@ Vue.use(Dialog)
 Vue.use(Card)
 // 导入弹框提示组件
 Vue.prototype.$rootMessage = Message
+// 导入Dialog组件
+Vue.prototype.$confirm = MessageBox

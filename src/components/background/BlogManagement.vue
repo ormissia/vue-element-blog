@@ -69,7 +69,7 @@
             <el-button type="danger"
                        icon="el-icon-delete"
                        size="small"
-                       @click="deleteBlogByBlogId(scope.row.blogId)">
+                       @click="openDeleteDialog(scope.row.blogId)">
             </el-button>
           </el-tooltip>
         </template>
@@ -149,11 +149,40 @@ export default {
         })
       }
     },
+    // 打开确认删除博客的Dialog
+    openDeleteDialog (blogId) {
+      this.$confirm('真的要删除这篇博客吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 调用发起删除请求的方法
+        this.deleteBlogByBlogId(blogId)
+      }).catch(() => {
+        this.$rootMessage({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
     // 根据博客Id发起删除博客的请求
     // 调用博客修改的接口，修改isDeleted字段的值
     async deleteBlogByBlogId (blogId) {
-      const { data: res } = await this.$http.delete('deleteBlogByBlogId', blogId)
+      const { data: res } = await this.$http.delete('deleteBlogByBlogId/' + blogId)
       console.log(res)
+      if (res.code === 200) {
+        this.$rootMessage({
+          type: 'success',
+          message: res.message
+        })
+      } else {
+        this.$rootMessage({
+          type: 'error',
+          message: '删除失败'
+        })
+      }
+      // 无论是否删除成功，刷新页面
+      this.selectBlogByPage()
     },
     // 按照页面分页获取博客列表
     async selectBlogByPage () {

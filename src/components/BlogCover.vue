@@ -23,14 +23,14 @@
         </div>
       </div>
       <div class="button-float-container">
-        <a href="https://github.com/Ormissia" class="button-float button-three">
+        <a href="https://github.com/Ormissia" target="_blank" class="button-float button-three">
           <svg class="icon icon-github" aria-hidden="true">
             <use xlink:href="#icongithub"></use>
           </svg>
         </a>
       </div>
       <div class="button-float-container">
-        <a href="https://ormissia.com:13101" class="button-float button-four">
+        <a href="https://ormissia.com:13101" target="_blank" class="button-float button-four">
           <svg class="icon icon-esxi" aria-hidden="true">
             <use xlink:href="#iconesxi"></use>
           </svg>
