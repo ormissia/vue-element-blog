@@ -16,7 +16,8 @@
       </div>
       <div class="button-float-container">
         <div class="button-float button-two">
-          <btn-with-num tag-name="按钮" number="3"
+          <btn-with-num tag-name="按钮"
+                        number="3"
                         @btnClick="loadHeadPortrait">
           </btn-with-num>
         </div>
