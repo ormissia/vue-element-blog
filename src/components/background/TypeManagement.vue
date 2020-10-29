@@ -45,7 +45,7 @@
             <el-button type="primary"
                        icon="el-icon-edit"
                        size="small"
-                       @click="openTypeEditor(scope.row.typeId)">
+                       @click="openTypeEditor(scope.row)">
             </el-button>
           </el-tooltip>
           <!--删除按钮-->
@@ -64,13 +64,13 @@
     </el-table>
     <!--分页区域-->
     <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="queryInfo.pageNum"
-        :page-size="queryInfo.pageSize"
-        :page-sizes="[3, 5, 10, 20]"
-        :total="total"
-        layout="total, sizes, prev, pager, next, jumper">
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="queryInfo.pageNum"
+      :page-size="queryInfo.pageSize"
+      :page-sizes="[3, 5, 10, 20]"
+      :total="total"
+      layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
     <!--添加新类型的dialog-->
     <el-dialog title="添加新类型" width="30%" :visible.sync="dialogVisible">
@@ -82,7 +82,7 @@
         </el-form-item>
         <!--按钮-->
         <el-form-item class="create-new-type">
-          <el-button type="primary" @click="createNewType">创建</el-button>
+          <el-button type="primary" @click="createNewType">保存</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -141,6 +141,17 @@ export default {
     },
     // 打开添加新类型的Dialog
     openDialogCreateNewType () {
+      // 重置对象的初始值，防止添加之前修改过类型对象值导致对象变量内的值不为初始值
+      this.typeForm.typeId = -1
+      this.typeForm.typeName = ''
+      // 打开弹窗
+      this.dialogVisible = true
+    },
+    openTypeEditor (row) {
+      // 获取当前行的类型信息
+      this.typeForm.typeId = row.typeId
+      this.typeForm.typeName = row.typeName
+      // 打开弹窗
       this.dialogVisible = true
     },
     // 发起创建新类型的http请求

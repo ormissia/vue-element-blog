@@ -45,7 +45,7 @@
             <el-button type="primary"
                        icon="el-icon-edit"
                        size="small"
-                       @click="openTagEditor(scope.row.tagId)">
+                       @click="openTagEditor(scope.row)">
             </el-button>
           </el-tooltip>
           <!--删除按钮-->
@@ -64,13 +64,13 @@
     </el-table>
     <!--分页区域-->
     <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="queryInfo.pageNum"
-        :page-size="queryInfo.pageSize"
-        :page-sizes="[3, 5, 10, 20]"
-        :total="total"
-        layout="total, sizes, prev, pager, next, jumper">
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="queryInfo.pageNum"
+      :page-size="queryInfo.pageSize"
+      :page-sizes="[3, 5, 10, 20]"
+      :total="total"
+      layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
     <!--添加新标签的dialog-->
     <el-dialog title="添加新标签" width="30%" :visible.sync="dialogVisible">
@@ -82,7 +82,7 @@
         </el-form-item>
         <!--按钮-->
         <el-form-item class="create-new-tag">
-          <el-button type="primary" @click="createNewTag">创建</el-button>
+          <el-button type="primary" @click="createNewTag">保存</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -98,6 +98,7 @@ export default {
       dialogVisible: false,
       // 创建新标签的form表单
       tagForm: {
+        tagId: -1,
         tagName: ''
       },
       // 创建新标签的表单验证
@@ -140,6 +141,17 @@ export default {
     },
     // 打开添加新标签的Dialog
     openDialogCreateNewTag () {
+      // 重置对象的初始值，防止添加之前修改过标签对象值导致对象变量内的值不为初始值
+      this.tagForm.tagId = -1
+      this.tagForm.tagName = ''
+      // 打开弹窗
+      this.dialogVisible = true
+    },
+    openTagEditor (row) {
+      // 获取当前行的类型信息
+      this.tagForm.tagId = row.tagId
+      this.tagForm.tagName = row.tagName
+      // 打开弹窗
       this.dialogVisible = true
     },
     // 发起创建新标签的http请求
