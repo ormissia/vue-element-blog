@@ -28,6 +28,7 @@ import {
   Submenu,
   MenuItem,
   MenuItemGroup,
+  Tag,
   Loading,
   Dialog,
   Card,
@@ -60,6 +61,7 @@ Vue.use(Menu)
 Vue.use(Submenu)
 Vue.use(MenuItem)
 Vue.use(MenuItemGroup)
+Vue.use(Tag)
 Vue.use(Loading)
 Vue.use(Dialog)
 Vue.use(Card)

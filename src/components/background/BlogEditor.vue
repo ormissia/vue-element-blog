@@ -14,11 +14,11 @@
             class="editor"/>
     <!--博客简介-->
     <el-input
-        type="textarea"
-        :autosize="{ minRows: 4 }"
-        placeholder="请输入简介"
-        v-model="blogForm.description"
-        class="description">
+      type="textarea"
+      :autosize="{ minRows: 4 }"
+      placeholder="请输入简介"
+      v-model="blogForm.description"
+      class="description">
     </el-input>
     <div class="selector">
       <!--博客类型的选择器-->
@@ -29,35 +29,35 @@
                  :default-first-option="true"
                  placeholder="请选择文章类型">
         <el-option
-            v-for="item in typeList"
-            :key="item.typeId"
-            :value="item.typeName">
+          v-for="item in typeList"
+          :key="item.typeId"
+          :value="item.typeName">
         </el-option>
       </el-select>
       <!--博客标签的选择器，可添加-->
       <el-select
-          v-model="blogForm.blogTags"
-          style="width: 50%;margin-left: 10px"
-          :multiple="true"
-          :filterable="true"
-          :allow-create="true"
-          :default-first-option="true"
-          placeholder="请选择文章标签">
+        v-model="blogForm.blogTags"
+        style="width: 50%;margin-left: 10px"
+        :multiple="true"
+        :filterable="true"
+        :allow-create="true"
+        :default-first-option="true"
+        placeholder="请选择文章标签">
         <el-option
-            v-for="item in tagList"
-            :key="item.tagId"
-            :value="item.tagName">
+          v-for="item in tagList"
+          :key="item.tagId"
+          :value="item.tagName">
         </el-option>
       </el-select>
     </div>
     <div class="switcher">
       <!--是否推荐的开关选择器-->
       <el-switch
-          v-model="blogForm.isRecommend"
-          active-color="#13ce66"
-          inactive-color="#9c9c9c"
-          active-text="这玩意儿太顶了，我要推荐"
-          inactive-text="知识积累">
+        v-model="blogForm.isRecommend"
+        active-color="#13ce66"
+        inactive-color="#9c9c9c"
+        active-text="这玩意儿太顶了，我要推荐"
+        inactive-text="知识积累">
       </el-switch>
     </div>
     <!--底部按钮区域-->
@@ -70,6 +70,9 @@
       <!--右边按钮区域-->
       <el-col :span="12">
         <div class="buttons">
+          <el-tag :type="blogForm.isPublished === true ? 'success' : 'info'">
+            状态：{{ blogForm.isPublished === true ? '发布' : '草稿' }}
+          </el-tag>
           <!--发布和保存的按钮-->
           <el-button type="primary" @click="saveAndPublish(true)">写完了，马上发布</el-button>
           <el-button type="primary" :plain="true">没写完，保存草稿</el-button>
@@ -307,10 +310,15 @@ export default {
   }
 
   .buttons {
-    margin-top: 10px;
+    // 垂直居中水平居右
     display: flex;
-    align-items: flex-start;
     justify-content: flex-end;
+    align-items: center;
+
+    .el-button {
+      float: right;
+      margin-left: 10px;
+    }
   }
 }
 </style>
