@@ -24,14 +24,15 @@
                   <h1 class="blog-title">{{ i.blogTitle }}</h1>
                 </div>
                 <!--简介-->
-                <div @click="openBlogDetail(i.blogId)">
+                <div class="div-description"
+                     @click="openBlogDetail(i.blogId)">
                   <p>{{ i.description }}</p>
                 </div>
                 <!--底部-->
                 <div class="div-bottom">
                   <!--时间戳-->
                   <div style="float: left">
-                    {{ i.lastEditDate }}
+                    {{ i.createDate }}
                   </div>
                   <!--类型,判断是否为空，不为空时显示-->
                   <div v-if="i.type != null" style="float: right">
@@ -41,10 +42,8 @@
               </el-col>
               <!--右侧文章首图的布局-->
               <el-col class="col-right" :span="8">
-                <img :src="i.blogImg"
-                     alt="博客首图"
-                     class="right-img"
-                     @click="openBlogDetail(i.blogId)"/>
+                <el-image alt="博客首图" class="right-img" fit="cover"
+                          src="https://imageserver.eveonline.com/Character/2113630487_1024.jpg"></el-image>
               </el-col>
             </el-row>
           </el-card>
@@ -182,6 +181,10 @@ export default {
           .blog-title {
             // 去掉标题标签<h1>的上边距
             margin-top: 0;
+          }
+
+          .div-description {
+            height: 100px;
           }
         }
 

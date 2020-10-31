@@ -1,12 +1,20 @@
 <!--博客文章页面-->
 <template>
   <el-card shadow="always" class="blog-card">
-    <h2>{{ this.blogForm.blogTitle }}</h2>
+    <!--博客首图-->
+    <el-image alt="博客首图" class="right-img" fit="cover" style="max-height: 500px;width: 100%"
+              :src="this.blogForm.topImage"></el-image>
+    <h1>{{ this.blogForm.blogTitle }}</h1>
+    <!--类型-->
+    <el-divider>{{ this.blogForm.blogType }}</el-divider>
+    <el-tag v-for="i in blogForm.blogTags" :key="i.tagId">{{ i }}</el-tag>
+    <!--创建日期-->
+    <el-divider>{{ this.blogForm.createDate }}</el-divider>
     <div>
       <viewer ref="toastUiEditor"
               :options="viewerOptions"
               class="viewer"/>
-      <div>----------就这么多了，要不看点别的？----------</div>
+      <el-divider>就这么多了，要不看点别的？</el-divider>
     </div>
   </el-card>
 </template>
@@ -36,6 +44,12 @@ export default {
         blogId: '',
         // 标题
         blogTitle: '',
+        // 创建时间
+        createDate: '',
+        // 最后修改时间
+        lastEditDate: '',
+        // 博客首图
+        topImage: 'https://imageserver.eveonline.com/Character/2113630487_1024.jpg',
         // 页面上的markdown内容
         blogContent: '',
         // 博客简介
@@ -71,6 +85,8 @@ export default {
       // 判断返回结果状态值，如果成功获取博客信息，则将博客信息分别赋值给blogForm和oldBlog（用于页面恢复数据）
       if (res.code === 200) {
         this.blogForm.blogId = res.data.blogId
+        this.blogForm.createDate = res.data.createDate
+        this.blogForm.lastEditDate = res.data.lastEditDate
         this.blogForm.blogTitle = res.data.blogTitle
         this.blogForm.blogContent = res.data.blogContent
         this.blogForm.description = res.data.description
@@ -104,6 +120,10 @@ export default {
 
 <style lang="less" scoped>
 .blog-card {
+  .el-tag{
+    margin: 0 5px;
+  }
+
   .viewer {
     text-align: start;
   }
