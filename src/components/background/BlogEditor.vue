@@ -75,7 +75,7 @@
           </el-tag>
           <!--发布和保存的按钮-->
           <el-button type="primary" @click="saveAndPublish(true)">写完了，马上发布</el-button>
-          <el-button type="primary" :plain="true">没写完，保存草稿</el-button>
+          <el-button type="primary" @click="saveAndPublish(false)" :plain="true">没写完，保存草稿</el-button>
         </div>
       </el-col>
     </el-row>

@@ -62,7 +62,7 @@
 
 <script>
 export default {
-  name: 'BlogListCard',
+  name: 'BlogList',
   data () {
     return {
       // 用于获取博客列表的参数对象
@@ -73,7 +73,8 @@ export default {
         pageNum: 1,
         // 当前每页显示多少条数据
         pageSize: 10,
-        // 向后端发送请求携带的参数，查询未删除的博客，false
+        // 向后端发送请求携带的参数，查询发布状态的博客，true;查询未删除的博客，false
+        isPublished: true,
         isDeleted: false
       },
       // 博客列表

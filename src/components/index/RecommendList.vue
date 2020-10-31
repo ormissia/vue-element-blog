@@ -33,7 +33,8 @@ export default {
         pageNum: 1,
         // 当前每页显示多少条数据，推荐文章默认显示6条
         pageSize: 5,
-        // 向后端发送请求携带的参数，查询未删除的博客，false
+        // 向后端发送请求携带的参数，查询发布状态的博客，true;查询未删除的博客，false
+        isPublished: true,
         isDeleted: false,
         // 查询推荐的文章
         isRecommend: true
