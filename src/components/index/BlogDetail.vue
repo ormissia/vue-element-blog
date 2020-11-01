@@ -2,7 +2,7 @@
 <template>
   <el-card shadow="always" class="blog-card">
     <!--博客首图-->
-    <el-image alt="博客首图" class="right-img" fit="cover" style="max-height: 500px;width: 100%"
+    <el-image alt="博客首图" class="image-top" fit="cover"
               :src="this.blogForm.topImage"></el-image>
     <h1>{{ this.blogForm.blogTitle }}</h1>
     <!--类型-->
@@ -120,10 +120,18 @@ export default {
 
 <style lang="less" scoped>
 .blog-card {
-  .el-tag{
+  // 博客首图
+  .image-top {
+    width: 100%;
+    height: 500px;
+  }
+
+  // 标签
+  .el-tag {
     margin: 0 5px;
   }
 
+  // Markdown查看器
   .viewer {
     text-align: start;
   }

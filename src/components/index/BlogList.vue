@@ -194,7 +194,6 @@ export default {
             width: 100%;
             // 图片高度需要改成card高度
             height: 150px;
-            object-fit: cover;
           }
         }
       }
