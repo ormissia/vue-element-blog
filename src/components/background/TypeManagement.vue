@@ -156,7 +156,7 @@ export default {
     },
     // 发起创建新类型的http请求
     async createNewType () {
-      const { data: res } = await this.$http.post('createNewType', this.$qs.parse(this.typeForm))
+      const { data: res } = await this.$http.post('private/createNewType', this.$qs.parse(this.typeForm))
       // 根据返回值判断是否保存成功
       if (res.code === 200) {
         this.$rootMessage({
@@ -179,7 +179,7 @@ export default {
     },
     // 按照页面分页获取博客列表
     async selectTypeByPage () {
-      const { data: res } = await this.$http.post('selectTypeByPage', this.$qs.parse(this.queryInfo))
+      const { data: res } = await this.$http.post('private/selectTypeByPage', this.$qs.parse(this.queryInfo))
       this.typeList = res.data.typeList
       // 给分页控件的总条数赋值
       this.total = res.data.total

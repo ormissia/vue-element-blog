@@ -129,13 +129,13 @@ export default {
     // 按照页面分页获取博客列表
     // 首次打开页面时调用
     async selectBlogByPage () {
-      const { data: res } = await this.$http.post('selectBlogByPage', this.$qs.parse(this.queryInfo))
+      const { data: res } = await this.$http.post('public/selectBlogByPage', this.$qs.parse(this.queryInfo))
       this.blogList = res.data.blogList
       this.total = res.data.total
     },
     // 连续加载时调用
     async loadMoreBlogByPage () {
-      const { data: res } = await this.$http.post('selectBlogByPage', this.$qs.parse(this.queryInfo))
+      const { data: res } = await this.$http.post('public/selectBlogByPage', this.$qs.parse(this.queryInfo))
       // 当返回值中blogList长度不为0时，添加到this.blogList后面
       if (res.data.blogList.length !== 0) {
         this.blogList = this.blogList.concat(res.data.blogList)

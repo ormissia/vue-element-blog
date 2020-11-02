@@ -49,7 +49,7 @@ export default {
     },
     // 按照页面分页获取推荐博客列表
     async selectBlogByPage () {
-      const { data: res } = await this.$http.post('selectBlogByPage', this.$qs.parse(this.queryInfo))
+      const { data: res } = await this.$http.post('public/selectBlogByPage', this.$qs.parse(this.queryInfo))
       this.blogList = res.data.blogList
     }
   },

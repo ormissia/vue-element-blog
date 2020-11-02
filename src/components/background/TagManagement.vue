@@ -156,7 +156,7 @@ export default {
     },
     // 发起创建新标签的http请求
     async createNewTag () {
-      const { data: res } = await this.$http.post('createNewTag', this.$qs.parse(this.tagForm))
+      const { data: res } = await this.$http.post('private/createNewTag', this.$qs.parse(this.tagForm))
       // 根据返回值判断是否保存成功
       if (res.code === 200) {
         this.$rootMessage({
@@ -179,7 +179,7 @@ export default {
     },
     // 按照页面分页获取博客列表
     async selectTagByPage () {
-      const { data: res } = await this.$http.post('selectTagByPage', this.$qs.parse(this.queryInfo))
+      const { data: res } = await this.$http.post('private/selectTagByPage', this.$qs.parse(this.queryInfo))
       this.tagList = res.data.tagList
       // 给分页控件的总条数赋值
       this.total = res.data.total

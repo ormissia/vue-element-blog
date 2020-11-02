@@ -30,6 +30,7 @@ import {
   MenuItemGroup,
   Tag,
   Image,
+  Upload,
   Divider,
   Loading,
   Dialog,
@@ -65,6 +66,7 @@ Vue.use(MenuItem)
 Vue.use(MenuItemGroup)
 Vue.use(Tag)
 Vue.use(Image)
+Vue.use(Upload)
 Vue.use(Divider)
 Vue.use(Loading)
 Vue.use(Dialog)

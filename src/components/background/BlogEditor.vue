@@ -12,14 +12,36 @@
             :initialValue='blogForm.blogContent'
             :options="viewerOptions"
             class="editor"/>
-    <!--博客简介-->
-    <el-input
-      type="textarea"
-      :autosize="{ minRows: 4 }"
-      placeholder="请输入简介"
-      v-model="blogForm.description"
-      class="description">
-    </el-input>
+    <el-row :gutter="20">
+      <el-col :span="6">
+        <el-upload class="upload-img" drag
+                   accept=""
+                   action="http://127.0.0.1:8085/api/private/uploadImage"
+                   :limit="1"
+                   :before-upload="beforeImageUpload"
+                   :on-success="handleImageSuccess"
+                   :show-file-list="true">
+          <!--上传后的图片展示-->
+          <img v-if="this.blogForm.topImage" :src="this.blogForm.topImage" class="img-success" alt="博客首图">
+          <!--上传控件提示信息-->
+          <div v-else>
+            <i class="el-icon-upload"></i>
+            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+          </div>
+        </el-upload>
+      </el-col>
+      <el-col :span="18">
+        <!--博客简介-->
+        <el-input
+          type="textarea"
+          :autosize="{ minRows: 8 }"
+          placeholder="请输入简介"
+          v-model="blogForm.description"
+          class="description">
+        </el-input>
+      </el-col>
+    </el-row>
     <div class="selector">
       <!--博客类型的选择器-->
       <el-select v-model="blogForm.blogType"
@@ -104,6 +126,7 @@ export default {
       blogForm: {
         // 博客Id
         blogId: '',
+        topImage: '',
         // 标题
         blogTitle: '',
         // 页面上的markdown内容
@@ -125,6 +148,7 @@ export default {
       oldBlog: {
         // 博客Id
         blogId: '',
+        topImage: '',
         // 标题
         blogTitle: '',
         // 页面上的markdown内容
@@ -188,6 +212,19 @@ export default {
     }
   },
   methods: {
+    // 文件上传之前
+    beforeImageUpload (file) {
+      console.log(file)
+      // 判断文件类型
+      const isJPG = file.type === 'image/jpeg'
+      if (!isJPG) {
+        this.$rootMessage.error('只能上传图片!')
+      }
+    },
+    // 文件上传成功
+    handleImageSuccess (res, file) {
+      this.blogForm.topImage = URL.createObjectURL(file.raw)
+    },
     refreshBlog () {
       this.blogForm = JSON.parse(JSON.stringify(this.oldBlog))
       this.setMarkdown()
@@ -197,7 +234,7 @@ export default {
       // 将发布状态赋值到对象中
       this.blogForm.isPublished = isPublished
       // 需要在页面上做校验是否有必须输入的内容
-      const { data: res } = await this.$http.post('saveBlog', this.$qs.parse(this.blogForm))
+      const { data: res } = await this.$http.post('private/saveBlog', this.$qs.parse(this.blogForm))
       // 根据返回值判断是否保存成功，若成功则跳到BlogManagement页面
       if (res.code === 200) {
         this.$rootMessage({
@@ -226,7 +263,7 @@ export default {
     },
     // 通过博客Id查询博客信息
     async selectBlogByBlogId (blogId) {
-      const { data: res } = await this.$http.post('selectBlogByBlogId', this.$qs.stringify({ blogId: blogId }))
+      const { data: res } = await this.$http.post('public/selectBlogByBlogId', this.$qs.stringify({ blogId: blogId }))
       // 判断返回结果状态值，如果成功获取博客信息，则将博客信息分别赋值给blogForm和oldBlog（用于页面恢复数据）
       if (res.code === 200) {
         this.blogForm.blogId = res.data.blogId
@@ -255,12 +292,12 @@ export default {
     },
     // 按照页面分页获取博客列表
     async selectTypeByPage () {
-      const { data: res } = await this.$http.post('selectTypeByPage', this.$qs.parse(this.queryInfo))
+      const { data: res } = await this.$http.post('private/selectTypeByPage', this.$qs.parse(this.queryInfo))
       this.typeList = res.data.typeList
     },
     // 按照页面分页获取博客列表
     async selectTagByPage () {
-      const { data: res } = await this.$http.post('selectTagByPage', this.$qs.parse(this.queryInfo))
+      const { data: res } = await this.$http.post('private/selectTagByPage', this.$qs.parse(this.queryInfo))
       this.tagList = res.data.tagList
     }
   },
@@ -292,6 +329,16 @@ export default {
   .editor {
     margin: 10px 0;
     height: 800px !important;
+  }
+
+  .upload-img {
+    margin-top: 10px;
+
+    .img-success {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 
   .description {

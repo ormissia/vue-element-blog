@@ -132,7 +132,7 @@ export default {
         isPublished: isPublished
       }
       // 使用修改保存博客的接口，传入数据创建一个博客对象，只包含博客Id和是否发布的信息
-      const { data: res } = await this.$http.post('saveBlog', this.$qs.parse(blog))
+      const { data: res } = await this.$http.post('private/saveBlog', this.$qs.parse(blog))
       // 根据返回值判断是否保存成功，若成功则提示修改成功的消息
       if (res.code === 200) {
         this.$rootMessage({
@@ -168,7 +168,7 @@ export default {
     // 根据博客Id发起删除博客的请求
     // 调用博客修改的接口，修改isDeleted字段的值
     async deleteBlogByBlogId (blogId) {
-      const { data: res } = await this.$http.delete('deleteBlogByBlogId/' + blogId)
+      const { data: res } = await this.$http.delete('private/deleteBlogByBlogId/' + blogId)
       console.log(res)
       if (res.code === 200) {
         this.$rootMessage({
@@ -186,7 +186,7 @@ export default {
     },
     // 按照页面分页获取博客列表
     async selectBlogByPage () {
-      const { data: res } = await this.$http.post('selectBlogByPage', this.$qs.parse(this.queryInfo))
+      const { data: res } = await this.$http.post('public/selectBlogByPage', this.$qs.parse(this.queryInfo))
       this.blogList = res.data.blogList
       // 给分页控件的总条数赋值
       this.total = res.data.total

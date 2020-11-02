@@ -17,7 +17,7 @@ import qs from 'qs'
 import infiniteScroll from 'vue-infinite-scroll'
 
 // 配置请求根路径
-axios.defaults.baseURL = 'http://127.0.0.1:8085/api/private/'
+axios.defaults.baseURL = 'http://127.0.0.1:8085/api/'
 // 远程后台地址
 // axios.defaults.baseURL = ''
 // 挂在到Vue实例，后面可通过this调用
