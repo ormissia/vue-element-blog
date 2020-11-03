@@ -22,7 +22,7 @@
                    :on-success="handleImageSuccess"
                    :show-file-list="true">
           <!--上传后的图片展示-->
-          <img v-if="this.blogForm.topImage" :src="this.blogForm.topImage" class="img-success" alt="博客首图">
+          <img v-if="this.temporaryImage" :src="this.temporaryImage" class="img-success" alt="博客首图">
           <!--上传控件提示信息-->
           <div v-else>
             <i class="el-icon-upload"></i>
@@ -122,10 +122,13 @@ export default {
   },
   data () {
     return {
+      // 图片临时路径
+      temporaryImage: '',
       // 博客保存表单的绑定对象
       blogForm: {
         // 博客Id
         blogId: '',
+        // 首图
         topImage: '',
         // 标题
         blogTitle: '',
@@ -148,6 +151,7 @@ export default {
       oldBlog: {
         // 博客Id
         blogId: '',
+        // 首图
         topImage: '',
         // 标题
         blogTitle: '',
@@ -214,7 +218,6 @@ export default {
   methods: {
     // 文件上传之前
     beforeImageUpload (file) {
-      console.log(file)
       // 判断文件类型
       const isJPG = file.type === 'image/jpeg'
       if (!isJPG) {
@@ -223,7 +226,25 @@ export default {
     },
     // 文件上传成功
     handleImageSuccess (res, file) {
-      this.blogForm.topImage = URL.createObjectURL(file.raw)
+      // 上传成功
+      if (res.code === 200) {
+        this.$rootMessage({
+          showClose: true,
+          message: res.message,
+          type: 'success'
+        })
+        // 给图片控件赋值
+        this.temporaryImage = URL.createObjectURL(file.raw)
+        // 将返回的图片路径保存到图片对象中
+        this.blogForm.topImage = res.data
+      } else {
+        // 上传失败
+        this.$rootMessage({
+          showClose: true,
+          message: res.message,
+          type: 'error'
+        })
+      }
     },
     refreshBlog () {
       this.blogForm = JSON.parse(JSON.stringify(this.oldBlog))
