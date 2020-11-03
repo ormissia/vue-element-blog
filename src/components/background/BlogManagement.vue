@@ -169,7 +169,6 @@ export default {
     // 调用博客修改的接口，修改isDeleted字段的值
     async deleteBlogByBlogId (blogId) {
       const { data: res } = await this.$http.delete('private/deleteBlogByBlogId/' + blogId)
-      console.log(res)
       if (res.code === 200) {
         this.$rootMessage({
           type: 'success',

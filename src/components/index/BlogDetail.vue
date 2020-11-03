@@ -105,7 +105,6 @@ export default {
 
         // 刷新编辑器内容
         this.setMarkdown()
-        console.log(this.blogForm)
       }
     }
   },

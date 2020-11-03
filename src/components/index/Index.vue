@@ -112,7 +112,6 @@ export default {
         if (!valid) return false
         // 发送请求之前需要对密码加密
         const { data: res } = await this.$http.post('public/login', this.$qs.parse(this.loginForm))
-        // console.log(res)
         if (res.code === 405) {
           // 用户不存在登录失败提示
           return this.$rootMessage({
