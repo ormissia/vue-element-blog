@@ -35,9 +35,9 @@
                     {{ i.createDate }}
                   </div>
                   <!--类型,判断是否为空，不为空时显示-->
-                  <div v-if="i.type != null" style="float: right">
+                  <el-tag v-if="i.type != null">
                     {{ i.type.typeName }}
-                  </div>
+                  </el-tag>
                 </div>
               </el-col>
               <!--右侧文章首图的布局-->
@@ -184,7 +184,18 @@ export default {
           }
 
           .div-description {
-            height: 100px;
+            height: 80px;
+          }
+
+          .div-bottom {
+            // 垂直居中
+            display: flex;
+            align-items: center;
+
+            .el-tag {
+              // flex内元素居右显示
+              margin-left: auto;
+            }
           }
         }
 

@@ -5,17 +5,19 @@
     <el-image alt="博客首图" class="image-top" fit="cover"
               :src="this.blogForm.topImage"></el-image>
     <h1>{{ this.blogForm.blogTitle }}</h1>
-    <!--类型-->
+    <!--分割线-类型-->
     <el-divider>{{ this.blogForm.blogType }}</el-divider>
+    <!--标签-->
     <el-tag v-for="i in blogForm.blogTags" :key="i.tagId">{{ i }}</el-tag>
-    <!--创建日期-->
+    <!--分割线-创建日期-->
     <el-divider>{{ this.blogForm.createDate }}</el-divider>
     <div>
       <viewer ref="toastUiEditor"
               :options="viewerOptions"
               class="viewer"/>
-      <el-divider>就这么多了，要不看点别的？</el-divider>
     </div>
+    <!--分割线-->
+    <el-divider>就这么多了，要不看点别的？</el-divider>
   </el-card>
 </template>
 

@@ -8,7 +8,8 @@
     </el-col>
     <!--右侧推荐区域-->
     <el-col :span="8">
-      <recommend-blog-list></recommend-blog-list>
+      <recommend-card></recommend-card>
+      <tag-card class="card-right"></tag-card>
     </el-col>
   </el-row>
 </template>
@@ -16,13 +17,15 @@
 <script>
 // 将文章列表以组件的方式引入
 import blogList from './BlogList'
-import recommendBlogList from './RecommendList'
+import recommendCard from './RecommendCard'
+import TagCard from '@/components/index/TagCard'
 
 export default {
   name: 'Blog',
   components: {
     'blog-list': blogList,
-    'recommend-blog-list': recommendBlogList
+    'recommend-card': recommendCard,
+    'tag-card': TagCard
   },
   data () {
     return {}
@@ -38,6 +41,10 @@ export default {
 
   .col-left {
     height: 100%;
+  }
+
+  .card-right{
+    margin-top: 20px;
   }
 }
 </style>

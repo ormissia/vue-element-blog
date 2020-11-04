@@ -2,10 +2,12 @@
 <template>
   <el-card shadow="always"
            :body-style="{ padding: '0 20px 20px 20px' }"
+           style="padding: 20px 20px 0 20px"
            class="card-list">
-    <div slot="header">
-      <h3 class="list-title">推荐文章</h3>
-    </div>
+    <!--分割线-->
+    <el-divider>
+      <h3 class="list-title">最新推荐</h3>
+    </el-divider>
     <ul class="list">
       <li v-for="i in blogList" :key="i.blogId">
         <el-card shadow="hover"
