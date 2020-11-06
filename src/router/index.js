@@ -7,7 +7,7 @@ import BlogCover from '@/components/BlogCover.vue'
 // 前台页面
 import Index from '@/components/index/Index.vue'
 import Article from '@/components/index/Blog.vue'
-import Type from '@/components/index/Type.vue'
+import Tag from '@/components/index/Tag.vue'
 import TimeLine from '@/components/index/TimeLine.vue'
 // 文章内容页面,也作为前台页面的一个子路由
 import ArticleDetail from '@/components/index/BlogDetail.vue'
@@ -37,8 +37,8 @@ const routes = [
         component: Article
       },
       {
-        path: '/type',
-        component: Type
+        path: '/tag/:tagId',
+        component: Tag
       },
       {
         path: '/timeline',

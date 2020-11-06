@@ -8,13 +8,13 @@
       <h3 class="list-title">标签</h3>
     </el-divider>
     <!--遍历查询到的tagList-->
-    <div v-for="i in tagList" :key="i.tagName">
-      <div style="float: left;margin: 3px 5px; cursor: pointer;">
+    <div v-for="i in tagList" :key="i.tagName" @click="filterTags(i.tagId)">
+      <el-button>
         <!--标签名字-->
         <el-tag>{{ i.tagName }}</el-tag>
         <!--标签包含博客数量-->
         <el-tag type="success">{{ i.totalBlogNum }}</el-tag>
-      </div>
+      </el-button>
     </div>
   </el-card>
 </template>
@@ -29,6 +29,10 @@ export default {
     }
   },
   methods: {
+    // 跳转到标签筛选界面
+    filterTags (tagId) {
+      this.$router.push('/tag/' + tagId)
+    },
     // 按照页面分页获取博客列表
     async selectTagByPage () {
       const { data: res } = await this.$http.get('public/selectTagCountBlog')
@@ -41,8 +45,21 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .list-title {
   margin: 0;
+}
+
+// 按钮样式
+.el-button {
+  float: left;
+  cursor: pointer;
+  padding: 0;
+  margin: 3px 5px;
+
+  // 标签圆角置为0
+  .el-tag {
+    border-radius: 0
+  }
 }
 </style>

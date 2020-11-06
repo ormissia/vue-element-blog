@@ -22,7 +22,7 @@
               @select="handleSelect">
             <el-menu-item index="/">首页</el-menu-item>
             <el-menu-item index="/article">文章</el-menu-item>
-            <el-menu-item index="/type">分类</el-menu-item>
+            <el-menu-item index="/tag/-1">分类</el-menu-item>
             <el-menu-item index="/timeline">历程</el-menu-item>
           </el-menu>
         </el-col>

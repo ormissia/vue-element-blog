@@ -72,6 +72,8 @@ export default {
         pageNum: 1,
         // 当前每页显示多少条数据
         pageSize: 10,
+        // 标签筛选的数组
+        tagIds: this.transferTagIds,
         // 向后端发送请求携带的参数，查询发布状态的博客，true;查询未删除的博客，false
         isPublished: true,
         isDeleted: false
@@ -86,6 +88,11 @@ export default {
       // 必须使首次加载的pageSize是该值的整数倍
       loadPageSize: 2
     }
+  },
+  // 父组件传过来的值，主要用于标签页面根据标签筛选博客
+  props: {
+    // 传输的tagId数组
+    transferTagIds: Array
   },
   computed: {
     // 判断是否还有没加载出来的博客
@@ -120,8 +127,9 @@ export default {
     searchBlog () {
       // 新建变量保存queryStr
       const queryStrCache = this.queryInfo.queryStr
+      // this.$options.data()   将变量重置为初始值
       this.queryInfo = this.$options.data().queryInfo
-      // 将表单重置中的查询参数pageSize，pageNum重置为为默认后将querStr的值放回去
+      // 将表单重置中的查询参数pageSize，pageNum重置为为默认后将queryStr的值放回去
       this.queryInfo.queryStr = queryStrCache
       // 发起查询请求
       this.selectBlogByPage()
