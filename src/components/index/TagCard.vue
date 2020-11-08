@@ -11,7 +11,7 @@
     <div v-for="i in tagList" :key="i.tagName" @click="filterTags(i.tagId)">
       <el-button>
         <!--标签名字-->
-        <el-tag>{{ i.tagName }}</el-tag>
+        <el-tag :type="tagIsSelect(i.tagId)">{{ i.tagName }}</el-tag>
         <!--标签包含博客数量-->
         <el-tag type="success">{{ i.totalBlogNum }}</el-tag>
       </el-button>
@@ -25,12 +25,27 @@ export default {
   data () {
     return {
       // 标签列表
-      tagList: []
+      tagList: [],
+      // 选中的tag
+      selectTagId: this.transferTagIds
     }
   },
+  // 父组件传过来的值，主要用于标签页面根据标签筛选博客
+  props: {
+    // 传输的tagId数组
+    transferTagIds: Number
+  },
   methods: {
+    tagIsSelect (tagId) {
+      if (tagId === this.selectTagId) {
+        return 'warning'
+      }
+      return ''
+    },
     // 跳转到标签筛选界面
     filterTags (tagId) {
+      this.selectTagId = tagId
+      this.$emit('getData', this.selectTagId)
       this.$router.push('/tag/' + tagId)
     },
     // 按照页面分页获取博客列表

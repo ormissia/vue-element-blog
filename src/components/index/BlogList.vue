@@ -74,6 +74,7 @@ export default {
         pageSize: 10,
         // 标签筛选的数组
         tagIds: this.transferTagIds,
+        // tagIds: [25, 28],
         // 向后端发送请求携带的参数，查询发布状态的博客，true;查询未删除的博客，false
         isPublished: true,
         isDeleted: false
@@ -89,10 +90,18 @@ export default {
       loadPageSize: 2
     }
   },
+  // 监听父组件传过来的值的变化
+  watch: {
+    // 如果选中的tagId发生变化，则重新发起获取博客列表的HTTP请求
+    transferTagIds (val, oldVal) {
+      this.selectBlogByPage()
+      console.log('inputVal = ' + val + ' , oldValue = ' + oldVal)
+    }
+  },
   // 父组件传过来的值，主要用于标签页面根据标签筛选博客
   props: {
     // 传输的tagId数组
-    transferTagIds: Array
+    transferTagIds: Number
   },
   computed: {
     // 判断是否还有没加载出来的博客
