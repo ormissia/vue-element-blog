@@ -180,7 +180,7 @@ export default {
     // 按照页面分页获取博客列表
     async selectTypeByPage () {
       const { data: res } = await this.$http.post('private/selectTypeByPage', this.$qs.parse(this.queryInfo))
-      this.typeList = res.data.typeList
+      this.typeList = res.data.dataList
       // 给分页控件的总条数赋值
       this.total = res.data.total
     }
