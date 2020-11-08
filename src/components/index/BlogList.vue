@@ -95,7 +95,6 @@ export default {
     // 如果选中的tagId发生变化，则重新发起获取博客列表的HTTP请求
     transferTagIds (val, oldVal) {
       this.selectBlogByPage()
-      console.log('inputVal = ' + val + ' , oldValue = ' + oldVal)
     }
   },
   // 父组件传过来的值，主要用于标签页面根据标签筛选博客
@@ -147,15 +146,15 @@ export default {
     // 首次打开页面时调用
     async selectBlogByPage () {
       const { data: res } = await this.$http.post('public/selectBlogByPage', this.$qs.parse(this.queryInfo))
-      this.blogList = res.data.blogList
+      this.blogList = res.data.dataList
       this.total = res.data.total
     },
     // 连续加载时调用
     async loadMoreBlogByPage () {
       const { data: res } = await this.$http.post('public/selectBlogByPage', this.$qs.parse(this.queryInfo))
       // 当返回值中blogList长度不为0时，添加到this.blogList后面
-      if (res.data.blogList.length !== 0) {
-        this.blogList = this.blogList.concat(res.data.blogList)
+      if (res.data.dataList.length !== 0) {
+        this.blogList = this.blogList.concat(res.data.dataList)
       }
 
       // 获取返回值之后将状态改为不繁忙忙碌
