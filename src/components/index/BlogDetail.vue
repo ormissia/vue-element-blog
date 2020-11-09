@@ -3,7 +3,7 @@
   <el-card shadow="always" class="blog-card">
     <!--博客首图-->
     <el-image alt="博客首图" class="image-top" fit="cover"
-              :src="this.blogForm.topImage"></el-image>
+              :src="'http://localhost:8085'+this.blogForm.topImage"></el-image>
     <h1>{{ this.blogForm.blogTitle }}</h1>
     <!--分割线-类型-->
     <el-divider>{{ this.blogForm.blogType }}</el-divider>
@@ -51,7 +51,7 @@ export default {
         // 最后修改时间
         lastEditDate: '',
         // 博客首图
-        topImage: 'https://imageserver.eveonline.com/Character/2113630487_1024.jpg',
+        topImage: '',
         // 页面上的markdown内容
         blogContent: '',
         // 博客简介
@@ -89,6 +89,7 @@ export default {
         this.blogForm.blogId = res.data.blogId
         this.blogForm.createDate = res.data.createDate
         this.blogForm.lastEditDate = res.data.lastEditDate
+        this.blogForm.topImage = res.data.topImage
         this.blogForm.blogTitle = res.data.blogTitle
         this.blogForm.blogContent = res.data.blogContent
         this.blogForm.description = res.data.description

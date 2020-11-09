@@ -43,7 +43,7 @@
               <!--右侧文章首图的布局-->
               <el-col class="col-right" :span="8">
                 <el-image alt="博客首图" class="right-img" fit="cover"
-                          src="https://imageserver.eveonline.com/Character/2113630487_1024.jpg"></el-image>
+                          :src="'http://localhost:8085'+i.topImage"></el-image>
               </el-col>
             </el-row>
           </el-card>
