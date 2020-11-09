@@ -43,7 +43,7 @@
               <!--右侧文章首图的布局-->
               <el-col class="col-right" :span="8">
                 <el-image alt="博客首图" class="right-img" fit="cover"
-                          :src="'http://localhost:8085'+i.topImage"></el-image>
+                          :src="imgUrl + i.topImage"></el-image>
               </el-col>
             </el-row>
           </el-card>
@@ -60,10 +60,15 @@
 </template>
 
 <script>
+// 导入全局变量
+import { pathway } from '@/assets/js/global'
+
 export default {
   name: 'BlogList',
   data () {
     return {
+      // 从全局变量获取配置的imageUrl
+      imgUrl: pathway.imgUrl,
       // 用于获取博客列表的参数对象
       queryInfo: {
         // 搜索框的内容

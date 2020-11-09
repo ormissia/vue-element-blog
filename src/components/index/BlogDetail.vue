@@ -3,7 +3,7 @@
   <el-card shadow="always" class="blog-card">
     <!--博客首图-->
     <el-image alt="博客首图" class="image-top" fit="cover"
-              :src="'http://localhost:8085'+this.blogForm.topImage"></el-image>
+              :src="imgUrl + this.blogForm.topImage"></el-image>
     <h1>{{ this.blogForm.blogTitle }}</h1>
     <!--分割线-类型-->
     <el-divider>{{ this.blogForm.blogType }}</el-divider>
@@ -32,6 +32,8 @@ import codeSyntaxHightlight from '@toast-ui/editor-plugin-code-syntax-highlight'
 // 代码高亮
 import hljs from 'highlight.js'
 
+import { pathway } from '@/assets/js/global'
+
 export default {
   name: 'ArticleDetail',
   components: {
@@ -40,6 +42,8 @@ export default {
   },
   data () {
     return {
+      // 从全局变量获取配置的imageUrl
+      imgUrl: pathway.imgUrl,
       // 博客保存表单的绑定对象
       blogForm: {
         // 博客Id
