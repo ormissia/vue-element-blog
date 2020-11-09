@@ -314,12 +314,12 @@ export default {
     // 按照页面分页获取博客列表
     async selectTypeByPage () {
       const { data: res } = await this.$http.post('private/selectTypeByPage', this.$qs.parse(this.queryInfo))
-      this.typeList = res.data.typeList
+      this.typeList = res.data.dataList
     },
     // 按照页面分页获取博客列表
     async selectTagByPage () {
       const { data: res } = await this.$http.post('private/selectTagByPage', this.$qs.parse(this.queryInfo))
-      this.tagList = res.data.tagList
+      this.tagList = res.data.dataList
     }
   },
   created () {
