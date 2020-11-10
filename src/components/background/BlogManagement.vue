@@ -35,8 +35,14 @@
       <el-table-column prop="blogTitle" label="标题"></el-table-column>
       <el-table-column prop="createDate" label="创建时间"></el-table-column>
       <el-table-column prop="lastEditDate" label="修改时间"></el-table-column>
-      <el-table-column prop="type.typeName" label="类型"></el-table-column>
-      <el-table-column prop="tags" label="标签"></el-table-column>
+      <el-table-column prop="type.typeName" label="类型">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.type != null">
+            {{ scope.row.type.typeName }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="访问数量"></el-table-column>
       <el-table-column label="状态">
         <!--通过作用域插槽将boolean值变成控件的开关状态-->
         <template slot-scope="scope">
@@ -77,13 +83,13 @@
     </el-table>
     <!--分页区域-->
     <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="queryInfo.pageNum"
-        :page-size="queryInfo.pageSize"
-        :page-sizes="[3, 5, 10, 20]"
-        :total="total"
-        layout="total, sizes, prev, pager, next, jumper">
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="queryInfo.pageNum"
+      :page-size="queryInfo.pageSize"
+      :page-sizes="[3, 5, 10, 20]"
+      :total="total"
+      layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
   </el-card>
 </template>
