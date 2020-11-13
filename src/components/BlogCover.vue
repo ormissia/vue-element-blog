@@ -1,11 +1,9 @@
 <!--博客封面-->
 <template>
   <div class="blog-cover">
-    <btn-with-num tag-name="按钮"
-                  number="3">
-    </btn-with-num>
     <!--按钮主体区域-->
-    <div class="cover-content">
+    <!--第一行-->
+    <div class="cover-content-one">
       <!--链接-->
       <div class="button-float-container">
         <router-link to="/index" class="button-float button-one">
@@ -15,12 +13,11 @@
         </router-link>
       </div>
       <div class="button-float-container">
-        <div class="button-float button-two">
-          <btn-with-num tag-name="按钮"
-                        number="3"
-                        @btnClick="loadHeadPortrait">
-          </btn-with-num>
-        </div>
+        <a href="http://ormissia.com:13881" target="_blank" class="button-float button-two">
+          <svg class="icon icon-jenkins" aria-hidden="true">
+            <use xlink:href="#iconjenkins"></use>
+          </svg>
+        </a>
       </div>
       <div class="button-float-container">
         <a href="https://github.com/Ormissia" target="_blank" class="button-float button-three">
@@ -37,6 +34,8 @@
         </a>
       </div>
     </div>
+    <!--第二行-->
+    <div class="cover-content-two"></div>
   </div>
 </template>
 
@@ -63,8 +62,9 @@ export default {
   height: 100%;
   background-color: #fff7f3;
 
-  .cover-content {
-    padding-top: 500px;
+  // 第一行
+  .cover-content-one {
+    padding-top: 15%;
     display: flex;
 
     .button-float-container {
@@ -97,8 +97,12 @@ export default {
       }
 
       .button-two {
-        background-color: #24292e;
+        background-color: #f0d6b7;
         animation: horizontal 1.1s linear 0s infinite alternate, vertical 1s linear 0s infinite alternate;
+
+        .icon-jenkins {
+          fill: #d33833;
+        }
       }
 
       .button-three {
@@ -119,30 +123,11 @@ export default {
         }
       }
     }
+  }
 
-    //.head-portrait {
-    //  width: 25%;
-    //  height: 150px;
-    //  border-radius: 50%;
-    //  //边缘2px
-    //  border: 2px solid pink;
-    //  transition: all 0.5s;
-    //
-    //  &:hover {
-    //    transform: scale(1.1);
-    //  }
-    //}
-
-    //.test {
-    //  position: absolute;
-    //  // alternate：动画先正常运行再反方向运行，并持续交替运行
-    //  animation: horizontal 6s linear 0s infinite alternate, vertical 8s linear 0s infinite alternate;
-    //
-    //  // 鼠标移入暂停动画
-    //  &:hover {
-    //    animation-play-state: paused;
-    //  }
-    //}
+  //第二行
+  .cover-content-two {
+    display: flex;
   }
 
 }
