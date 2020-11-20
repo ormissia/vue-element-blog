@@ -188,24 +188,6 @@ export default {
           fill: #3682bb !important;
         }
       }
-
-      .button-three {
-        background-color: #24292e;
-        animation: horizontal 1.05s linear 0s infinite alternate, vertical 1.15s linear 0s infinite alternate;
-
-        .icon-github {
-          fill: #ffffff;
-        }
-      }
-
-      .button-four {
-        background-color: #408ecc;
-        animation: horizontal 1.15s linear 0s infinite alternate, vertical 1.05s linear 0s infinite alternate;
-
-        .icon-esxi {
-          fill: #ffffff;
-        }
-      }
     }
 
     .button-float-container-center {
