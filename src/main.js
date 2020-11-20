@@ -16,14 +16,21 @@ import qs from 'qs'
 // InfiniteScroll无限滚动
 import infiniteScroll from 'vue-infinite-scroll'
 
+// 引入MD5
+import md5 from 'js-md5'
+
+// Session id一致
+axios.defaults.withCredentials = true
 // 配置请求根路径
-axios.defaults.baseURL = 'http://127.0.0.1:8085/api/'
+axios.defaults.baseURL = 'http://ormissia.com:13880/api/'
 // 远程后台地址
 // axios.defaults.baseURL = ''
 // 挂在到Vue实例，后面可通过this调用
 Vue.prototype.$http = axios
-// 挂在qs
+// 挂载qs
 Vue.prototype.$qs = qs
+// 挂载MD5
+Vue.prototype.$md5 = md5
 
 // 添加InfiniteScroll无限滚动
 Vue.use(infiniteScroll)

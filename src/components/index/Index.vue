@@ -13,13 +13,13 @@
         <el-col :span="12">
           <!--头部菜单-->
           <el-menu
-              mode="horizontal"
-              text-color="#fff"
-              active-text-color="#ffd04b"
-              background-color="#545c64"
-              :router="true"
-              :default-active="$route.path"
-              @select="handleSelect">
+            mode="horizontal"
+            text-color="#fff"
+            active-text-color="#ffd04b"
+            background-color="#545c64"
+            :router="true"
+            :default-active="$route.path"
+            @select="handleSelect">
             <el-menu-item index="/">首页</el-menu-item>
             <el-menu-item index="/article">文章</el-menu-item>
             <el-menu-item index="/tag/-1">分类</el-menu-item>
@@ -43,7 +43,7 @@
           </el-form-item>
           <!--密码-->
           <el-form-item prop="password">
-            <el-input placeholder="请输入密码" v-model="loginForm.password"
+            <el-input placeholder="请输入密码" v-model="passwordStr"
                       prefix-icon="el-icon-info" type="password"></el-input>
           </el-form-item>
           <!--按钮-->
@@ -71,10 +71,12 @@ export default {
     return {
       // 登录Dialog打开关闭的标记
       dialogVisible: false,
+      // 密码输入框，明文
+      passwordStr: '',
       // 这是登录表单的绑定对象
       loginForm: {
-        username: '1',
-        password: '1'
+        username: '',
+        password: this.$md5(this.passwordStr)
       },
       // 这是表单验证规则对象
       loginFormRules: {
