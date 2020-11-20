@@ -43,7 +43,7 @@
           </el-form-item>
           <!--密码-->
           <el-form-item prop="password">
-            <el-input placeholder="请输入密码" v-model="passwordStr"
+            <el-input placeholder="请输入密码" v-model="loginForm.password"
                       prefix-icon="el-icon-info" type="password"></el-input>
           </el-form-item>
           <!--按钮-->
@@ -71,12 +71,10 @@ export default {
     return {
       // 登录Dialog打开关闭的标记
       dialogVisible: false,
-      // 密码输入框，明文
-      passwordStr: '',
       // 这是登录表单的绑定对象
       loginForm: {
         username: '',
-        password: this.$md5(this.passwordStr)
+        password: ''
       },
       // 这是表单验证规则对象
       loginFormRules: {
@@ -113,6 +111,7 @@ export default {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return false
         // 发送请求之前需要对密码加密
+        this.loginForm.password = this.$md5(this.loginForm.password)
         const { data: res } = await this.$http.post('public/login', this.$qs.parse(this.loginForm))
         if (res.code === 405) {
           // 用户不存在登录失败提示
