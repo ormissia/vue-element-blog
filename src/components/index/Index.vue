@@ -73,8 +73,8 @@ export default {
       dialogVisible: false,
       // 这是登录表单的绑定对象
       loginForm: {
-        username: '1',
-        password: '1'
+        username: '',
+        password: ''
       },
       // 这是表单验证规则对象
       loginFormRules: {
@@ -111,6 +111,7 @@ export default {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return false
         // 发送请求之前需要对密码加密
+        this.loginForm.password = this.$md5(this.loginForm.password)
         const { data: res } = await this.$http.post('public/login', this.$qs.parse(this.loginForm))
         if (res.code === 405) {
           // 用户不存在登录失败提示
