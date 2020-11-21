@@ -111,8 +111,10 @@ export default {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return false
         // 发送请求之前需要对密码加密
-        this.loginForm.password = this.$md5(this.loginForm.password)
-        const { data: res } = await this.$http.post('public/login', this.$qs.parse(this.loginForm))
+        const { data: res } = await this.$http.post('public/login', this.$qs.parse({
+          username: this.loginForm.username,
+          password: this.$md5(this.loginForm.password)
+        }))
         if (res.code === 405) {
           // 用户不存在登录失败提示
           return this.$rootMessage({
