@@ -1,62 +1,50 @@
 <!--博客封面-->
 <template>
   <div class="blog-cover">
-    <!--按钮主体区域-->
-    <!--第一行-->
-    <div class="cover-content-one">
-      <!--链接-->
-      <div class="button-float-container">
-        <a href="https://github.com/Ormissia" target="_blank" class="button-float button-one">
-          <svg class="icon icon-github" aria-hidden="true">
-            <use xlink:href="#icongithub"></use>
-          </svg>
-        </a>
-      </div>
-      <div class="button-float-container">
-        <a href="https://ormissia.com:13101" target="_blank" class="button-float button-two">
-          <svg class="icon icon-esxi" aria-hidden="true">
-            <use xlink:href="#iconesxi"></use>
-          </svg>
-        </a>
-      </div>
-      <div class="button-float-container">
-        <a href="http://ormissia.com:13881" target="_blank" class="button-float button-three">
-          <svg class="icon icon-jenkins" aria-hidden="true">
-            <use xlink:href="#iconjenkins"></use>
-          </svg>
-        </a>
-      </div>
-      <div class="button-float-container">
-        <a href="http://ormissia.com:13880/share/" target="_blank" class="button-float button-four">
-          <svg class="icon icon-webdav" aria-hidden="true">
-            <use xlink:href="#iconwebdav"></use>
-          </svg>
-        </a>
-      </div>
-    </div>
-    <!--第二行-->
-    <div class="cover-content-two">
-      <div class="button-float-container">
-        <a href="https://github.com/Ormissia" target="_blank" class="button-float button-one">
-          <svg class="icon icon-emby" aria-hidden="true">
-            <use xlink:href="#iconemby"></use>
-          </svg>
-        </a>
-      </div>
-      <div class="button-float-container-center">
-        <router-link to="/index" class="button-float button-one">
-          <svg class="icon-blog" aria-hidden="true">
-            <use xlink:href="#iconblog"></use>
-          </svg>
-        </router-link>
-      </div>
-      <div class="button-float-container">
-        <a href="https://github.com/Ormissia" target="_blank" class="button-float button-two">
-          <svg class="icon icon-qbittorrent" aria-hidden="true">
-            <use xlink:href="#iconqbittorrent"></use>
-          </svg>
-        </a>
-      </div>
+    <!--头像-->
+    <img src="../assets/image/EVE.png" class="head-portrait"/>
+    <!--标题-->
+    <h1 class="title">Hi, I'm Ormissia.</h1>
+    <!--分割线-->
+    <el-divider class="line"></el-divider>
+    <!--链接按钮区域-->
+    <div>
+      <!--博客页面-->
+      <router-link to="/index" class="button-float button-one">
+        <svg class="icon icon-size-first" aria-hidden="true">
+          <use xlink:href="#iconblog"></use>
+        </svg>
+      </router-link>
+      <!--GitHub-->
+      <a href="https://github.com/Ormissia" target="_blank">
+        <svg class="icon icon-size" aria-hidden="true">
+          <use xlink:href="#icongithub"></use>
+        </svg>
+      </a>
+      <!--ESXI-->
+      <a href="https://ormissia.com:13101" target="_blank">
+        <svg class="icon icon-size" aria-hidden="true">
+          <use xlink:href="#iconesxi"></use>
+        </svg>
+      </a>
+      <!--Jenkins-->
+      <a href="http://ormissia.com:13881" target="_blank">
+        <svg class="icon icon-size" aria-hidden="true">
+          <use xlink:href="#iconjenkins"></use>
+        </svg>
+      </a>
+      <!--我的文件-->
+      <a href="http://ormissia.com:13880/share" target="_blank">
+        <svg class="icon icon-size" aria-hidden="true">
+          <use xlink:href="#iconwebdav"></use>
+        </svg>
+      </a>
+      <!--emby-->
+      <a href="https://github.com/Ormissia" target="_blank">
+        <svg class="icon icon-size" aria-hidden="true">
+          <use xlink:href="#iconemby"></use>
+        </svg>
+      </a>
     </div>
   </div>
 </template>
@@ -64,182 +52,57 @@
 <script>
 export default {
   name: 'BlogCover',
-  methods: {
-    loadHeadPortrait () {
-      console.log('加载头像')
-    }
-  },
-  // 在模板渲染成html前调用，即通常初始化某些属性值，然后再渲染成视图。
-  created () {
-    this.loadHeadPortrait()
-  },
-  // 在模板渲染成html后调用，通常是初始化页面完成后，再对html的dom节点进行一些需要的操作。
-  mounted () {
+  data () {
+    return {}
   }
 }
 </script>
 
 <style lang="less" scoped>
 .blog-cover {
+  // 高度和宽度填满整个页面
+  width: 100%;
   height: 100%;
-  background-color: #fff7f3;
+  // 内边距
+  padding: 150px 100px;
+  //宽高100%加入padding会出现滚动条，此样式会消除滚动条
+  box-sizing: border-box;
+  background-image: linear-gradient(155deg, rgb(209, 130, 130) 1%, rgb(88, 119, 168) 70%);
 
-  // 第一行
-  .cover-content-one {
-    //padding-top: 15%;
-    display: flex;
-
-    .button-float-container {
-      width: 25%;
-      height: 300px;
-      position: relative;
-      border: 1px solid #ba9f93;
-
-      .button-float {
-        width: 95%;
-        height: 95%;
-        position: absolute;
-        border-radius: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &:hover {
-          animation-play-state: paused;
-        }
-      }
-
-      .button-one {
-        background-color: #24292e;
-        animation: horizontal 1s linear 0s infinite alternate, vertical 1.1s linear 0s infinite alternate;
-
-        .icon-github {
-          fill: #ffffff;
-        }
-      }
-
-      .button-two {
-        background-color: #408ecc;
-        animation: horizontal 1.1s linear 0s infinite alternate, vertical 1s linear 0s infinite alternate;
-
-        .icon-esxi {
-          fill: #ffd24f;
-        }
-      }
-
-      .button-three {
-        background-color: #f0d6b7;
-        animation: horizontal 1.05s linear 0s infinite alternate, vertical 1.15s linear 0s infinite alternate;
-
-        .icon-jenkins {
-          fill: #d33833;
-        }
-      }
-
-      .button-four {
-        background-color: #800b6f;
-        animation: horizontal 1.15s linear 0s infinite alternate, vertical 1.05s linear 0s infinite alternate;
-
-        .icon-webdav {
-          fill: #ef9de6;
-        }
-      }
-    }
+  // 头像的样式
+  .head-portrait {
+    border-radius: 50%;
+    width: 240px;
+    height: 240px;
   }
 
-  //第二行
-  .cover-content-two {
-    display: flex;
-
-    .button-float-container {
-      width: 25%;
-      height: 300px;
-      position: relative;
-      border: 1px solid #ba9f93;
-
-      .button-float {
-        width: 95%;
-        height: 95%;
-        position: absolute;
-        border-radius: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &:hover {
-          animation-play-state: paused;
-        }
-      }
-
-      .button-one {
-        background-color: #fcfefc;
-        animation: horizontal 1s linear 0s infinite alternate, vertical 1.1s linear 0s infinite alternate;
-
-        .icon-emby {
-          fill: #52b54b;
-        }
-      }
-
-      .button-two {
-        background-color: #fcfefc;
-        animation: horizontal 1.1s linear 0s infinite alternate, vertical 1s linear 0s infinite alternate;
-
-        .icon-qbittorrent {
-          fill: #3682bb !important;
-        }
-      }
-    }
-
-    .button-float-container-center {
-      width: 50%;
-      height: 600px;
-      position: relative;
-      border: 1px solid #ba9f93;
-
-      .button-float {
-        width: 95%;
-        height: 95%;
-        position: absolute;
-        border-radius: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &:hover {
-          animation-play-state: paused;
-        }
-      }
-
-      .button-one {
-        background-color: #b13460;
-        animation: horizontal 1s linear 0s infinite alternate, vertical 1.1s linear 0s infinite alternate;
-
-        .icon-blog {
-          width: 40%;
-          height: 40%;
-          fill: pink;
-        }
-      }
-    }
+  // 标题的样式
+  .title {
+    // 字体大小
+    font-size: 4em;
+    // 字体粗细
+    font-weight: lighter;
+    // 字体颜色
+    color: white;
   }
 
-}
+  // 分割线样式
+  .line {
+    width: 5%;
+  }
 
-@keyframes horizontal {
-  0% {
-    left: 0;
+  // 第一个图标
+  .icon-size-first {
+    width: 4em;
+    height: 4em;
+    fill: white;
   }
-  100% {
-    left: 5%;
-  }
-}
 
-@keyframes vertical {
-  0% {
-    top: 0;
-  }
-  100% {
-    top: 5%;
+  // 第二个及以后的图标
+  .icon-size {
+    width: 4em;
+    height: 2.4em;
+    fill: white;
   }
 }
 </style>
