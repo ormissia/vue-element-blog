@@ -19,12 +19,10 @@ import infiniteScroll from 'vue-infinite-scroll'
 // 引入MD5
 import md5 from 'js-md5'
 
-// Session id一致
-axios.defaults.withCredentials = true
 // 配置请求根路径
 axios.defaults.baseURL = 'http://ormissia.com:13880/api/'
-// 远程后台地址
-// axios.defaults.baseURL = ''
+// Session id一致
+// axios.defaults.withCredentials = true
 // 挂在到Vue实例，后面可通过this调用
 Vue.prototype.$http = axios
 // 挂载qs

@@ -34,7 +34,7 @@
         </svg>
       </a>
       <!--我的文件-->
-      <a href="http://ormissia.com:13880/share/" target="_blank">
+      <a href="http://ormissia.com:13880/share/">
         <svg class="icon icon-size" aria-hidden="true">
           <use xlink:href="#iconwebdav"></use>
         </svg>
