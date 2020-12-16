@@ -1,6 +1,6 @@
 <!--博客封面-->
 <template>
-  <div class="blog-cover">
+  <div class="article-cover">
     <!--头像-->
     <img src="../assets/image/EVE.png" class="head-portrait"/>
     <!--标题-->
@@ -51,7 +51,7 @@
 
 <script>
 export default {
-  name: 'BlogCover',
+  name: 'ArticleCover',
   data () {
     return {}
   }
@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.blog-cover {
+.article-cover {
   // 高度和宽度填满整个页面
   width: 100%;
   height: 100%;

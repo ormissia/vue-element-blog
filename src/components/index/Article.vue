@@ -4,7 +4,7 @@
     <!--左侧文章列表-->
     <el-col :span="16" class="col-left">
       <!--文章列表整体的Card，阴影总是显示-->
-      <blog-list></blog-list>
+      <article-list></article-list>
     </el-col>
     <!--右侧推荐区域-->
     <el-col :span="8">
@@ -16,14 +16,14 @@
 
 <script>
 // 将文章列表以组件的方式引入
-import blogList from './BlogList'
+import articleList from './ArticleList'
 import recommendCard from './RecommendCard'
 import TagCard from '@/components/index/TagCard'
 
 export default {
-  name: 'Blog',
+  name: 'Article',
   components: {
-    'blog-list': blogList,
+    'article-list': articleList,
     'recommend-card': recommendCard,
     'tag-card': TagCard
   },

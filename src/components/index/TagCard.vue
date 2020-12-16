@@ -13,7 +13,7 @@
         <!--标签名字-->
         <el-tag :type="tagIsSelect(i.tagId)">{{ i.tagName }}</el-tag>
         <!--标签包含博客数量-->
-        <el-tag type="success">{{ i.totalBlogNum }}</el-tag>
+        <el-tag type="success">{{ i.totalArticleNum }}</el-tag>
       </el-button>
     </div>
   </el-card>
@@ -50,7 +50,7 @@ export default {
     },
     // 按照页面分页获取博客列表
     async selectTagByPage () {
-      const { data: res } = await this.$http.get('public/selectTagCountBlog')
+      const { data: res } = await this.$http.get('tag/selectTagCountArticle')
       this.tagList = res.data
     }
   },

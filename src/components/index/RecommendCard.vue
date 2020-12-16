@@ -9,12 +9,12 @@
       <h3 class="list-title">最新推荐</h3>
     </el-divider>
     <ul class="list">
-      <li v-for="i in blogList" :key="i.blogId">
+      <li v-for="i in articleList" :key="i.articleId">
         <el-card shadow="hover"
-                 @click.native="openBlogDetail(i.blogId)"
-                 class="card-blog-title">
-          <h4 class="blog-title">
-            {{ i.blogTitle }}
+                 @click.native="openArticleDetail(i.articleId)"
+                 class="card-article-title">
+          <h4 class="article-title">
+            {{ i.articleTitle }}
           </h4>
         </el-card>
       </li>
@@ -42,21 +42,21 @@ export default {
         isRecommend: true
       },
       // 博客列表
-      blogList: []
+      articleList: []
     }
   },
   methods: {
-    openBlogDetail (index) {
-      this.$router.push('/blogDetail/' + index)
+    openArticleDetail (index) {
+      this.$router.push('/articleDetail/' + index)
     },
     // 按照页面分页获取推荐博客列表
-    async selectBlogByPage () {
-      const { data: res } = await this.$http.post('public/selectBlogByPage', this.$qs.parse(this.queryInfo))
-      this.blogList = res.data.blogList
+    async selectArticleByPage () {
+      const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
+      this.articleList = res.data.articleList
     }
   },
   created () {
-    this.selectBlogByPage()
+    this.selectArticleByPage()
   }
 }
 </script>
@@ -73,11 +73,11 @@ export default {
     list-style: none;
     padding-inline-start: 0;
 
-    .card-blog-title {
+    .card-article-title {
       // 鼠标指针样式
       cursor: pointer;
 
-      .blog-title {
+      .article-title {
         margin: 0;
       }
     }

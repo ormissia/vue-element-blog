@@ -6,19 +6,19 @@ import BlogCover from '@/components/BlogCover.vue'
 
 // 前台页面
 import Index from '@/components/index/Index.vue'
-import Article from '@/components/index/Blog.vue'
+import Article from '@/components/index/Article.vue'
 import Tag from '@/components/index/Tag.vue'
 import TimeLine from '@/components/index/TimeLine.vue'
 // 文章内容页面,也作为前台页面的一个子路由
-import ArticleDetail from '@/components/index/BlogDetail.vue'
+import ArticleDetail from '@/components/index/ArticleDetail.vue'
 
 // 后台管理页面
 import Home from '@/components/background/Home.vue'
-import BlogManagement from '@/components/background/BlogManagement'
+import ArticleManagement from '@/components/background/ArticleManagement'
 import TypeManagement from '@/components/background/TypeManagement'
 import TagManagement from '@/components/background/TagManagement'
 // 博客编写组件
-import BlogEditor from '@/components/background/BlogEditor'
+import ArticleEditor from '@/components/background/ArticleEditor'
 
 Vue.use(VueRouter)
 
@@ -45,8 +45,8 @@ const routes = [
         component: TimeLine
       },
       {
-        // path后面添加 :blogId 为动态路由匹配，使用blogId作为参数，跳转到对应博客的页面
-        path: '/blogDetail/:blogId',
+        // path后面添加 :articleId 为动态路由匹配，使用articleId作为参数，跳转到对应博客的页面
+        path: '/articleDetail/:articleId',
         component: ArticleDetail
       }
     ]
@@ -55,11 +55,11 @@ const routes = [
   {
     path: '/background/home',
     component: Home,
-    redirect: '/background/blogManagement',
+    redirect: '/background/articleManagement',
     children: [
       {
-        path: '/background/blogManagement',
-        component: BlogManagement
+        path: '/background/articleManagement',
+        component: ArticleManagement
       },
       {
         path: '/background/typeManagement',
@@ -70,8 +70,8 @@ const routes = [
         component: TagManagement
       },
       {
-        path: '/background/blogEditor/:blogId',
-        component: BlogEditor
+        path: '/background/articleEditor/:articleId',
+        component: ArticleEditor
       }
     ]
   }

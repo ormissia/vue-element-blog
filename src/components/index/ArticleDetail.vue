@@ -1,16 +1,16 @@
 <!--博客文章页面-->
 <template>
-  <el-card shadow="always" class="blog-card">
+  <el-card shadow="always" class="article-card">
     <!--博客首图-->
     <el-image alt="博客首图" class="image-top" fit="cover"
-              :src="imgUrl + this.blogForm.topImage"></el-image>
-    <h1>{{ this.blogForm.blogTitle }}</h1>
+              :src="imgUrl + this.articleForm.topImage"></el-image>
+    <h1>{{ this.articleForm.articleTitle }}</h1>
     <!--分割线-类型-->
-    <el-divider>{{ this.blogForm.blogType }}</el-divider>
+    <el-divider>{{ this.articleForm.articleType }}</el-divider>
     <!--标签-->
-    <el-tag v-for="i in blogForm.blogTags" :key="i.tagId">{{ i }}</el-tag>
+    <el-tag v-for="i in articleForm.articleTags" :key="i.tagId">{{ i }}</el-tag>
     <!--分割线-创建日期-->
-    <el-divider>{{ this.blogForm.createDate }}</el-divider>
+    <el-divider>{{ this.articleForm.createDate }}</el-divider>
     <div>
       <viewer ref="toastUiEditor"
               :options="viewerOptions"
@@ -45,11 +45,11 @@ export default {
       // 从全局变量获取配置的imageUrl
       imgUrl: pathway.imgUrl,
       // 博客保存表单的绑定对象
-      blogForm: {
+      articleForm: {
         // 博客Id
-        blogId: '',
+        articleId: '',
         // 标题
-        blogTitle: '',
+        articleTitle: '',
         // 创建时间
         createDate: '',
         // 最后修改时间
@@ -57,13 +57,13 @@ export default {
         // 博客首图
         topImage: '',
         // 页面上的markdown内容
-        blogContent: '',
+        articleContent: '',
         // 博客简介
         description: '',
         // 当前博客类型
-        blogType: '',
+        articleType: '',
         // 当前博客标签
-        blogTags: [],
+        articleTags: [],
         // 是否推荐
         isRecommend: false,
         // 是否发布
@@ -83,32 +83,32 @@ export default {
   methods: {
     // 设置编辑器的内容
     setMarkdown () {
-      this.$refs.toastUiEditor.invoke('setMarkdown', this.blogForm.blogContent, false)
+      this.$refs.toastUiEditor.invoke('setMarkdown', this.articleForm.articleContent, false)
     },
     // 通过博客Id查询博客信息
-    async selectBlogByBlogId (blogId) {
-      const { data: res } = await this.$http.post('public/selectBlogByBlogId', this.$qs.stringify({ blogId: blogId }))
-      // 判断返回结果状态值，如果成功获取博客信息，则将博客信息分别赋值给blogForm和oldBlog（用于页面恢复数据）
+    async selectArticleByArticleId (articleId) {
+      const { data: res } = await this.$http.post('article/selectArticleByArticleId', this.$qs.stringify({ articleId: articleId }))
+      // 判断返回结果状态值，如果成功获取博客信息，则将博客信息分别赋值给articleForm和oldArticle（用于页面恢复数据）
       if (res.code === 200) {
-        this.blogForm.blogId = res.data.blogId
-        this.blogForm.createDate = res.data.createDate
-        this.blogForm.lastEditDate = res.data.lastEditDate
-        this.blogForm.topImage = res.data.topImage
-        this.blogForm.blogTitle = res.data.blogTitle
-        this.blogForm.blogContent = res.data.blogContent
-        this.blogForm.description = res.data.description
-        this.blogForm.userId = res.data.user.userId
+        this.articleForm.articleId = res.data.articleId
+        this.articleForm.createDate = res.data.createDate
+        this.articleForm.lastEditDate = res.data.lastEditDate
+        this.articleForm.topImage = res.data.topImage
+        this.articleForm.articleTitle = res.data.articleTitle
+        this.articleForm.articleContent = res.data.articleContent
+        this.articleForm.description = res.data.description
+        this.articleForm.userId = res.data.user.userId
         // 判断type和tags是否为空，如果为空时不加判断会报错
         if (res.data.type !== null) {
-          this.blogForm.blogType = res.data.type.typeName
+          this.articleForm.articleType = res.data.type.typeName
         }
         if (res.data.tags.length >= 0) {
           for (let i = 0; i < res.data.tags.length; i++) {
-            this.blogForm.blogTags.push(res.data.tags[i].tagName)
+            this.articleForm.articleTags.push(res.data.tags[i].tagName)
           }
         }
-        this.blogForm.isRecommend = res.data.recommend
-        this.blogForm.isPublished = res.data.published
+        this.articleForm.isRecommend = res.data.recommend
+        this.articleForm.isPublished = res.data.published
 
         // 刷新编辑器内容
         this.setMarkdown()
@@ -117,15 +117,15 @@ export default {
   },
   created () {
     // 获取跳转参数博客Id
-    const blogId = this.$route.params.blogId
+    const articleId = this.$route.params.articleId
     // 通过博客Id获取博客信息，并赋值给双向绑定的数据对象中
-    this.selectBlogByBlogId(blogId)
+    this.selectArticleByArticleId(articleId)
   }
 }
 </script>
 
 <style lang="less" scoped>
-.blog-card {
+.article-card {
   // 博客首图
   .image-top {
     width: 100%;

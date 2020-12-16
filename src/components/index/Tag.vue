@@ -2,19 +2,19 @@
 <template>
   <div>
     <tag-card :transferTagIds="tagIds" @getData="getData" class="card-top"></tag-card>
-    <blog-list :transferTagIds="tagIds"></blog-list>
+    <article-list :transferTagIds="tagIds"></article-list>
   </div>
 </template>
 
 <script>
 // 导入博客列表组件
-import blogList from '@/components/index/BlogList'
+import articleList from '@/components/index/ArticleList'
 import TagCard from '@/components/index/TagCard'
 
 export default {
   name: 'Tag',
   components: {
-    'blog-list': blogList,
+    'article-list': articleList,
     'tag-card': TagCard
   },
   data () {

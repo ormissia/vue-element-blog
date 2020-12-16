@@ -111,7 +111,7 @@ export default {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return false
         // 发送请求之前需要对密码加密
-        const { data: res } = await this.$http.post('public/login', this.$qs.parse({
+        const { data: res } = await this.$http.post('user/login', this.$qs.parse({
           username: this.loginForm.username,
           password: this.$md5(this.loginForm.password)
         }))

@@ -20,9 +20,12 @@ import infiniteScroll from 'vue-infinite-scroll'
 import md5 from 'js-md5'
 
 // 配置请求根路径
-axios.defaults.baseURL = 'http://ormissia.com:13880/api/'
-// Session id一致
-// axios.defaults.withCredentials = true
+axios.defaults.baseURL = 'http://127.0.0.1:8085/api/'
+// 请求头添加token
+axios.interceptors.request.use(config => {
+  console.log(config)
+  return config
+})
 // 挂在到Vue实例，后面可通过this调用
 Vue.prototype.$http = axios
 // 挂载qs
