@@ -32,9 +32,9 @@
               :border="true"
               style="width: 100%">
       <el-table-column type="index"></el-table-column>
-      <el-table-column prop="articleTitle" label="标题"></el-table-column>
-      <el-table-column prop="createDate" label="创建时间"></el-table-column>
-      <el-table-column prop="lastEditDate" label="修改时间"></el-table-column>
+      <el-table-column prop="title" label="标题"></el-table-column>
+      <el-table-column prop="CreatedAt" label="创建时间"></el-table-column>
+      <el-table-column prop="UpdatedAt" label="修改时间"></el-table-column>
       <el-table-column prop="type.typeName" label="类型">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.type != null">
@@ -42,9 +42,9 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="访问数量"></el-table-column>
+      <el-table-column prop="visits" label="访问数量"></el-table-column>
       <el-table-column label="状态">
-        <!--通过作用域插槽将boolean值变成控件的开关状态-->
+        <!--通过作用域插槽将值变成控件的开关状态-->
         <template slot-scope="scope">
           <el-switch v-model="scope.row.published"
                      active-text="发布"
@@ -102,13 +102,15 @@ export default {
       // 用于获取博客列表的参数对象
       queryInfo: {
         // 搜索框的内容
-        queryStr: '',
+        title: '',
         // 当前页数
         pageNum: 1,
         // 当前每页显示多少条数据
         pageSize: 10,
-        // 向后端发送请求携带的参数，查询未删除的博客，false
-        isDeleted: false
+        // 向后端发送请求携带的参数，查询未删除的博客，0;查询推荐的博客-1（代表全部）;查询发布状态的博客-1（代表全部）;
+        isDeleted: 0,
+        isRecommend: -1,
+        isPublished: -1
       },
       // 一共多少条数据
       total: 0,
@@ -192,7 +194,7 @@ export default {
     // 按照页面分页获取博客列表
     async selectArticleByPage () {
       const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
-      this.articleList = res.data.dataList
+      this.articleList = res.data.articles
       // 给分页控件的总条数赋值
       this.total = res.data.total
     }

@@ -3,7 +3,7 @@
   <!--文章列表整体的Card，阴影总是显示-->
   <el-card shadow="always" class="card-list">
     <!--搜索框-->
-    <el-input placeholder="请输入内容" v-model="queryInfo.queryStr">
+    <el-input placeholder="请输入内容" v-model="queryInfo.title">
       <template slot="prepend">搜索</template>
       <el-button slot="append" icon="el-icon-search" @click="searchArticle"></el-button>
     </el-input>
@@ -21,7 +21,7 @@
                 <!--标题-->
                 <!--点击跳转到对应的博客页面-->
                 <div @click="openArticleDetail(i.articleId)">
-                  <h1 class="article-title">{{ i.articleTitle }}</h1>
+                  <h1 class="article-title">{{ i.title }}</h1>
                 </div>
                 <!--简介-->
                 <div class="div-description"
@@ -32,7 +32,7 @@
                 <div class="div-bottom">
                   <!--时间戳-->
                   <div style="float: left">
-                    {{ i.createDate }}
+                    {{ i.UpdatedAt }}
                   </div>
                   <!--类型,判断是否为空，不为空时显示-->
                   <el-tag v-if="i.type != null">
@@ -72,7 +72,7 @@ export default {
       // 用于获取博客列表的参数对象
       queryInfo: {
         // 搜索框的内容
-        queryStr: '',
+        title: '',
         // 当前页数
         pageNum: 1,
         // 当前每页显示多少条数据
@@ -80,9 +80,10 @@ export default {
         // 标签筛选的数组
         tagIds: this.transferTagIds,
         // tagIds: [25, 28],
-        // 向后端发送请求携带的参数，查询发布状态的博客，true;查询未删除的博客，false
-        isPublished: true,
-        isDeleted: false
+        // 向后端发送请求携带的参数，查询未删除的博客，0;查询推荐的博客-1（代表全部）;查询发布状态的博客1;
+        isDeleted: 0,
+        isRecommend: -1,
+        isPublished: 1
       },
       // 博客列表
       articleList: [],
@@ -138,12 +139,12 @@ export default {
     },
     // 搜索需要将页面加载参数重置为默认
     searchArticle () {
-      // 新建变量保存queryStr
-      const queryStrCache = this.queryInfo.queryStr
+      // 新建变量保存title
+      const titleCache = this.queryInfo.title
       // this.$options.data()   将变量重置为初始值
       this.queryInfo = this.$options.data().queryInfo
-      // 将表单重置中的查询参数pageSize，pageNum重置为为默认后将queryStr的值放回去
-      this.queryInfo.queryStr = queryStrCache
+      // 将表单重置中的查询参数pageSize，pageNum重置为为默认后将title的值放回去
+      this.queryInfo.title = titleCache
       // 发起查询请求
       this.selectArticleByPage()
     },
@@ -151,7 +152,7 @@ export default {
     // 首次打开页面时调用
     async selectArticleByPage () {
       const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
-      this.articleList = res.data.dataList
+      this.articleList = res.data.articles
       this.total = res.data.total
     },
     // 连续加载时调用
