@@ -46,7 +46,9 @@
       <el-table-column label="状态">
         <!--通过作用域插槽将值变成控件的开关状态-->
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.published"
+          <el-switch v-model="scope.row.isPublished"
+                     :active-value=1
+                     :inactive-value=0
                      active-text="发布"
                      inactive-text="草稿"
                      @change="saveArticle(scope.row.articleId,scope.row.published)">
@@ -64,7 +66,7 @@
             <el-button type="primary"
                        icon="el-icon-edit"
                        size="small"
-                       @click="openArticleEditor(scope.row.articleId)">
+                       @click="openArticleEditor(scope.row.ID)">
             </el-button>
           </el-tooltip>
           <!--删除按钮-->

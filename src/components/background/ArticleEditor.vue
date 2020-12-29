@@ -2,14 +2,14 @@
 <template>
   <el-card shadow="always" class="article-editor-container">
     <el-input placeholder="起个漂亮的名字吧"
-              v-model="articleForm.articleTitle"
+              v-model="articleForm.title"
               class="input-title">
       <template slot="prepend">标题</template>
     </el-input>
     <!--markdown编辑器-->
     <editor @blur="onEditorBlur"
             ref="toastUiEditor"
-            :initialValue='articleForm.articleContent'
+            :initialValue='articleForm.content'
             :options="viewerOptions"
             class="editor"/>
     <el-row :gutter="20">
@@ -52,7 +52,7 @@
                  placeholder="请选择文章类型">
         <el-option
           v-for="item in typeList"
-          :key="item.typeId"
+          :key="item.ID"
           :value="item.typeName">
         </el-option>
       </el-select>
@@ -76,6 +76,8 @@
       <!--是否推荐的开关选择器-->
       <el-switch
         v-model="articleForm.isRecommend"
+        :active-value=1
+        :inactive-value=0
         active-color="#13ce66"
         inactive-color="#9c9c9c"
         active-text="这玩意儿太顶了，我要推荐"
@@ -96,8 +98,8 @@
             状态：{{ articleForm.isPublished === true ? '发布' : '草稿' }}
           </el-tag>
           <!--发布和保存的按钮-->
-          <el-button type="primary" @click="saveAndPublish(true)">写完了，马上发布</el-button>
-          <el-button type="primary" @click="saveAndPublish(false)" :plain="true">没写完，保存草稿</el-button>
+          <el-button type="primary" @click="saveAndPublish(1)">写完了，马上发布</el-button>
+          <el-button type="primary" @click="saveAndPublish(0)" :plain="true">没写完，保存草稿</el-button>
         </div>
       </el-col>
     </el-row>
@@ -127,13 +129,13 @@ export default {
       // 博客保存表单的绑定对象
       articleForm: {
         // 博客Id
-        articleId: '',
+        ID: 0,
         // 首图
         topImage: '',
         // 标题
-        articleTitle: '',
+        title: '',
         // 页面上的markdown内容
-        articleContent: '',
+        content: '',
         // 博客简介
         description: '',
         // 当前博客类型
@@ -141,22 +143,22 @@ export default {
         // 当前博客标签
         articleTags: [],
         // 是否推荐
-        isRecommend: false,
+        isRecommend: 0,
         // 是否发布
-        isPublished: false,
+        isPublished: 0,
         // 用户Id
         userId: ''
       },
       // 编辑之前的article信息
       oldArticle: {
         // 博客Id
-        articleId: '',
+        ID: 0,
         // 首图
         topImage: '',
         // 标题
-        articleTitle: '',
+        title: '',
         // 页面上的markdown内容
-        articleContent: '',
+        content: '',
         // 博客简介
         description: '',
         // 当前博客类型
@@ -164,9 +166,9 @@ export default {
         // 当前博客标签
         articleTags: [],
         // 是否推荐
-        isRecommend: false,
+        isRecommend: 0,
         // 是否发布
-        isPublished: false,
+        isPublished: 0,
         // 用户Id
         userId: ''
       },
@@ -260,7 +262,7 @@ export default {
       if (res.code === 200) {
         this.$rootMessage({
           showClose: true,
-          message: res.message,
+          message: res.msg,
           type: 'success'
         })
         // 跳转到博客管理页面
@@ -269,27 +271,27 @@ export default {
         // 保存失败，输出错误提示
         this.$rootMessage({
           showClose: true,
-          message: res.message,
+          message: res.msg,
           type: 'error'
         })
       }
     },
     onEditorBlur () {
       // 当编辑器失去焦点时获取Editor的值
-      this.articleForm.articleContent = this.$refs.toastUiEditor.invoke('getMarkdown')
+      this.articleForm.content = this.$refs.toastUiEditor.invoke('getMarkdown')
     },
     // 设置编辑器的内容
     setMarkdown () {
-      this.$refs.toastUiEditor.invoke('setMarkdown', this.articleForm.articleContent, false)
+      this.$refs.toastUiEditor.invoke('setMarkdown', this.articleForm.content, false)
     },
     // 通过博客Id查询博客信息
     async selectArticleByArticleId (articleId) {
-      const { data: res } = await this.$http.post('public/selectArticleByArticleId', this.$qs.stringify({ articleId: articleId }))
+      const { data: res } = await this.$http.post('article/selectArticleById', this.$qs.stringify({ articleId: articleId }))
       // 判断返回结果状态值，如果成功获取博客信息，则将博客信息分别赋值给articleForm和oldArticle（用于页面恢复数据）
       if (res.code === 200) {
-        this.articleForm.articleId = res.data.articleId
-        this.articleForm.articleTitle = res.data.articleTitle
-        this.articleForm.articleContent = res.data.articleContent
+        this.articleForm.ID = res.data.ID
+        this.articleForm.title = res.data.title
+        this.articleForm.content = res.data.content
         this.articleForm.description = res.data.description
         this.articleForm.userId = res.data.user.userId
         // 判断type和tags是否为空，如果为空时不加判断会报错
@@ -301,8 +303,8 @@ export default {
             this.articleForm.articleTags.push(res.data.tags[i].tagName)
           }
         }
-        this.articleForm.isRecommend = res.data.recommend
-        this.articleForm.isPublished = res.data.published
+        this.articleForm.isRecommend = res.data.isRecommend
+        this.articleForm.isPublished = res.data.isPublished
 
         // 同时将原始值保存到oldArticle中
         this.oldArticle = JSON.parse(JSON.stringify(this.articleForm))
@@ -311,14 +313,14 @@ export default {
         this.setMarkdown()
       }
     },
-    // 按照页面分页获取博客列表
+    // 按照页面分页获取类型列表
     async selectTypeByPage () {
-      const { data: res } = await this.$http.post('private/selectTypeByPage', this.$qs.parse(this.queryInfo))
+      const { data: res } = await this.$http.post('type/selectTypeByPage', this.$qs.parse(this.queryInfo))
       this.typeList = res.data.dataList
     },
-    // 按照页面分页获取博客列表
+    // 按照页面分页获取标签列表
     async selectTagByPage () {
-      const { data: res } = await this.$http.post('private/selectTagByPage', this.$qs.parse(this.queryInfo))
+      const { data: res } = await this.$http.post('tag/selectTagByPage', this.$qs.parse(this.queryInfo))
       this.tagList = res.data.dataList
     }
   },

@@ -14,7 +14,7 @@
                  @click.native="openArticleDetail(i.articleId)"
                  class="card-article-title">
           <h4 class="article-title">
-            {{ i.articleTitle }}
+            {{ i.title }}
           </h4>
         </el-card>
       </li>
@@ -36,10 +36,10 @@ export default {
         // 当前每页显示多少条数据，推荐文章默认显示6条
         pageSize: 5,
         // 向后端发送请求携带的参数，查询发布状态的博客，true;查询未删除的博客，false
-        isPublished: true,
-        isDeleted: false,
+        isPublished: 1,
+        isDeleted: 0,
         // 查询推荐的文章
-        isRecommend: true
+        isRecommend: 1
       },
       // 博客列表
       articleList: []
@@ -52,7 +52,7 @@ export default {
     // 按照页面分页获取推荐博客列表
     async selectArticleByPage () {
       const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
-      this.articleList = res.data.articleList
+      this.articleList = res.data.articles
     }
   },
   created () {
