@@ -8,6 +8,7 @@ import '@/plugins/mycontrols'
 
 // 导入全局样式
 import './assets/css/global.css'
+
 // 导入axios
 import axios from 'axios'
 // 导入qs，用于序列化发送参数
