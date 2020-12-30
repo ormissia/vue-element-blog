@@ -13,7 +13,7 @@
         <!--标签名字-->
         <el-tag :type="tagIsSelect(i.tagId)">{{ i.tagName }}</el-tag>
         <!--标签包含博客数量-->
-        <el-tag type="success">{{ i.totalArticleNum }}</el-tag>
+        <el-tag type="success">{{ i.articles.length }}</el-tag>
       </el-button>
     </div>
   </el-card>
@@ -27,7 +27,18 @@ export default {
       // 标签列表
       tagList: [],
       // 选中的tag
-      selectTagId: this.transferTagIds
+      selectTagId: this.transferTagIds,
+      // 用于查询标签列表的参数对象
+      queryInfo: {
+        // 搜索框的内容
+        queryStr: '',
+        // 当前页数
+        pageNum: 1,
+        // 当前每页显示多少条数据
+        pageSize: 9999,
+        // 向后端发送请求携带的参数，查询未删除的标签，false
+        isDeleted: false
+      }
     }
   },
   // 父组件传过来的值，主要用于标签页面根据标签筛选博客
@@ -50,8 +61,9 @@ export default {
     },
     // 按照页面分页获取博客列表
     async selectTagByPage () {
-      const { data: res } = await this.$http.get('tag/selectTagCountArticle')
-      this.tagList = res.data
+      const { data: res } = await this.$http.post('tag/selectTagByPage', this.$qs.parse(this.queryInfo))
+      // TODO 错误处理
+      this.tagList = res.data.dataList
     }
   },
   created () {

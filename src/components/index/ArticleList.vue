@@ -20,7 +20,7 @@
               <el-col class="col-left" :span="16">
                 <!--标题-->
                 <!--点击跳转到对应的博客页面-->
-                <div @click="openArticleDetail(i.articleId)">
+                <div @click="openArticleDetail(i.ID)">
                   <h1 class="article-title">{{ i.title }}</h1>
                 </div>
                 <!--简介-->

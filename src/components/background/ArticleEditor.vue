@@ -285,7 +285,7 @@ export default {
       this.$refs.toastUiEditor.invoke('setMarkdown', this.articleForm.content, false)
     },
     // 通过博客Id查询博客信息
-    async selectArticleByArticleId (articleId) {
+    async selectArticleById (articleId) {
       const { data: res } = await this.$http.post('article/selectArticleById', this.$qs.stringify({ articleId: articleId }))
       // 判断返回结果状态值，如果成功获取博客信息，则将博客信息分别赋值给articleForm和oldArticle（用于页面恢复数据）
       if (res.code === 200) {
@@ -336,7 +336,7 @@ export default {
       this.oldArticle.userId = window.sessionStorage.getItem('userId')
     } else {
       // 通过博客Id获取博客信息，并赋值给双向绑定的数据对象中
-      this.selectArticleByArticleId(articleId)
+      this.selectArticleById(articleId)
     }
   }
 }

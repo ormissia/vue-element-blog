@@ -4,13 +4,13 @@
     <!--博客首图-->
     <el-image alt="博客首图" class="image-top" fit="cover"
               :src="imgUrl + this.articleForm.topImage"></el-image>
-    <h1>{{ this.articleForm.articleTitle }}</h1>
+    <h1>{{ this.articleForm.title }}</h1>
     <!--分割线-类型-->
-    <el-divider>{{ this.articleForm.articleType }}</el-divider>
+    <el-divider>{{ this.articleForm.typeName }}</el-divider>
     <!--标签-->
     <el-tag v-for="i in articleForm.articleTags" :key="i.tagId">{{ i }}</el-tag>
     <!--分割线-创建日期-->
-    <el-divider>{{ this.articleForm.createDate }}</el-divider>
+    <el-divider>{{ this.articleForm.CreatedAt }}</el-divider>
     <div>
       <viewer ref="toastUiEditor"
               :options="viewerOptions"
@@ -47,21 +47,21 @@ export default {
       // 博客保存表单的绑定对象
       articleForm: {
         // 博客Id
-        articleId: '',
+        ID: 0,
         // 标题
-        articleTitle: '',
+        title: '',
         // 创建时间
-        createDate: '',
+        CreatedAt: '',
         // 最后修改时间
-        lastEditDate: '',
+        UpdatedAt: '',
         // 博客首图
         topImage: '',
         // 页面上的markdown内容
-        articleContent: '',
+        content: '',
         // 博客简介
         description: '',
         // 当前博客类型
-        articleType: '',
+        typeName: '',
         // 当前博客标签
         articleTags: [],
         // 是否推荐
@@ -83,24 +83,24 @@ export default {
   methods: {
     // 设置编辑器的内容
     setMarkdown () {
-      this.$refs.toastUiEditor.invoke('setMarkdown', this.articleForm.articleContent, false)
+      this.$refs.toastUiEditor.invoke('setMarkdown', this.articleForm.content, false)
     },
     // 通过博客Id查询博客信息
-    async selectArticleByArticleId (articleId) {
-      const { data: res } = await this.$http.post('article/selectArticleByArticleId', this.$qs.stringify({ articleId: articleId }))
+    async selectArticleById (articleId) {
+      const { data: res } = await this.$http.post('article/selectArticleById', this.$qs.stringify({ articleId: articleId }))
       // 判断返回结果状态值，如果成功获取博客信息，则将博客信息分别赋值给articleForm和oldArticle（用于页面恢复数据）
       if (res.code === 200) {
-        this.articleForm.articleId = res.data.articleId
-        this.articleForm.createDate = res.data.createDate
-        this.articleForm.lastEditDate = res.data.lastEditDate
+        this.articleForm.ID = res.data.ID
+        this.articleForm.CreatedAt = res.data.CreatedAt
+        this.articleForm.UpdatedAt = res.data.UpdatedAt
         this.articleForm.topImage = res.data.topImage
-        this.articleForm.articleTitle = res.data.articleTitle
-        this.articleForm.articleContent = res.data.articleContent
+        this.articleForm.title = res.data.title
+        this.articleForm.content = res.data.content
         this.articleForm.description = res.data.description
         this.articleForm.userId = res.data.user.userId
         // 判断type和tags是否为空，如果为空时不加判断会报错
         if (res.data.type !== null) {
-          this.articleForm.articleType = res.data.type.typeName
+          this.articleForm.typeName = res.data.type.typeName
         }
         if (res.data.tags.length >= 0) {
           for (let i = 0; i < res.data.tags.length; i++) {
@@ -119,7 +119,7 @@ export default {
     // 获取跳转参数博客Id
     const articleId = this.$route.params.articleId
     // 通过博客Id获取博客信息，并赋值给双向绑定的数据对象中
-    this.selectArticleByArticleId(articleId)
+    this.selectArticleById(articleId)
   }
 }
 </script>
