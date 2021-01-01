@@ -48,10 +48,10 @@
         <template slot-scope="scope">
           <el-switch v-model="scope.row.isPublished"
                      :active-value=1
-                     :inactive-value=0
+                     :inactive-value=2
                      active-text="发布"
                      inactive-text="草稿"
-                     @change="saveArticle(scope.row.articleId,scope.row.published)">
+                     @change="saveArticle(scope.row.ID,scope.row.isPublished)">
           </el-switch>
         </template>
       </el-table-column>
@@ -77,7 +77,7 @@
             <el-button type="danger"
                        icon="el-icon-delete"
                        size="small"
-                       @click="openDeleteDialog(scope.row.articleId)">
+                       @click="openDeleteDialog(scope.row.ID)">
             </el-button>
           </el-tooltip>
         </template>
@@ -110,9 +110,9 @@ export default {
         // 当前每页显示多少条数据
         pageSize: 10,
         // 向后端发送请求携带的参数，查询未删除的博客，0;查询推荐的博客-1（代表全部）;查询发布状态的博客-1（代表全部）;
-        isDeleted: 0,
-        isRecommend: -1,
-        isPublished: -1
+        isDeleted: 2,
+        isRecommend: 0,
+        isPublished: 0
       },
       // 一共多少条数据
       total: 0,
@@ -138,7 +138,7 @@ export default {
     },
     async saveArticle (articleId, isPublished) {
       const article = {
-        articleId: articleId,
+        ID: articleId,
         isPublished: isPublished
       }
       // 使用修改保存博客的接口，传入数据创建一个博客对象，只包含博客Id和是否发布的信息
@@ -147,14 +147,14 @@ export default {
       if (res.code === 200) {
         this.$rootMessage({
           showClose: true,
-          message: res.message,
+          message: res.msg,
           type: 'success'
         })
       } else {
         // 当状态码不是200的时候为修改失败，提示修改失败的消息
         this.$rootMessage({
           showClose: true,
-          message: res.message,
+          message: res.msg,
           type: 'error'
         })
       }
@@ -178,11 +178,15 @@ export default {
     // 根据博客Id发起删除博客的请求
     // 调用博客修改的接口，修改isDeleted字段的值
     async deleteArticleByArticleId (articleId) {
-      const { data: res } = await this.$http.delete('article/deleteArticleByArticleId/' + articleId)
+      const article = {
+        ID: articleId,
+        isDeleted: 1
+      }
+      const { data: res } = await this.$http.post('article/saveArticle', this.$qs.parse(article))
       if (res.code === 200) {
         this.$rootMessage({
           type: 'success',
-          message: res.message
+          message: res.msg
         })
       } else {
         this.$rootMessage({

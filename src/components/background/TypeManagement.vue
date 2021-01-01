@@ -56,7 +56,7 @@
             <el-button type="danger"
                        icon="el-icon-delete"
                        size="small"
-                       @click="deleteTypeByTypeId(scope.row.typeId)">
+                       @click="deleteTypeByTypeId(scope.row.ID)">
             </el-button>
           </el-tooltip>
         </template>
@@ -98,7 +98,7 @@ export default {
       dialogVisible: false,
       // 创建新类型的form表单
       typeForm: {
-        typeId: -1,
+        ID: 0,
         typeName: ''
       },
       // 创建新类型的表单验证
@@ -118,7 +118,7 @@ export default {
         // 当前每页显示多少条数据
         pageSize: 10,
         // 向后端发送请求携带的参数，查询未删除的类型，false
-        isDeleted: false
+        isDeleted: 2
       },
       // 一共多少条数据
       total: 0,
@@ -142,26 +142,26 @@ export default {
     // 打开添加新类型的Dialog
     openDialogCreateNewType () {
       // 重置对象的初始值，防止添加之前修改过类型对象值导致对象变量内的值不为初始值
-      this.typeForm.typeId = -1
+      this.typeForm.ID = 0
       this.typeForm.typeName = ''
       // 打开弹窗
       this.dialogVisible = true
     },
     openTypeEditor (row) {
       // 获取当前行的类型信息
-      this.typeForm.typeId = row.typeId
+      this.typeForm.ID = row.ID
       this.typeForm.typeName = row.typeName
       // 打开弹窗
       this.dialogVisible = true
     },
     // 发起创建新类型的http请求
     async createNewType () {
-      const { data: res } = await this.$http.post('type/createNewType', this.$qs.parse(this.typeForm))
+      const { data: res } = await this.$http.post('type/saveType', this.$qs.parse(this.typeForm))
       // 根据返回值判断是否保存成功
       if (res.code === 200) {
         this.$rootMessage({
           showClose: true,
-          message: res.message,
+          message: res.msg,
           type: 'success'
         })
         // 返回成功之后关闭Dialog
@@ -170,7 +170,7 @@ export default {
         // 保存失败，输出错误提示
         this.$rootMessage({
           showClose: true,
-          message: res.message,
+          message: res.msg,
           type: 'error'
         })
       }

@@ -44,7 +44,8 @@
     </el-row>
     <div class="selector">
       <!--博客类型的选择器-->
-      <el-select v-model="articleForm.articleType"
+      <el-select v-model="articleForm.type"
+                 value-key="ID"
                  style="width: 50%;margin-right: 10px"
                  :filterable="true"
                  :allow-create="true"
@@ -53,12 +54,14 @@
         <el-option
           v-for="item in typeList"
           :key="item.ID"
-          :value="item.typeName">
+          :label="item.typeName"
+          :value="item">
         </el-option>
       </el-select>
       <!--博客标签的选择器，可添加-->
       <el-select
-        v-model="articleForm.articleTags"
+        v-model="articleForm.tags"
+        value-key="ID"
         style="width: 50%;margin-left: 10px"
         :multiple="true"
         :filterable="true"
@@ -67,8 +70,9 @@
         placeholder="请选择文章标签">
         <el-option
           v-for="item in tagList"
-          :key="item.tagId"
-          :value="item.tagName">
+          :key="item.ID"
+          :label="item.tagName"
+          :value="item">
         </el-option>
       </el-select>
     </div>
@@ -77,7 +81,7 @@
       <el-switch
         v-model="articleForm.isRecommend"
         :active-value=1
-        :inactive-value=0
+        :inactive-value=2
         active-color="#13ce66"
         inactive-color="#9c9c9c"
         active-text="这玩意儿太顶了，我要推荐"
@@ -139,13 +143,17 @@ export default {
         // 博客简介
         description: '',
         // 当前博客类型
-        articleType: '',
+        typeId: 0,
+        typeName: '',
+        type: {},
         // 当前博客标签
-        articleTags: [],
+        tags: [],
         // 是否推荐
-        isRecommend: 0,
+        isRecommend: 2,
         // 是否发布
-        isPublished: 0,
+        isPublished: 2,
+        // 是否删除
+        isDeleted: 2,
         // 用户Id
         userId: ''
       },
@@ -162,13 +170,17 @@ export default {
         // 博客简介
         description: '',
         // 当前博客类型
-        articleType: '',
+        typeId: 0,
+        typeName: '',
+        type: {},
         // 当前博客标签
-        articleTags: [],
+        tags: [],
         // 是否推荐
-        isRecommend: 0,
+        isRecommend: 2,
         // 是否发布
-        isPublished: 0,
+        isPublished: 2,
+        // 是否删除
+        isDeleted: 2,
         // 用户Id
         userId: ''
       },
@@ -232,7 +244,7 @@ export default {
       if (res.code === 200) {
         this.$rootMessage({
           showClose: true,
-          message: res.message,
+          message: res.msg,
           type: 'success'
         })
         // 给图片控件赋值
@@ -243,7 +255,7 @@ export default {
         // 上传失败
         this.$rootMessage({
           showClose: true,
-          message: res.message,
+          message: res.msg,
           type: 'error'
         })
       }
@@ -256,6 +268,8 @@ export default {
     async saveAndPublish (isPublished) {
       // 将发布状态赋值到对象中
       this.articleForm.isPublished = isPublished
+      // 将类型信息赋值到对象中
+      this.articleForm.typeId = this.articleForm.type.ID
       // 需要在页面上做校验是否有必须输入的内容
       const { data: res } = await this.$http.post('article/saveArticle', this.$qs.parse(this.articleForm))
       // 根据返回值判断是否保存成功，若成功则跳到ArticleManagement页面
@@ -296,12 +310,10 @@ export default {
         this.articleForm.userId = res.data.user.userId
         // 判断type和tags是否为空，如果为空时不加判断会报错
         if (res.data.type !== null) {
-          this.articleForm.articleType = res.data.type.typeName
+          this.articleForm.type = res.data.type
         }
         if (res.data.tags.length >= 0) {
-          for (let i = 0; i < res.data.tags.length; i++) {
-            this.articleForm.articleTags.push(res.data.tags[i].tagName)
-          }
+          this.articleForm.tags = res.data.tags
         }
         this.articleForm.isRecommend = res.data.isRecommend
         this.articleForm.isPublished = res.data.isPublished
@@ -329,13 +341,8 @@ export default {
     this.selectTypeByPage()
     this.selectTagByPage()
     const articleId = this.$route.params.articleId
-    // 判断articleId是否等于-1，若相等则为新建博客，无需向后端发送请求
-    if (articleId === '-1') {
-      // articleId等于-1则为新建博客，需要将session中存储的userId赋值到对象中
-      this.articleForm.userId = window.sessionStorage.getItem('userId')
-      this.oldArticle.userId = window.sessionStorage.getItem('userId')
-    } else {
-      // 通过博客Id获取博客信息，并赋值给双向绑定的数据对象中
+    // 通过当articleId不等-1时，即为修改文章
+    if (articleId !== '-1') {
       this.selectArticleById(articleId)
     }
   }

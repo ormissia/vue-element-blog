@@ -25,7 +25,7 @@ export default {
       canvas: document.getElementById('canvas'),
       options: {
         list: [['JAVA', 45], ['Spring', 21]], // 数据list
-        wait: 30, // 绘制下一项的时间间隔，单位：毫秒
+        wait: 1, // 绘制下一项的时间间隔，单位：毫秒
         gridSize: 0.1, // 密集程度 数字越小越密集
         weightFactor: 20, // 字体大小=原始大小*weightFactor
         minFontSize: 1, // 最小字号

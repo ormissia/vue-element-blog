@@ -11,7 +11,7 @@
     <ul class="list">
       <li v-for="i in articleList" :key="i.articleId">
         <el-card shadow="hover"
-                 @click.native="openArticleDetail(i.articleId)"
+                 @click.native="openArticleDetail(i.ID)"
                  class="card-article-title">
           <h4 class="article-title">
             {{ i.title }}
@@ -35,9 +35,9 @@ export default {
         pageNum: 1,
         // 当前每页显示多少条数据，推荐文章默认显示6条
         pageSize: 5,
-        // 向后端发送请求携带的参数，查询发布状态的博客，true;查询未删除的博客，false
+        // 向后端发送请求携带的参数，查询发布状态的博客，1;查询未删除的博客，2
         isPublished: 1,
-        isDeleted: 0,
+        isDeleted: 2,
         // 查询推荐的文章
         isRecommend: 1
       },

@@ -8,7 +8,7 @@
       <h3 class="list-title">标签</h3>
     </el-divider>
     <!--遍历查询到的tagList-->
-    <div v-for="i in tagList" :key="i.tagName" @click="filterTags(i.tagId)">
+    <div v-for="i in tagList" :key="i.ID" @click="filterTags(i.ID)">
       <el-button>
         <!--标签名字-->
         <el-tag :type="tagIsSelect(i.tagId)">{{ i.tagName }}</el-tag>

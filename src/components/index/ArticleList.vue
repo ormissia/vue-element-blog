@@ -79,10 +79,9 @@ export default {
         pageSize: 10,
         // 标签筛选的数组
         tagIds: this.transferTagIds,
-        // tagIds: [25, 28],
-        // 向后端发送请求携带的参数，查询未删除的博客，0;查询推荐的博客-1（代表全部）;查询发布状态的博客1;
-        isDeleted: 0,
-        isRecommend: -1,
+        // 向后端发送请求携带的参数，查询未删除的博客，0;查询推荐的博客0（代表全部）;查询发布状态的博客1;
+        isDeleted: 2,
+        isRecommend: 0,
         isPublished: 1
       },
       // 博客列表
