@@ -20,7 +20,8 @@
     "qs": "^6.9.4",
     "vue": "^2.6.11",
     "vue-infinite-scroll": "^2.0.2",
-    "vue-router": "^3.4.9"
+    "vue-router": "^3.4.9",
+    "wordcloud": "^1.1.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

@@ -37,7 +37,7 @@ const routes = [
         component: Article
       },
       {
-        path: '/tag/:tagId',
+        path: '/tag',
         component: Tag
       },
       {
