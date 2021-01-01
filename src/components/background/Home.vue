@@ -76,7 +76,7 @@ export default {
             {
               id: '101',
               menuName: '博客管理',
-              path: '/background/blogManagement'
+              path: '/background/articleManagement'
             },
             {
               id: '102',
@@ -121,10 +121,7 @@ export default {
     logout () {
       window.sessionStorage.clear()
       this.$router.push('/index')
-      // TODO
-      // 向后端发送等出请求
-      // 登录成功
-      // TODO 修改退出登录提示信息为返回值里的信息
+      // 登出成功
       this.$rootMessage({
         showClose: true,
         message: '已退出登录',
