@@ -56,7 +56,7 @@
             <el-button type="danger"
                        icon="el-icon-delete"
                        size="small"
-                       @click="deleteTypeByTypeId(scope.row.ID)">
+                       @click="openDeleteDialog(scope.row.ID)">
             </el-button>
           </el-tooltip>
         </template>
@@ -99,7 +99,8 @@ export default {
       // 创建新类型的form表单
       typeForm: {
         ID: 0,
-        typeName: ''
+        typeName: '',
+        isDeleted: 0
       },
       // 创建新类型的表单验证
       typeFormRules: {
@@ -146,6 +147,43 @@ export default {
       this.typeForm.typeName = ''
       // 打开弹窗
       this.dialogVisible = true
+    },
+    // 打开确认删除确认的Dialog
+    openDeleteDialog (typeId) {
+      this.$confirm('真的要删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 调用发起删除请求的方法
+        this.deleteTypeById(typeId)
+      }).catch(() => {
+        this.$rootMessage({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    // 调用修改的接口，修改isDeleted字段的值
+    async deleteTypeById (typeId) {
+      const articleType = {
+        ID: typeId,
+        isDeleted: 1
+      }
+      const { data: res } = await this.$http.post('type/saveType', this.$qs.parse(articleType))
+      if (res.code === 200) {
+        this.$rootMessage({
+          type: 'success',
+          message: res.msg
+        })
+      } else {
+        this.$rootMessage({
+          type: 'error',
+          message: '删除失败'
+        })
+      }
+      // 无论是否删除成功，刷新页面
+      this.selectTypeByPage()
     },
     openTypeEditor (row) {
       // 获取当前行的类型信息

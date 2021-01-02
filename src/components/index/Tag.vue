@@ -56,9 +56,7 @@ export default {
       // 生成数据list
       const temporaryTagList = []
       for (let i = 0; i < dataList.length; i++) {
-        const itemList = []
-        itemList.push(dataList[i].tagName)
-        itemList.push(dataList[i].articles.length)
+        const itemList = [dataList[i].tagName, dataList[i].articles.length]
         temporaryTagList.push(itemList)
       }
 

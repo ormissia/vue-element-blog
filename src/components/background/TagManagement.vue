@@ -56,7 +56,7 @@
             <el-button type="danger"
                        icon="el-icon-delete"
                        size="small"
-                       @click="deleteTagByTagId(scope.row.ID)">
+                       @click="openDeleteDialog(scope.row.ID)">
             </el-button>
           </el-tooltip>
         </template>
@@ -99,7 +99,8 @@ export default {
       // 创建新标签的form表单
       tagForm: {
         ID: 0,
-        tagName: ''
+        tagName: '',
+        isDeleted: 0
       },
       // 创建新标签的表单验证
       tagFormRules: {
@@ -118,7 +119,7 @@ export default {
         // 当前每页显示多少条数据
         pageSize: 10,
         // 向后端发送请求携带的参数，查询未删除的标签，false
-        isDeleted: false
+        isDeleted: 2
       },
       // 一共多少条数据
       total: 0,
@@ -146,6 +147,43 @@ export default {
       this.tagForm.tagName = ''
       // 打开弹窗
       this.dialogVisible = true
+    },
+    // 打开确认删除确认的Dialog
+    openDeleteDialog (tagId) {
+      this.$confirm('真的要删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 调用发起删除请求的方法
+        this.deleteTagById(tagId)
+      }).catch(() => {
+        this.$rootMessage({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    // 调用修改的接口，修改isDeleted字段的值
+    async deleteTagById (tagId) {
+      const articleTag = {
+        ID: tagId,
+        isDeleted: 1
+      }
+      const { data: res } = await this.$http.post('tag/saveTag', this.$qs.parse(articleTag))
+      if (res.code === 200) {
+        this.$rootMessage({
+          type: 'success',
+          message: res.msg
+        })
+      } else {
+        this.$rootMessage({
+          type: 'error',
+          message: '删除失败'
+        })
+      }
+      // 无论是否删除成功，刷新页面
+      this.selectTagByPage()
     },
     openTagEditor (row) {
       // 获取当前行的类型信息
