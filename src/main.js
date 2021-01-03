@@ -18,7 +18,7 @@ import md5 from 'js-md5'
 import infiniteScroll from 'vue-infinite-scroll'
 
 // 配置请求根路径
-axios.defaults.baseURL = 'http://127.0.0.1:8085/api/'
+axios.defaults.baseURL = 'http://ormissia.com:13880/api/'
 // 请求头添加token
 axios.interceptors.request.use(config => {
   config.headers.token = window.sessionStorage.getItem('token')
