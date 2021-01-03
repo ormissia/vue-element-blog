@@ -19,8 +19,8 @@ export default {
         pageNum: 1,
         // 当前每页显示多少条数据
         pageSize: 9999,
-        // 向后端发送请求携带的参数，查询未删除的标签，false
-        isDeleted: false
+        // 向后端发送请求携带的参数，查询未删除的标签，2
+        isDeleted: 2
       },
       canvas: document.getElementById('canvas'),
       options: {
