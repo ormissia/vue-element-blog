@@ -49,14 +49,18 @@ export default {
     async selectTagByPage () {
       const { data: res } = await this.$http.post('tag/selectTagByPage', this.$qs.parse(this.queryInfo))
       // TODO 错误处理
-      this.createOption(res.data.dataList)
+      // 判断列表长度大于0
+      if (res.data.dataList.length > 0) {
+        this.createOption(res.data.dataList)
+      }
     },
     //
     createOption (dataList) {
       // 生成数据list
       const temporaryTagList = []
       for (let i = 0; i < dataList.length; i++) {
-        const itemList = [dataList[i].tagName, dataList[i].articles.length]
+        // 如果长度为0，则赋值为1，防止不显示
+        const itemList = [dataList[i].tagName, dataList[i].articles.length === 0 ? 1 : dataList[i].articles.length]
         temporaryTagList.push(itemList)
       }
 
@@ -66,13 +70,22 @@ export default {
       }
 
       // 计算weightFactor的值（控制最大字体为100），字体大小=原始大小*weightFactor
-      const fontSize = 100 / temporaryTagList[0][1]
+      let maxSize = this.tagList[0][1]
+      if (maxSize === 0) {
+        maxSize = 2
+      }
+      let minSize = dataList[dataList.length - 1].articles.length
+      if (minSize === 0) {
+        minSize = 1
+      }
+      const fontSize = 100 / maxSize
 
       // 设置option
       this.options.list = this.tagList// 数据list
       this.options.weightFactor = fontSize
-      this.options.minFontSize = dataList[dataList.length - 1].articles.length// 最小字号,取最后一个标签的文章数量（后端按文章数量排序）
-      this.options.maxFontSize = dataList[0].articles.length// 取第一个标签的文章数量
+      this.options.maxFontSize = maxSize// 取第一个标签的文章数量
+      this.options.minFontSize = minSize// 最小字号,取最后一个标签的文章数量（后端按文章数量排序）
+
       // 展示
       WordCloud(this.$refs.canvas, this.options)
     }
