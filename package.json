@@ -14,6 +14,7 @@
     "@toast-ui/vue-editor": "^2.5.1",
     "axios": "^0.20.0",
     "core-js": "^3.8.1",
+    "echarts": "^5.0.0",
     "element-ui": "^2.14.1",
     "highlight.js": "^10.5.0",
     "js-md5": "^0.7.3",
