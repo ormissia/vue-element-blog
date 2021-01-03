@@ -3,36 +3,36 @@
   <!--文章列表整体的Card，阴影总是显示-->
   <el-card shadow="always" class="card-list">
     <!--搜索框-->
-    <el-input placeholder="请输入内容" v-model="queryInfo.queryStr">
+    <el-input placeholder="请输入内容" v-model="queryInfo.title">
       <template slot="prepend">搜索</template>
-      <el-button slot="append" icon="el-icon-search" @click="searchBlog"></el-button>
+      <el-button slot="append" icon="el-icon-search" @click="searchArticle"></el-button>
     </el-input>
     <div class="infinite-list-wrapper" style="overflow:visible">
-      <ul v-infinite-scroll="loadMoreBlog"
+      <ul v-infinite-scroll="loadMoreArticle"
           infinite-scroll-disabled="disabled"
           class="list">
-        <!--遍历blogList生成文章列表-->
-        <li v-for="i in blogList" :key="i.blogId" class="list-item">
+        <!--遍历articleList生成文章列表-->
+        <li v-for="i in articleList" :key="i.articleId" class="list-item">
           <!--文章的Card，当鼠标移入时显示阴影-->
-          <el-card shadow="hover" class="card-blog">
+          <el-card shadow="hover" class="card-article">
             <el-row>
               <!--左侧文章相关信息的布局-->
               <el-col class="col-left" :span="16">
                 <!--标题-->
                 <!--点击跳转到对应的博客页面-->
-                <div @click="openBlogDetail(i.blogId)">
-                  <h1 class="blog-title">{{ i.blogTitle }}</h1>
+                <div @click="openArticleDetail(i.ID)">
+                  <h1 class="article-title">{{ i.title }}</h1>
                 </div>
                 <!--简介-->
                 <div class="div-description"
-                     @click="openBlogDetail(i.blogId)">
+                     @click="openArticleDetail(i.articleId)">
                   <p>{{ i.description }}</p>
                 </div>
                 <!--底部-->
                 <div class="div-bottom">
                   <!--时间戳-->
                   <div style="float: left">
-                    {{ i.createDate }}
+                    {{ i.UpdatedAt }}
                   </div>
                   <!--类型,判断是否为空，不为空时显示-->
                   <el-tag v-if="i.type != null">
@@ -64,7 +64,7 @@
 import { pathway } from '@/assets/js/global'
 
 export default {
-  name: 'BlogList',
+  name: 'ArticleList',
   data () {
     return {
       // 从全局变量获取配置的imageUrl
@@ -72,20 +72,20 @@ export default {
       // 用于获取博客列表的参数对象
       queryInfo: {
         // 搜索框的内容
-        queryStr: '',
+        title: '',
         // 当前页数
         pageNum: 1,
         // 当前每页显示多少条数据
         pageSize: 10,
         // 标签筛选的数组
         tagIds: this.transferTagIds,
-        // tagIds: [25, 28],
-        // 向后端发送请求携带的参数，查询发布状态的博客，true;查询未删除的博客，false
-        isPublished: true,
-        isDeleted: false
+        // 向后端发送请求携带的参数，查询未删除的博客，0;查询推荐的博客0（代表全部）;查询发布状态的博客1;
+        isDeleted: 2,
+        isRecommend: 0,
+        isPublished: 1
       },
       // 博客列表
-      blogList: [],
+      articleList: [],
       // 博客总数
       total: 0,
       // 加载状态，true为忙碌
@@ -99,7 +99,7 @@ export default {
   watch: {
     // 如果选中的tagId发生变化，则重新发起获取博客列表的HTTP请求
     transferTagIds (val, oldVal) {
-      this.selectBlogByPage()
+      this.selectArticleByPage()
     }
   },
   // 父组件传过来的值，主要用于标签页面根据标签筛选博客
@@ -118,7 +118,7 @@ export default {
     }
   },
   methods: {
-    loadMoreBlog () {
+    loadMoreArticle () {
       // 开始加载时将状态置为true标识忙碌
       this.loading = true
 
@@ -134,45 +134,45 @@ export default {
       }
 
       // 调用发起请求的方法
-      this.loadMoreBlogByPage()
+      this.loadMoreArticleByPage()
     },
     // 搜索需要将页面加载参数重置为默认
-    searchBlog () {
-      // 新建变量保存queryStr
-      const queryStrCache = this.queryInfo.queryStr
+    searchArticle () {
+      // 新建变量保存title
+      const titleCache = this.queryInfo.title
       // this.$options.data()   将变量重置为初始值
       this.queryInfo = this.$options.data().queryInfo
-      // 将表单重置中的查询参数pageSize，pageNum重置为为默认后将queryStr的值放回去
-      this.queryInfo.queryStr = queryStrCache
+      // 将表单重置中的查询参数pageSize，pageNum重置为为默认后将title的值放回去
+      this.queryInfo.title = titleCache
       // 发起查询请求
-      this.selectBlogByPage()
+      this.selectArticleByPage()
     },
     // 按照页面分页获取博客列表
     // 首次打开页面时调用
-    async selectBlogByPage () {
-      const { data: res } = await this.$http.post('public/selectBlogByPage', this.$qs.parse(this.queryInfo))
-      this.blogList = res.data.dataList
+    async selectArticleByPage () {
+      const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
+      this.articleList = res.data.articles
       this.total = res.data.total
     },
     // 连续加载时调用
-    async loadMoreBlogByPage () {
-      const { data: res } = await this.$http.post('public/selectBlogByPage', this.$qs.parse(this.queryInfo))
-      // 当返回值中blogList长度不为0时，添加到this.blogList后面
+    async loadMoreArticleByPage () {
+      const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
+      // 当返回值中articleList长度不为0时，添加到this.articleList后面
       if (res.data.dataList.length !== 0) {
-        this.blogList = this.blogList.concat(res.data.dataList)
+        this.articleList = this.articleList.concat(res.data.dataList)
       }
 
       // 获取返回值之后将状态改为不繁忙忙碌
       this.loading = false
     },
     // 根据博客Id打开博客详情页面
-    openBlogDetail (index) {
-      this.$router.push('/blogDetail/' + index)
+    openArticleDetail (index) {
+      this.$router.push('/articleDetail/' + index)
     }
   },
   created () {
     // 页面加载前按照默认分页获取博客列表
-    this.selectBlogByPage()
+    this.selectArticleByPage()
   }
 }
 </script>
@@ -191,7 +191,7 @@ export default {
       // 鼠标指针样式
       cursor: pointer;
 
-      .card-blog {
+      .card-article {
         // 文字左对齐
         text-align: left;
 
@@ -199,7 +199,7 @@ export default {
           // 内容的右边距
           padding-right: 20px;
 
-          .blog-title {
+          .article-title {
             // 去掉标题标签<h1>的上边距
             margin-top: 0;
           }

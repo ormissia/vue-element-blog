@@ -1,6 +1,6 @@
 <!--博客封面-->
 <template>
-  <div class="blog-cover">
+  <div class="article-cover">
     <!--头像-->
     <img src="../assets/image/EVE.png" class="head-portrait"/>
     <!--标题-->
@@ -51,7 +51,7 @@
 
 <script>
 export default {
-  name: 'BlogCover',
+  name: 'ArticleCover',
   data () {
     return {}
   }
@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.blog-cover {
+.article-cover {
   // 高度和宽度填满整个页面
   width: 100%;
   height: 100%;
@@ -67,7 +67,7 @@ export default {
   padding: 150px 100px;
   //宽高100%加入padding会出现滚动条，此样式会消除滚动条
   box-sizing: border-box;
-  background-image: linear-gradient(155deg, rgb(209, 130, 130) 1%, rgb(88, 119, 168) 70%);
+  background-image: linear-gradient(155deg, rgb(210, 130, 130) 1%, rgb(88, 119, 168) 70%);
 
   // 头像的样式
   .head-portrait {

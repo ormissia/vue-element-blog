@@ -9,12 +9,12 @@
       <h3 class="list-title">最新推荐</h3>
     </el-divider>
     <ul class="list">
-      <li v-for="i in blogList" :key="i.blogId">
+      <li v-for="i in articleList" :key="i.articleId">
         <el-card shadow="hover"
-                 @click.native="openBlogDetail(i.blogId)"
-                 class="card-blog-title">
-          <h4 class="blog-title">
-            {{ i.blogTitle }}
+                 @click.native="openArticleDetail(i.ID)"
+                 class="card-article-title">
+          <h4 class="article-title">
+            {{ i.title }}
           </h4>
         </el-card>
       </li>
@@ -35,28 +35,28 @@ export default {
         pageNum: 1,
         // 当前每页显示多少条数据，推荐文章默认显示6条
         pageSize: 5,
-        // 向后端发送请求携带的参数，查询发布状态的博客，true;查询未删除的博客，false
-        isPublished: true,
-        isDeleted: false,
+        // 向后端发送请求携带的参数，查询发布状态的博客，1;查询未删除的博客，2
+        isPublished: 1,
+        isDeleted: 2,
         // 查询推荐的文章
-        isRecommend: true
+        isRecommend: 1
       },
       // 博客列表
-      blogList: []
+      articleList: []
     }
   },
   methods: {
-    openBlogDetail (index) {
-      this.$router.push('/blogDetail/' + index)
+    openArticleDetail (index) {
+      this.$router.push('/articleDetail/' + index)
     },
     // 按照页面分页获取推荐博客列表
-    async selectBlogByPage () {
-      const { data: res } = await this.$http.post('public/selectBlogByPage', this.$qs.parse(this.queryInfo))
-      this.blogList = res.data.blogList
+    async selectArticleByPage () {
+      const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
+      this.articleList = res.data.articles
     }
   },
   created () {
-    this.selectBlogByPage()
+    this.selectArticleByPage()
   }
 }
 </script>
@@ -73,11 +73,11 @@ export default {
     list-style: none;
     padding-inline-start: 0;
 
-    .card-blog-title {
+    .card-article-title {
       // 鼠标指针样式
       cursor: pointer;
 
-      .blog-title {
+      .article-title {
         margin: 0;
       }
     }

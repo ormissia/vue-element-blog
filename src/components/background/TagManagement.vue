@@ -56,7 +56,7 @@
             <el-button type="danger"
                        icon="el-icon-delete"
                        size="small"
-                       @click="deleteTagByTagId(scope.row.tagId)">
+                       @click="openDeleteDialog(scope.row.ID)">
             </el-button>
           </el-tooltip>
         </template>
@@ -82,7 +82,7 @@
         </el-form-item>
         <!--按钮-->
         <el-form-item class="create-new-tag">
-          <el-button type="primary" @click="createNewTag">保存</el-button>
+          <el-button type="primary" @click="saveTag">保存</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -98,8 +98,9 @@ export default {
       dialogVisible: false,
       // 创建新标签的form表单
       tagForm: {
-        tagId: -1,
-        tagName: ''
+        ID: 0,
+        tagName: '',
+        isDeleted: 0
       },
       // 创建新标签的表单验证
       tagFormRules: {
@@ -118,7 +119,7 @@ export default {
         // 当前每页显示多少条数据
         pageSize: 10,
         // 向后端发送请求携带的参数，查询未删除的标签，false
-        isDeleted: false
+        isDeleted: 2
       },
       // 一共多少条数据
       total: 0,
@@ -142,26 +143,63 @@ export default {
     // 打开添加新标签的Dialog
     openDialogCreateNewTag () {
       // 重置对象的初始值，防止添加之前修改过标签对象值导致对象变量内的值不为初始值
-      this.tagForm.tagId = -1
+      this.tagForm.ID = 0
       this.tagForm.tagName = ''
       // 打开弹窗
       this.dialogVisible = true
     },
+    // 打开确认删除确认的Dialog
+    openDeleteDialog (tagId) {
+      this.$confirm('真的要删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 调用发起删除请求的方法
+        this.deleteTagById(tagId)
+      }).catch(() => {
+        this.$rootMessage({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    // 调用修改的接口，修改isDeleted字段的值
+    async deleteTagById (tagId) {
+      const articleTag = {
+        ID: tagId,
+        isDeleted: 1
+      }
+      const { data: res } = await this.$http.post('tag/saveTag', this.$qs.parse(articleTag))
+      if (res.code === 200) {
+        this.$rootMessage({
+          type: 'success',
+          message: res.msg
+        })
+      } else {
+        this.$rootMessage({
+          type: 'error',
+          message: '删除失败'
+        })
+      }
+      // 无论是否删除成功，刷新页面
+      this.selectTagByPage()
+    },
     openTagEditor (row) {
       // 获取当前行的类型信息
-      this.tagForm.tagId = row.tagId
+      this.tagForm.ID = row.ID
       this.tagForm.tagName = row.tagName
       // 打开弹窗
       this.dialogVisible = true
     },
     // 发起创建新标签的http请求
-    async createNewTag () {
-      const { data: res } = await this.$http.post('private/createNewTag', this.$qs.parse(this.tagForm))
+    async saveTag () {
+      const { data: res } = await this.$http.post('tag/saveTag', this.$qs.parse(this.tagForm))
       // 根据返回值判断是否保存成功
       if (res.code === 200) {
         this.$rootMessage({
           showClose: true,
-          message: res.message,
+          message: res.msg,
           type: 'success'
         })
         // 返回成功之后关闭Dialog
@@ -170,7 +208,7 @@ export default {
         // 保存失败，输出错误提示
         this.$rootMessage({
           showClose: true,
-          message: res.message,
+          message: res.msg,
           type: 'error'
         })
       }
@@ -179,7 +217,8 @@ export default {
     },
     // 按照页面分页获取博客列表
     async selectTagByPage () {
-      const { data: res } = await this.$http.post('private/selectTagByPage', this.$qs.parse(this.queryInfo))
+      const { data: res } = await this.$http.post('tag/selectTagByPage', this.$qs.parse(this.queryInfo))
+      // TODO 错误处理
       this.tagList = res.data.dataList
       // 给分页控件的总条数赋值
       this.total = res.data.total
