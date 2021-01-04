@@ -11,7 +11,7 @@
     <el-row :gutter="20">
       <el-col :span="18">
         <!--搜索框-->
-        <el-input placeholder="请输入内容" v-model="queryInfo.queryStr">
+        <el-input placeholder="请输入内容" v-model="queryInfo.typeName">
           <template slot="prepend">搜索</template>
           <el-button slot="append" icon="el-icon-search" @click="selectTypeByPage"></el-button>
         </el-input>
@@ -113,7 +113,7 @@ export default {
       // 用于查询类型列表的参数对象
       queryInfo: {
         // 搜索框的内容
-        queryStr: '',
+        typeName: '',
         // 当前页数
         pageNum: 1,
         // 当前每页显示多少条数据
