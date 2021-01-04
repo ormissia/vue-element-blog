@@ -1,6 +1,6 @@
 <!--类型页面-->
 <template>
-  <canvas ref="canvas" width="1200px" height="1000px"></canvas>
+  <canvas ref="canvas" style="width: 100%" :width="width" :height="height"></canvas>
 </template>
 <script>
 import WordCloud from 'wordcloud'
@@ -9,6 +9,9 @@ export default {
   name: 'Tag',
   data () {
     return {
+      // 页面宽度高度
+      width: 0,
+      height: 0,
       // 用于显示的标签列表
       tagList: [],
       // 用于查询标签列表的参数对象
@@ -26,7 +29,7 @@ export default {
       options: {
         list: [['JAVA', 45], ['Spring', 21]], // 数据list
         wait: 1, // 绘制下一项的时间间隔，单位：毫秒
-        gridSize: 0.1, // 密集程度 数字越小越密集
+        gridSize: 5, // 密集程度 数字越小越密集
         weightFactor: 20, // 字体大小=原始大小*weightFactor
         minFontSize: 1, // 最小字号
         maxFontSize: 10, // 最大字号
@@ -44,7 +47,16 @@ export default {
     // 调用获取数据的方法
     this.selectTagByPage()
   },
+  created () {
+    // 页面创建时获取页面高度
+    this.sizeHandle()
+  },
   methods: {
+    // 滚动监听
+    sizeHandle () {
+      this.height = window.innerHeight// 获取页面高度
+      this.width = 2 / 3 * (window.innerWidth + 153)// 获取页面宽度
+    },
     // 按照页面分页获取博客列表
     async selectTagByPage () {
       const { data: res } = await this.$http.post('tag/selectTagByPage', this.$qs.parse(this.queryInfo))

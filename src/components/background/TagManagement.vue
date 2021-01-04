@@ -11,7 +11,7 @@
     <el-row :gutter="20">
       <el-col :span="18">
         <!--搜索框-->
-        <el-input placeholder="请输入内容" v-model="queryInfo.queryStr">
+        <el-input placeholder="请输入内容" v-model="queryInfo.tagName">
           <template slot="prepend">搜索</template>
           <el-button slot="append" icon="el-icon-search" @click="selectTagByPage"></el-button>
         </el-input>
@@ -113,7 +113,7 @@ export default {
       // 用于查询标签列表的参数对象
       queryInfo: {
         // 搜索框的内容
-        queryStr: '',
+        tagName: '',
         // 当前页数
         pageNum: 1,
         // 当前每页显示多少条数据
@@ -217,6 +217,7 @@ export default {
     },
     // 按照页面分页获取博客列表
     async selectTagByPage () {
+      console.log(this.queryInfo)
       const { data: res } = await this.$http.post('tag/selectTagByPage', this.$qs.parse(this.queryInfo))
       // TODO 错误处理
       this.tagList = res.data.dataList

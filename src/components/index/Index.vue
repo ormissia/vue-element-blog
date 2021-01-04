@@ -54,7 +54,7 @@
       </el-dialog>
       <!--使用layout布局分割内容区域-->
       <el-row class="content-row">
-        <el-col :span="16" :offset="4">
+        <el-col :span="16" :offset="4" style="height: 100%">
           <!--内容区域-->
           <!--路由占位符-->
           <router-view></router-view>

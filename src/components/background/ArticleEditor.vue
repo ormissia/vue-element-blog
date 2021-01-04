@@ -155,7 +155,7 @@ export default {
         // 是否删除
         isDeleted: 2,
         // 用户Id
-        userId: ''
+        userId: 0
       },
       // 编辑之前的article信息
       oldArticle: {
@@ -182,7 +182,7 @@ export default {
         // 是否删除
         isDeleted: 2,
         // 用户Id
-        userId: ''
+        userId: 0
       },
 
       // 用于查询所有类型标签列表的参数对象
