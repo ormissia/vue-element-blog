@@ -43,7 +43,7 @@
               <!--右侧文章首图的布局-->
               <el-col class="col-right" :span="8">
                 <el-image alt="博客首图" class="right-img" fit="cover"
-                          :src="imgUrl + i.topImage"></el-image>
+                          :src="i.topImage"></el-image>
               </el-col>
             </el-row>
           </el-card>
