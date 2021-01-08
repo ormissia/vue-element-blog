@@ -6,6 +6,11 @@
               class="input-title">
       <template slot="prepend">标题</template>
     </el-input>
+    <el-input placeholder="来个首图"
+              v-model="articleForm.topImage"
+              class="input-title">
+      <template slot="prepend">首图</template>
+    </el-input>
     <!--markdown编辑器-->
     <editor @blur="onEditorBlur"
             ref="toastUiEditor"
@@ -13,25 +18,25 @@
             :options="viewerOptions"
             class="editor"/>
     <el-row :gutter="20">
-      <el-col :span="6">
-        <el-upload class="upload-img" drag
-                   accept=""
-                   action="http://127.0.0.1:8085/api/private/uploadImage"
-                   :limit="1"
-                   :before-upload="beforeImageUpload"
-                   :on-success="handleImageSuccess"
-                   :show-file-list="true">
-          <!--上传后的图片展示-->
-          <img v-if="this.temporaryImage" :src="this.temporaryImage" class="img-success" alt="博客首图">
-          <!--上传控件提示信息-->
-          <div v-else>
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-          </div>
-        </el-upload>
-      </el-col>
-      <el-col :span="18">
+      <!--      <el-col :span="6">-->
+      <!--        <el-upload class="upload-img" drag-->
+      <!--                   accept=""-->
+      <!--                   action="http://127.0.0.1:8085/api/private/uploadImage"-->
+      <!--                   :limit="1"-->
+      <!--                   :before-upload="beforeImageUpload"-->
+      <!--                   :on-success="handleImageSuccess"-->
+      <!--                   :show-file-list="true">-->
+      <!--          &lt;!&ndash;上传后的图片展示&ndash;&gt;-->
+      <!--          <img v-if="this.temporaryImage" :src="this.temporaryImage" class="img-success" alt="博客首图">-->
+      <!--          &lt;!&ndash;上传控件提示信息&ndash;&gt;-->
+      <!--          <div v-else>-->
+      <!--            <i class="el-icon-upload"></i>-->
+      <!--            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>-->
+      <!--            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>-->
+      <!--          </div>-->
+      <!--        </el-upload>-->
+      <!--      </el-col>-->
+      <el-col :span="24">
         <!--博客简介-->
         <el-input
           type="textarea"

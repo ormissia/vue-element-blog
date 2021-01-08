@@ -3,7 +3,7 @@
   <el-card shadow="always" class="article-card">
     <!--博客首图-->
     <el-image alt="博客首图" class="image-top" fit="cover"
-              :src="imgUrl + this.articleForm.topImage"></el-image>
+              :src="this.articleForm.topImage"></el-image>
     <h1>{{ this.articleForm.title }}</h1>
     <!--分割线-类型-->
     <el-divider>{{ this.articleForm.typeName }}</el-divider>

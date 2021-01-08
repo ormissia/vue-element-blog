@@ -1,10 +1,22 @@
 <!--博客封面-->
 <template>
   <div class="article-cover">
-    <!--头像-->
-    <img src="../assets/image/EVE.png" class="head-portrait"/>
-    <!--标题-->
-    <h1 class="title">Hi, I'm Ormissia.</h1>
+    <div>
+      <!--日历区域-->
+      <div class="calendar">
+        <p id="monthName">{{ monthName }}</p>
+        <p id="dayName">{{ dayName }}</p>
+        <p id="dayNumber">{{ dayNumber }}</p>
+        <p id="year">{{ year }}</p>
+      </div>
+      <!--头像标题区域-->
+      <div>
+        <!--头像-->
+        <img src="../assets/image/EVE.png" class="head-portrait"/>
+        <!--标题-->
+        <h1 class="title">Hi, I'm Ormissia.</h1>
+      </div>
+    </div>
     <!--分割线-->
     <el-divider class="line"></el-divider>
     <!--链接按钮区域-->
@@ -53,7 +65,40 @@
 export default {
   name: 'ArticleCover',
   data () {
-    return {}
+    return {
+      timer: '', // 定义一个定时器的变量
+      monthName: new Date(),
+      dayName: new Date(),
+      dayNumber: new Date(),
+      year: new Date()
+    }
+  },
+  created () {
+    this.initCalendar()
+    const _this = this
+    // 初始化日历
+    setInterval(function () {
+      const lang = navigator.language
+      _this.dayNumber = new Date().getDate()
+      _this.month = new Date().getMonth()
+      _this.dayName = new Date().toLocaleString(lang, { weekday: 'long' })
+      _this.monthName = new Date().toLocaleString(lang, { month: 'long' })
+      _this.year = new Date().getFullYear()
+    }, 1000)
+  },
+  beforeDestroy () {
+    clearInterval(this.timer) // 在Vue实例销毁前，清除我们的定时器
+  },
+  methods: {
+    // 初始化日历
+    initCalendar () {
+      const lang = navigator.language
+      this.dayNumber = new Date().getDate()
+      this.month = new Date().getMonth()
+      this.dayName = new Date().toLocaleString(lang, { weekday: 'long' })
+      this.monthName = new Date().toLocaleString(lang, { month: 'long' })
+      this.year = new Date().getFullYear()
+    }
   }
 }
 </script>
@@ -68,6 +113,51 @@ export default {
   //宽高100%加入padding会出现滚动条，此样式会消除滚动条
   box-sizing: border-box;
   background-image: linear-gradient(155deg, rgb(210, 130, 130) 1%, rgb(88, 119, 168) 70%);
+
+  .calendar {
+    margin-top: 20px;
+    margin-right: 200px;
+    float: right;
+    position: relative;
+    width: 200px;
+    background: #fff;
+    text-align: center;
+    border-radius: 8px;
+    overflow: hidden;
+    -webkit-box-reflect: below 2px linear-gradient(transparent, transparent, #0004);
+
+    #monthName {
+      margin: 0;
+      position: relative;
+      padding: 5px 10px;
+      background: rgb(210, 130, 130) 1%;
+      color: #fff;
+      font-size: 30px;
+      font-weight: 600;
+    }
+
+    #dayName {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: 300;
+      color: #999;
+    }
+
+    #dayNumber {
+      margin: 0;
+      font-size: 80px;
+      line-height: 1em;
+      font-weight: 700;
+      color: #333;
+    }
+
+    #year {
+      margin-bottom: 20px;
+      font-size: 20px;
+      font-weight: 500;
+      color: #999;
+    }
+  }
 
   // 头像的样式
   .head-portrait {
