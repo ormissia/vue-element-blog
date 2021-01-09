@@ -43,12 +43,17 @@
           </el-form-item>
           <!--密码-->
           <el-form-item prop="password">
-            <el-input placeholder="请输入密码" v-model="loginForm.password"
-                      prefix-icon="el-icon-info" type="password"></el-input>
+            <el-input placeholder="请输入密码"
+                      v-model="loginForm.password"
+                      prefix-icon="el-icon-info"
+                      type="password"
+                      v-on:keyup.enter.native ="login"></el-input>
           </el-form-item>
           <!--按钮-->
           <el-form-item class="login-button">
-            <el-button type="primary" @click="login">登录</el-button>
+            <el-button type="primary"
+                       @click="login">登录
+            </el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
