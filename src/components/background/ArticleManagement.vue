@@ -142,19 +142,21 @@ export default {
         isPublished: isPublished
       }
       // 使用修改保存博客的接口，传入数据创建一个博客对象，只包含博客Id和是否发布的信息
-      const { data: res } = await this.$http.post('article/saveArticle', this.$qs.parse(article))
-      // 根据返回值判断是否保存成功，若成功则提示修改成功的消息
-      if (res.code === 200) {
+      try {
+        const { data: res } = await this.$http.post('article/saveArticle', this.$qs.parse(article))
+        // 根据返回值判断是否保存成功，若成功则提示修改成功的消息
+        if (res.code === 200) {
+          this.$rootMessage({
+            showClose: true,
+            message: res.msg,
+            type: 'success'
+          })
+        }
+      } catch (e) {
+        // 保存失败，输出错误提示
         this.$rootMessage({
           showClose: true,
-          message: res.msg,
-          type: 'success'
-        })
-      } else {
-        // 当状态码不是200的时候为修改失败，提示修改失败的消息
-        this.$rootMessage({
-          showClose: true,
-          message: res.msg,
+          message: e,
           type: 'error'
         })
       }
@@ -182,16 +184,20 @@ export default {
         ID: articleId,
         isDeleted: 1
       }
-      const { data: res } = await this.$http.post('article/saveArticle', this.$qs.parse(article))
-      if (res.code === 200) {
+      try {
+        const { data: res } = await this.$http.post('article/saveArticle', this.$qs.parse(article))
+        if (res.code === 200) {
+          this.$rootMessage({
+            type: 'success',
+            message: res.msg
+          })
+        }
+      } catch (e) {
+        // 保存失败，输出错误提示
         this.$rootMessage({
-          type: 'success',
-          message: res.msg
-        })
-      } else {
-        this.$rootMessage({
-          type: 'error',
-          message: '删除失败'
+          showClose: true,
+          message: e,
+          type: 'error'
         })
       }
       // 无论是否删除成功，刷新页面
@@ -199,10 +205,19 @@ export default {
     },
     // 按照页面分页获取博客列表
     async selectArticleByPage () {
-      const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
-      this.articleList = res.data.articles
-      // 给分页控件的总条数赋值
-      this.total = res.data.total
+      try {
+        const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
+        this.articleList = res.data.articles
+        // 给分页控件的总条数赋值
+        this.total = res.data.total
+      } catch (e) {
+        // 保存失败，输出错误提示
+        this.$rootMessage({
+          showClose: true,
+          message: e,
+          type: 'error'
+        })
+      }
     }
   },
   created () {

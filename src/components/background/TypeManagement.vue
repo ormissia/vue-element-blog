@@ -170,16 +170,20 @@ export default {
         ID: typeId,
         isDeleted: 1
       }
-      const { data: res } = await this.$http.post('type/saveType', this.$qs.parse(articleType))
-      if (res.code === 200) {
+      try {
+        const { data: res } = await this.$http.post('type/saveType', this.$qs.parse(articleType))
+        if (res.code === 200) {
+          this.$rootMessage({
+            type: 'success',
+            message: res.msg
+          })
+        }
+      } catch (e) {
+        // 保存失败，输出错误提示
         this.$rootMessage({
-          type: 'success',
-          message: res.msg
-        })
-      } else {
-        this.$rootMessage({
-          type: 'error',
-          message: '删除失败'
+          showClose: true,
+          message: e,
+          type: 'error'
         })
       }
       // 无论是否删除成功，刷新页面
@@ -194,21 +198,23 @@ export default {
     },
     // 发起创建新类型的http请求
     async createNewType () {
-      const { data: res } = await this.$http.post('type/saveType', this.$qs.parse(this.typeForm))
-      // 根据返回值判断是否保存成功
-      if (res.code === 200) {
-        this.$rootMessage({
-          showClose: true,
-          message: res.msg,
-          type: 'success'
-        })
-        // 返回成功之后关闭Dialog
-        this.dialogVisible = false
-      } else {
+      try {
+        const { data: res } = await this.$http.post('type/saveType', this.$qs.parse(this.typeForm))
+        // 根据返回值判断是否保存成功
+        if (res.code === 200) {
+          this.$rootMessage({
+            showClose: true,
+            message: res.msg,
+            type: 'success'
+          })
+          // 返回成功之后关闭Dialog
+          this.dialogVisible = false
+        }
+      } catch (e) {
         // 保存失败，输出错误提示
         this.$rootMessage({
           showClose: true,
-          message: res.msg,
+          message: e,
           type: 'error'
         })
       }
@@ -217,10 +223,19 @@ export default {
     },
     // 按照页面分页获取博客列表
     async selectTypeByPage () {
-      const { data: res } = await this.$http.post('type/selectTypeByPage', this.$qs.parse(this.queryInfo))
-      this.typeList = res.data.dataList
-      // 给分页控件的总条数赋值
-      this.total = res.data.total
+      try {
+        const { data: res } = await this.$http.post('type/selectTypeByPage', this.$qs.parse(this.queryInfo))
+        this.typeList = res.data.dataList
+        // 给分页控件的总条数赋值
+        this.total = res.data.total
+      } catch (e) {
+        // 保存失败，输出错误提示
+        this.$rootMessage({
+          showClose: true,
+          message: e,
+          type: 'error'
+        })
+      }
     }
   },
   created () {

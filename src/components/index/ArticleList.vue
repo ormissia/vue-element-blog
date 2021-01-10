@@ -150,18 +150,35 @@ export default {
     // 按照页面分页获取博客列表
     // 首次打开页面时调用
     async selectArticleByPage () {
-      const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
-      this.articleList = res.data.articles
-      this.total = res.data.total
+      try {
+        const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
+        this.articleList = res.data.articles
+        this.total = res.data.total
+      } catch (e) {
+        // 保存失败，输出错误提示
+        this.$rootMessage({
+          showClose: true,
+          message: e,
+          type: 'error'
+        })
+      }
     },
     // 连续加载时调用
     async loadMoreArticleByPage () {
-      const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
-      // 当返回值中articleList长度不为0时，添加到this.articleList后面
-      if (res.data.dataList.length !== 0) {
-        this.articleList = this.articleList.concat(res.data.dataList)
+      try {
+        const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
+        // 当返回值中articleList长度不为0时，添加到this.articleList后面
+        if (res.data.dataList.length !== 0) {
+          this.articleList = this.articleList.concat(res.data.dataList)
+        }
+      } catch (e) {
+        // 保存失败，输出错误提示
+        this.$rootMessage({
+          showClose: true,
+          message: e,
+          type: 'error'
+        })
       }
-
       // 获取返回值之后将状态改为不繁忙忙碌
       this.loading = false
     },
@@ -201,11 +218,13 @@ export default {
 
           .article-title {
             // 去掉标题标签<h1>的上边距
-            margin-top: 0;
+            margin: 0;
+            line-height: 30px;
           }
 
           .div-description {
             height: 80px;
+            line-height: 20px;
           }
 
           .div-bottom {

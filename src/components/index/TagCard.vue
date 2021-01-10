@@ -61,9 +61,17 @@ export default {
     },
     // 按照页面分页获取博客列表
     async selectTagByPage () {
-      const { data: res } = await this.$http.post('tag/selectTagByPage', this.$qs.parse(this.queryInfo))
-      // TODO 错误处理
-      this.tagList = res.data.dataList
+      try {
+        const { data: res } = await this.$http.post('tag/selectTagByPage', this.$qs.parse(this.queryInfo))
+        this.tagList = res.data.dataList
+      } catch (e) {
+        // 保存失败，输出错误提示
+        this.$rootMessage({
+          showClose: true,
+          message: e,
+          type: 'error'
+        })
+      }
     }
   },
   created () {

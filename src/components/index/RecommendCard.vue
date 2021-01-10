@@ -51,8 +51,17 @@ export default {
     },
     // 按照页面分页获取推荐博客列表
     async selectArticleByPage () {
-      const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
-      this.articleList = res.data.articles
+      try {
+        const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
+        this.articleList = res.data.articles
+      } catch (e) {
+        // 保存失败，输出错误提示
+        this.$rootMessage({
+          showClose: true,
+          message: e,
+          type: 'error'
+        })
+      }
     }
   },
   created () {

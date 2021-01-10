@@ -16,6 +16,7 @@
             ref="toastUiEditor"
             :initialValue='articleForm.content'
             :options="viewerOptions"
+            height="750px"
             class="editor"/>
     <el-row :gutter="20">
       <!--      <el-col :span="6">-->
@@ -40,7 +41,9 @@
         <!--博客简介-->
         <el-input
           type="textarea"
-          :autosize="{ minRows: 8 }"
+          :autosize="{ minRows: 1 }"
+          maxlength="120"
+          show-word-limit
           placeholder="请输入简介"
           v-model="articleForm.description"
           class="description">
@@ -276,21 +279,23 @@ export default {
       // 将类型信息赋值到对象中
       this.articleForm.typeId = this.articleForm.type.ID
       // 需要在页面上做校验是否有必须输入的内容
-      const { data: res } = await this.$http.post('article/saveArticle', this.$qs.parse(this.articleForm))
-      // 根据返回值判断是否保存成功，若成功则跳到ArticleManagement页面
-      if (res.code === 200) {
-        this.$rootMessage({
-          showClose: true,
-          message: res.msg,
-          type: 'success'
-        })
-        // 跳转到博客管理页面
-        await this.$router.push('/background/articleManagement/')
-      } else {
+      try {
+        const { data: res } = await this.$http.post('article/saveArticle', this.$qs.parse(this.articleForm))
+        // 根据返回值判断是否保存成功，若成功则跳到ArticleManagement页面
+        if (res.code === 200) {
+          this.$rootMessage({
+            showClose: true,
+            message: res.msg,
+            type: 'success'
+          })
+          // 跳转到博客管理页面
+          await this.$router.push('/background/articleManagement/')
+        }
+      } catch (e) {
         // 保存失败，输出错误提示
         this.$rootMessage({
           showClose: true,
-          message: res.msg,
+          message: e,
           type: 'error'
         })
       }
@@ -363,7 +368,6 @@ export default {
 
   .editor {
     margin: 10px 0;
-    height: 800px !important;
   }
 
   .upload-img {
