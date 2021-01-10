@@ -170,16 +170,20 @@ export default {
         ID: tagId,
         isDeleted: 1
       }
-      const { data: res } = await this.$http.post('tag/saveTag', this.$qs.parse(articleTag))
-      if (res.code === 200) {
+      try {
+        const { data: res } = await this.$http.post('tag/saveTag', this.$qs.parse(articleTag))
+        if (res.code === 200) {
+          this.$rootMessage({
+            type: 'success',
+            message: res.msg
+          })
+        }
+      } catch (e) {
+        // 保存失败，输出错误提示
         this.$rootMessage({
-          type: 'success',
-          message: res.msg
-        })
-      } else {
-        this.$rootMessage({
-          type: 'error',
-          message: '删除失败'
+          showClose: true,
+          message: e,
+          type: 'error'
         })
       }
       // 无论是否删除成功，刷新页面
@@ -194,21 +198,23 @@ export default {
     },
     // 发起创建新标签的http请求
     async saveTag () {
-      const { data: res } = await this.$http.post('tag/saveTag', this.$qs.parse(this.tagForm))
-      // 根据返回值判断是否保存成功
-      if (res.code === 200) {
-        this.$rootMessage({
-          showClose: true,
-          message: res.msg,
-          type: 'success'
-        })
-        // 返回成功之后关闭Dialog
-        this.dialogVisible = false
-      } else {
+      try {
+        const { data: res } = await this.$http.post('tag/saveTag', this.$qs.parse(this.tagForm))
+        // 根据返回值判断是否保存成功
+        if (res.code === 200) {
+          this.$rootMessage({
+            showClose: true,
+            message: res.msg,
+            type: 'success'
+          })
+          // 返回成功之后关闭Dialog
+          this.dialogVisible = false
+        }
+      } catch (e) {
         // 保存失败，输出错误提示
         this.$rootMessage({
           showClose: true,
-          message: res.msg,
+          message: e,
           type: 'error'
         })
       }
@@ -217,12 +223,20 @@ export default {
     },
     // 按照页面分页获取博客列表
     async selectTagByPage () {
-      console.log(this.queryInfo)
-      const { data: res } = await this.$http.post('tag/selectTagByPage', this.$qs.parse(this.queryInfo))
-      // TODO 错误处理
-      this.tagList = res.data.dataList
-      // 给分页控件的总条数赋值
-      this.total = res.data.total
+      try {
+        const { data: res } = await this.$http.post('tag/selectTagByPage', this.$qs.parse(this.queryInfo))
+        // 将结果赋值到变量中
+        this.tagList = res.data.dataList
+        // 给分页控件的总条数赋值
+        this.total = res.data.total
+      } catch (e) {
+        // 保存失败，输出错误提示
+        this.$rootMessage({
+          showClose: true,
+          message: e,
+          type: 'error'
+        })
+      }
     }
   },
   created () {

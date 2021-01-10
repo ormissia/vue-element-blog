@@ -87,31 +87,40 @@ export default {
     },
     // 通过博客Id查询博客信息
     async selectArticleById (articleId) {
-      const { data: res } = await this.$http.post('article/selectArticleById', this.$qs.stringify({ articleId: articleId }))
-      // 判断返回结果状态值，如果成功获取博客信息，则将博客信息分别赋值给articleForm和oldArticle（用于页面恢复数据）
-      if (res.code === 200) {
-        this.articleForm.ID = res.data.ID
-        this.articleForm.CreatedAt = res.data.CreatedAt
-        this.articleForm.UpdatedAt = res.data.UpdatedAt
-        this.articleForm.topImage = res.data.topImage
-        this.articleForm.title = res.data.title
-        this.articleForm.content = res.data.content
-        this.articleForm.description = res.data.description
-        this.articleForm.userId = res.data.user.userId
-        // 判断type和tags是否为空，如果为空时不加判断会报错
-        if (res.data.type !== null) {
-          this.articleForm.typeName = res.data.type.typeName
-        }
-        if (res.data.tags.length >= 0) {
-          for (let i = 0; i < res.data.tags.length; i++) {
-            this.articleForm.articleTags.push(res.data.tags[i].tagName)
+      try {
+        const { data: res } = await this.$http.post('article/selectArticleById', this.$qs.stringify({ articleId: articleId }))
+        // 判断返回结果状态值，如果成功获取博客信息，则将博客信息分别赋值给articleForm和oldArticle（用于页面恢复数据）
+        if (res.code === 200) {
+          this.articleForm.ID = res.data.ID
+          this.articleForm.CreatedAt = res.data.CreatedAt
+          this.articleForm.UpdatedAt = res.data.UpdatedAt
+          this.articleForm.topImage = res.data.topImage
+          this.articleForm.title = res.data.title
+          this.articleForm.content = res.data.content
+          this.articleForm.description = res.data.description
+          this.articleForm.userId = res.data.user.userId
+          // 判断type和tags是否为空，如果为空时不加判断会报错
+          if (res.data.type !== null) {
+            this.articleForm.typeName = res.data.type.typeName
           }
-        }
-        this.articleForm.isRecommend = res.data.recommend
-        this.articleForm.isPublished = res.data.published
+          if (res.data.tags.length >= 0) {
+            for (let i = 0; i < res.data.tags.length; i++) {
+              this.articleForm.articleTags.push(res.data.tags[i].tagName)
+            }
+          }
+          this.articleForm.isRecommend = res.data.recommend
+          this.articleForm.isPublished = res.data.published
 
-        // 刷新编辑器内容
-        this.setMarkdown()
+          // 刷新编辑器内容
+          this.setMarkdown()
+        }
+      } catch (e) {
+        // 保存失败，输出错误提示
+        this.$rootMessage({
+          showClose: true,
+          message: e,
+          type: 'error'
+        })
       }
     }
   },

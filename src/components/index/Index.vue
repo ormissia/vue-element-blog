@@ -47,7 +47,7 @@
                       v-model="loginForm.password"
                       prefix-icon="el-icon-info"
                       type="password"
-                      v-on:keyup.enter.native ="login"></el-input>
+                      v-on:keyup.enter.native="login"></el-input>
           </el-form-item>
           <!--按钮-->
           <el-form-item class="login-button">
@@ -116,30 +116,40 @@ export default {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return false
         // 发送请求之前需要对密码加密
-        const { data: res } = await this.$http.post('user/login', this.$qs.parse({
-          username: this.loginForm.username,
-          password: this.$md5(this.loginForm.password)
-        }))
-        if (res.code === 1002 || res.code === 1003) {
-          // 用户不存在登录失败提示
-          return this.$rootMessage({
+        try {
+          const { data: res } = await this.$http.post('user/login', this.$qs.parse({
+            username: this.loginForm.username,
+            password: this.$md5(this.loginForm.password)
+          }))
+          if (res.code === 1002 || res.code === 1003) {
+            // 用户不存在登录失败提示
+            return this.$rootMessage({
+              showClose: true,
+              message: res.message,
+              type: 'error'
+            })
+          }
+          // 登录成功提示
+          this.$rootMessage({
             showClose: true,
-            message: res.message,
+            message: res.msg,
+            type: 'success'
+          })
+
+          // 1、将登陆成功之后的token, 保存到客户端的sessionStorage中; localStorage中是持久化的保存
+          //   1.1 项目中出现了登录之外的其他API接口，必须在登陆之后才能访问
+          //   1.2 token 只应在当前网站打开期间生效，所以将token保存在sessionStorage中
+          window.sessionStorage.setItem('token', 'Bearer ' + res.token)
+          // 2、通过编程式导航跳转到后台主页, 路由地址为：/home
+          await this.$router.push('/background/home')
+        } catch (e) {
+          // 保存失败，输出错误提示
+          this.$rootMessage({
+            showClose: true,
+            message: e,
             type: 'error'
           })
         }
-        // 登录成功提示
-        this.$rootMessage({
-          showClose: true,
-          message: res.msg,
-          type: 'success'
-        })
-        // 1、将登陆成功之后的token, 保存到客户端的sessionStorage中; localStorage中是持久化的保存
-        //   1.1 项目中出现了登录之外的其他API接口，必须在登陆之后才能访问
-        //   1.2 token 只应在当前网站打开期间生效，所以将token保存在sessionStorage中
-        window.sessionStorage.setItem('token', 'Bearer ' + res.token)
-        // 2、通过编程式导航跳转到后台主页, 路由地址为：/home
-        await this.$router.push('/background/home')
       })
     }
   }
