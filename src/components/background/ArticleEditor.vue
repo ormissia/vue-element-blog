@@ -315,6 +315,7 @@ export default {
       if (res.code === 200) {
         this.articleForm.ID = res.data.ID
         this.articleForm.title = res.data.title
+        this.articleForm.topImage = res.data.topImage
         this.articleForm.content = res.data.content
         this.articleForm.description = res.data.description
         this.articleForm.userId = res.data.user.userId
