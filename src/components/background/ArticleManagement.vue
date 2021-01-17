@@ -91,7 +91,8 @@
       :page-size="queryInfo.pageSize"
       :page-sizes="[3, 5, 10, 20]"
       :total="total"
-      layout="total, sizes, prev, pager, next, jumper">
+      layout="total, sizes, prev, pager, next, jumper"
+      class="pagination">
     </el-pagination>
   </el-card>
 </template>
@@ -229,8 +230,12 @@ export default {
 
 <style lang="less" scoped>
 .management-card {
-  // 高度设置成100会出现滚动条，就很奇怪
-  height: 99%;
+  //分页控件的样式
+  .pagination {
+    margin-top: 15px;
+    position: static;
+    transform: translate(0, 0)
+  }
 
   .btn-add-article {
     float: right;
