@@ -17,11 +17,22 @@ import md5 from 'js-md5'
 // InfiniteScroll无限滚动
 import infiniteScroll from 'vue-infinite-scroll'
 
+// 导入NProgress的JS和CSS
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
 // 配置请求根路径
 axios.defaults.baseURL = 'http://ormissia.com:13880/api/'
 // 请求头添加token
 axios.interceptors.request.use(config => {
+  // 在request拦截器中展示进度条
+  NProgress.start()
   config.headers.token = window.sessionStorage.getItem('token')
+  return config
+})
+axios.interceptors.response.use(config => {
+  // 在response拦截器中展示进度条
+  NProgress.done()
   return config
 })
 // 挂在到Vue实例，后面可通过this调用
