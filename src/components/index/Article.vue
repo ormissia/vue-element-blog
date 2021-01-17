@@ -10,22 +10,25 @@
     <el-col :span="8">
       <recommend-card></recommend-card>
       <tag-card class="card-right"></tag-card>
+      <record-info class="card-right"></record-info>
     </el-col>
   </el-row>
 </template>
 
 <script>
 // 将文章列表以组件的方式引入
-import articleList from './ArticleList'
-import recommendCard from './RecommendCard'
+import ArticleList from './ArticleList'
+import RecommendCard from './RecommendCard'
 import TagCard from '@/components/index/TagCard'
+import RecordInfo from '@/components/index/RecordInfo'
 
 export default {
   name: 'Article',
   components: {
-    'article-list': articleList,
-    'recommend-card': recommendCard,
-    'tag-card': TagCard
+    'article-list': ArticleList,
+    'recommend-card': RecommendCard,
+    'tag-card': TagCard,
+    'record-info': RecordInfo
   },
   data () {
     return {}
