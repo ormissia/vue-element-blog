@@ -12,7 +12,7 @@
           infinite-scroll-disabled="disabled"
           class="list">
         <!--遍历articleList生成文章列表-->
-        <li v-for="i in articleList" :key="i.articleId" class="list-item">
+        <li v-for="i in articleList" :key="i.ID" class="list-item">
           <!--文章的Card，当鼠标移入时显示阴影-->
           <el-card shadow="hover" class="card-article">
             <el-row>
@@ -25,7 +25,7 @@
                 </div>
                 <!--简介-->
                 <div class="div-description"
-                     @click="openArticleDetail(i.articleId)">
+                     @click="openArticleDetail(i.ID)">
                   <p>{{ i.description }}</p>
                 </div>
                 <!--底部-->
