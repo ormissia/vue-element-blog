@@ -66,14 +66,14 @@
           :value="item">
         </el-option>
       </el-select>
-      <!--博客标签的选择器，可添加-->
+      <!--博客标签的选择器-->
       <el-select
         v-model="articleForm.tags"
         value-key="ID"
         style="width: 50%;margin-left: 10px"
         :multiple="true"
         :filterable="true"
-        :allow-create="true"
+        :allow-create="false"
         :default-first-option="true"
         placeholder="请选择文章标签">
         <el-option
