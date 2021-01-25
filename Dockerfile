@@ -6,14 +6,9 @@ FROM node AS builder
 WORKDIR /build
 
 # 将依赖复制到容器中
-COPY package*.json ./
-# 安装依赖
-RUN npm install
-
-# 将依赖复制到容器中
 COPY . .
 # 构建项目
-RUN npm run build
+RUN npm install && npm run build
 
 ###################
 # 接下来创建一个Nginx镜像将打包好的文件放进去
