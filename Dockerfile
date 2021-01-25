@@ -3,20 +3,25 @@
 FROM node AS builder
 
 # 设置工作目录：/build
-WORKDIR /build
+WORKDIR /app
 
 # 将依赖复制到容器中
+COPY package*.json ./
+# 安装依赖
+RUN npm install
+
+# 复制文件
 COPY . .
-# 构建项目
-RUN npm install && npm run build
+# 构建应用
+RUN npm run build
 
 ###################
 # 接下来创建一个Nginx镜像将打包好的文件放进去
 ###################
 FROM nginx
 
-# 从builder镜像中把/build/dist 拷贝到/web目录
-COPY --from=builder /build/dist /web/dist
+# 从builder镜像中把/build/dist 拷贝到/app
+COPY --from=builder /app/dist /app/dist
 
 # 删除原有配置文件
 RUN rm -f  /etc/nginx/nginx.conf
