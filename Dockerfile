@@ -6,7 +6,7 @@ FROM node AS builder
 WORKDIR /build
 
 # 将依赖复制到容器中
-COPY package*.json .
+COPY package*.json ./
 # 安装依赖
 RUN npm install
 
