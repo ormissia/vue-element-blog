@@ -9,8 +9,7 @@ WORKDIR /build
 COPY . .
 
 # 将代码用Node打包
-RUN npm install
-RUN npm run build
+RUN yum install -y npm && npm install && npm run build
 
 ###################
 # 接下来创建一个Nginx镜像将打包好的文件放进去
