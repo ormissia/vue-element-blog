@@ -5,11 +5,15 @@ FROM node AS builder
 # 设置工作目录：/build
 WORKDIR /build
 
-# 将代码复制到容器中
-COPY . .
+# 将依赖复制到容器中
+COPY package*.json .
+# 安装依赖
+RUN npm install
 
-# 将代码用Node打包
-RUN yum install -y npm && npm install && npm run build
+# 将依赖复制到容器中
+COPY . .
+# 构建项目
+RUN npm run build
 
 ###################
 # 接下来创建一个Nginx镜像将打包好的文件放进去
