@@ -168,8 +168,8 @@ export default {
       try {
         const { data: res } = await this.$http.post('article/selectArticleByPage', this.$qs.parse(this.queryInfo))
         // 当返回值中articleList长度不为0时，添加到this.articleList后面
-        if (res.data.dataList.length !== 0) {
-          this.articleList = this.articleList.concat(res.data.dataList)
+        if (res.data.total !== 0) {
+          this.articleList = this.articleList.concat(res.data.articles)
         }
       } catch (e) {
         // 保存失败，输出错误提示
