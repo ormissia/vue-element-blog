@@ -35,6 +35,7 @@ import {
   Loading,
   Dialog,
   Card,
+  Popover,
   Message,
   MessageBox
 } from 'element-ui'
@@ -71,6 +72,7 @@ Vue.use(Divider)
 Vue.use(Loading)
 Vue.use(Dialog)
 Vue.use(Card)
+Vue.use(Popover)
 // 导入弹框提示组件
 Vue.prototype.$rootMessage = Message
 // 导入Dialog组件

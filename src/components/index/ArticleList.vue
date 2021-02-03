@@ -42,8 +42,16 @@
               </el-col>
               <!--右侧文章首图的布局-->
               <el-col class="col-right" :span="8">
-                <el-image alt="博客首图" class="right-img" fit="cover"
-                          :src="i.topImage"></el-image>
+                <el-popover
+                  max-width="600px"
+                  trigger="hover">
+                  <el-image style="max-width: 700px"
+                            alt="博客首图" fit="cover"
+                            :src="i.topImage"></el-image>
+                  <el-image alt="博客首图" class="right-img" fit="cover"
+                            slot="reference"
+                            :src="i.topImage"></el-image>
+                </el-popover>
               </el-col>
             </el-row>
           </el-card>
@@ -92,7 +100,9 @@ export default {
       loading: false,
       // 继续加载时每次加载的数量
       // 必须使首次加载的pageSize是该值的整数倍
-      loadPageSize: 2
+      loadPageSize: 2,
+      // 首图大图可见性
+      visible: false
     }
   },
   // 监听父组件传过来的值的变化
