@@ -22,7 +22,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 // 配置请求根路径
-axios.defaults.baseURL = 'http://ormissia.com:13880/api/'
+axios.defaults.baseURL = 'http://127.0.0.1:8085/api/'
 // 请求头添加token
 axios.interceptors.request.use(config => {
   // 在request拦截器中展示进度条

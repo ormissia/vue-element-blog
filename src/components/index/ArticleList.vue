@@ -3,7 +3,10 @@
   <!--文章列表整体的Card，阴影总是显示-->
   <el-card shadow="always" class="card-list">
     <!--搜索框-->
-    <el-input placeholder="请输入内容" v-model="queryInfo.title">
+    <el-input placeholder="请输入内容"
+              v-model="queryInfo.title"
+              @change="searchArticle"
+              clearable>
       <template slot="prepend">搜索</template>
       <el-button slot="append" icon="el-icon-search" @click="searchArticle"></el-button>
     </el-input>
