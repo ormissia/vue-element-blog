@@ -310,43 +310,30 @@ export default {
     },
     // 通过博客Id查询博客信息
     async selectArticleById (articleId) {
-      try {
-        // isPublished: 查询发布未发布所有状态的文章，只要不为0即可
-        const { data: res } = await this.$http.post('article/selectArticleById', this.$qs.stringify({
-          articleId: articleId,
-          isPublished: '3'
-        }))
-        // 判断返回结果状态值，如果成功获取博客信息，则将博客信息分别赋值给articleForm和oldArticle（用于页面恢复数据）
-        if (res.code === 200) {
-          this.articleForm.ID = res.data.ID
-          this.articleForm.title = res.data.title
-          this.articleForm.topImage = res.data.topImage
-          this.articleForm.content = res.data.content
-          this.articleForm.description = res.data.description
-          this.articleForm.userId = res.data.user.userId
-          // 判断type和tags是否为空，如果为空时不加判断会报错
-          if (res.data.type !== null) {
-            this.articleForm.type = res.data.type
-          }
-          if (res.data.tags.length >= 0) {
-            this.articleForm.tags = res.data.tags
-          }
-          this.articleForm.isRecommend = res.data.isRecommend
-          this.articleForm.isPublished = res.data.isPublished
-
-          // 同时将原始值保存到oldArticle中
-          this.oldArticle = JSON.parse(JSON.stringify(this.articleForm))
-
-          // 刷新编辑器内容
-          this.setMarkdown()
+      const { data: res } = await this.$http.post('article/selectArticleById', this.$qs.stringify({ articleId: articleId }))
+      // 判断返回结果状态值，如果成功获取博客信息，则将博客信息分别赋值给articleForm和oldArticle（用于页面恢复数据）
+      if (res.code === 200) {
+        this.articleForm.ID = res.data.ID
+        this.articleForm.title = res.data.title
+        this.articleForm.topImage = res.data.topImage
+        this.articleForm.content = res.data.content
+        this.articleForm.description = res.data.description
+        this.articleForm.userId = res.data.user.userId
+        // 判断type和tags是否为空，如果为空时不加判断会报错
+        if (res.data.type !== null) {
+          this.articleForm.type = res.data.type
         }
-      } catch (e) {
-        // 保存失败，输出错误提示
-        this.$rootMessage({
-          showClose: true,
-          message: e,
-          type: 'error'
-        })
+        if (res.data.tags.length >= 0) {
+          this.articleForm.tags = res.data.tags
+        }
+        this.articleForm.isRecommend = res.data.isRecommend
+        this.articleForm.isPublished = res.data.isPublished
+
+        // 同时将原始值保存到oldArticle中
+        this.oldArticle = JSON.parse(JSON.stringify(this.articleForm))
+
+        // 刷新编辑器内容
+        this.setMarkdown()
       }
     },
     // 按照页面分页获取类型列表
