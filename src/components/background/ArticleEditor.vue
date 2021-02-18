@@ -310,7 +310,10 @@ export default {
     },
     // 通过博客Id查询博客信息
     async selectArticleById (articleId) {
-      const { data: res } = await this.$http.post('article/selectArticleById', this.$qs.stringify({ articleId: articleId }))
+      const { data: res } = await this.$http.post('article/selectArticleById', this.$qs.stringify({
+        articleId: articleId,
+        isPublished: '3'
+      }))
       // 判断返回结果状态值，如果成功获取博客信息，则将博客信息分别赋值给articleForm和oldArticle（用于页面恢复数据）
       if (res.code === 200) {
         this.articleForm.ID = res.data.ID
