@@ -111,7 +111,7 @@
           </el-tag>
           <!--发布和保存的按钮-->
           <el-button type="primary" @click="saveAndPublish(1)">写完了，马上发布</el-button>
-          <el-button type="primary" @click="saveAndPublish(0)" :plain="true">没写完，保存草稿</el-button>
+          <el-button type="primary" @click="saveAndPublish(2)" :plain="true">没写完，保存草稿</el-button>
         </div>
       </el-col>
     </el-row>
