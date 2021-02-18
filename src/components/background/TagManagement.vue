@@ -11,7 +11,10 @@
     <el-row :gutter="20">
       <el-col :span="18">
         <!--搜索框-->
-        <el-input placeholder="请输入内容" v-model="queryInfo.tagName">
+        <el-input placeholder="请输入内容"
+                  v-model="queryInfo.tagName"
+                  @change="selectTagByPage"
+                  clearable>
           <template slot="prepend">搜索</template>
           <el-button slot="append" icon="el-icon-search" @click="selectTagByPage"></el-button>
         </el-input>
