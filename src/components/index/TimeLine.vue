@@ -1,9 +1,11 @@
 <!--历程页面-->
 <template>
   <div class="container">
-    <div style="width: 100%;height: 100%" v-for="item in items" :key="item.index">
-      <div id="calendar" ref="calendar" style="width: 45%;height: 40%"></div>
-    </div>
+    <h1 style="padding-top: 20px">施工中...</h1>
+    <img src="https://ormissia-blog.oss-cn-qingdao.aliyuncs.com/image-hosting/building.jpg" alt="施工中...">
+<!--    <div style="width: 100%;height: 100%" v-for="item in items" :key="item.index">-->
+<!--      <div id="calendar" ref="calendar" style="width: 45%;height: 40%"></div>-->
+<!--    </div>-->
   </div>
 </template>
 
