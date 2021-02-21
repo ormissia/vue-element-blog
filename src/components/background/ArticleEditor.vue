@@ -106,8 +106,8 @@
       <!--右边按钮区域-->
       <el-col :span="12">
         <div class="buttons">
-          <el-tag :type="articleForm.isPublished === true ? 'success' : 'info'">
-            状态：{{ articleForm.isPublished === true ? '发布' : '草稿' }}
+          <el-tag :type="articleForm.isPublished === 1 ? 'success' : 'info'">
+            状态：{{ articleForm.isPublished === 1 ? '发布' : '草稿' }}
           </el-tag>
           <!--发布和保存的按钮-->
           <el-button type="primary" @click="saveAndPublish(1)">写完了，马上发布</el-button>
